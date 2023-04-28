@@ -1,4 +1,22 @@
 <template>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+          <a href="#" class="navbar-brand">KBT Chatbot</a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+              <span class="navbar-toggler-icon"></span>
+          </button>
+          <div id="navbarCollapse" class="collapse navbar-collapse">
+              <div class="navbar-nav">
+                  <a href="#" class="nav-item nav-link active">Chatbot 1</a>
+                  <a href="#" class="nav-item nav-link active">Chatbot 2</a>
+                  <a href="#" class="nav-item nav-link active">Chatbot 3</a>
+              </div>
+              <div class="navbar-nav ms-auto">
+                  <a href="#" class="nav-item nav-link">Login</a>
+              </div>
+          </div>
+      </div>
+  </nav>
   <section class="container-fluid py-4">
     <router-view />
   </section>

@@ -5,31 +5,6 @@
   <div class="row clearfix">
       <div class="col-lg-12">
           <div class="card chat-app">
-              <div id="plist" class="people-list">
-                  <ul class="list-unstyled chat-list mt-2 mb-0">
-                      <li class="clearfix">
-                          <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="avatar">
-                          <div class="about">
-                              <div class="name">ChatBot#1</div>
-                              <div class="status">Closed Domain Chatbot</div>                                            
-                          </div>
-                      </li>
-                      <li class="clearfix active">
-                          <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="avatar">
-                          <div class="about">
-                              <div class="name">ChatBot#2</div>
-                              <div class="status">Open Domain Chatbot</div>
-                          </div>
-                      </li>
-                      <li class="clearfix">
-                          <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="avatar">
-                          <div class="about">
-                              <div class="name">ChatBot#3</div>
-                              <div class="status">Combined Chatbot</div>
-                          </div>
-                      </li>
-                  </ul>
-              </div>
               <div class="chat">
                   <div class="chat-header clearfix">
                       <div class="row">
@@ -94,6 +69,7 @@ export default {
   mounted() {
     const chatHistory = document.getElementById("chat-history");
     chatHistory.scrollTop = chatHistory.scrollHeight;
+    
     this.socket.on("booking-timeslot", (data) => {
       const btnId = data[0];
       const action = data[1];

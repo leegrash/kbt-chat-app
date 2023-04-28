@@ -44,7 +44,7 @@
                           </div>
                       </div>
                   </div>
-                  <div class="chat-history">
+                  <div id="chat-history" class="chat-history">
                       <ul class="m-b-0">
                           <li class="clearfix">
                               <div class="message-data text-right">
@@ -213,6 +213,8 @@ export default {
   }),
 
   mounted() {
+    const chatHistory = document.getElementById("chat-history");
+    chatHistory.scrollTop = chatHistory.scrollHeight;
     this.socket.on("booking-timeslot", (data) => {
       const btnId = data[0];
       const action = data[1];
@@ -240,41 +242,7 @@ export default {
     });
   },
   created() {
-    fetch("/api/load-timeslots")
-      .then((res) => res.json())
-      .then((data) => {
-        this.availabletimeslots = data;
-      });
-
-    this.adminTimeout = null;
-
-    document.onmousemove = () => {
-      if (this.$store.state.authenticated !== false) {
-        clearTimeout(this.adminTimeout);
-        this.adminTimeout = setTimeout(() => {
-          console.log("You have been logged out due to mouse move inactivity");
-          this.timeoutSignout();
-        }, 10000);
-      }
-    };
-    document.onkeydown = () => {
-      if (this.$store.state.authenticated !== false) {
-        clearTimeout(this.adminTimeout);
-        this.adminTimeout = setTimeout(() => {
-          console.log("You have been logged out due to key inactivity");
-          this.timeoutSignout();
-        }, 10000);
-      }
-    };
-    document.onmousedown = () => {
-      if (this.$store.state.authenticated !== false) {
-        clearTimeout(this.adminTimeout);
-        this.adminTimeout = setTimeout(() => {
-          console.log("You have been logged out due to mouse click inactivity");
-          this.timeoutSignout();
-        }, 10000);
-      }
-    };
+    
   },
   methods: {
     buttonClicked(timeslot) {

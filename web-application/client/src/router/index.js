@@ -1,19 +1,19 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Login from "../views/Login.vue";
-import ShowTimeslots from "../views/ShowTimeslots.vue";
+import Chat from "../views/Chat.vue";
 
 const routes = [
   {
     path: "/",
-    redirect: "/showtimeslots",
+    redirect: "/chat",
   },
   {
     path: "/login",
     component: Login,
   },
   {
-    path: "/showtimeslots",
-    component: ShowTimeslots,
+    path: "/chat",
+    component: Chat,
   },
 ];
 

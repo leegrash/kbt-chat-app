@@ -17,7 +17,7 @@ export default {
     const { push } = this.$router;
 
     commit("setAuthenticated", false);
-    push(getters.isAuthenticated === true ? "/login" : "/showtimeslots");
+    push(getters.isAuthenticated === true ? "/login" : "/chat");
   },
   methods: {
     redirect(target) {

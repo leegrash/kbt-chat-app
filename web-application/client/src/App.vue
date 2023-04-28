@@ -54,9 +54,11 @@ body{
 }
 
 .chat-app .chat {
-    height: calc(100vh - 80px);
     margin-left: 280px;
-    border-left: 1px solid #eaeaea
+    border-left: 1px solid #eaeaea;
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 80px);
 }
 
 .people-list {
@@ -124,7 +126,7 @@ body{
 .chat .chat-history {
     padding: 20px;
     border-bottom: 2px solid #fff;
-    height: calc(100% - 20vh);
+    flex: 1;
     overflow-y: auto;
 }
 
@@ -208,8 +210,8 @@ body{
 }
 
 .chat .chat-message {
-    padding: 20px;
-    height: 10vh;
+    width: 100%;
+    padding: 20px
 }
 
 .online,

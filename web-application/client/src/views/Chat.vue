@@ -100,39 +100,7 @@ export default {
     
   },
   methods: {
-    buttonClicked(timeslot) {
-      console.log(timeslot);
-      const { push } = this.$router;
-      const userName = timeslot.assistant;
-      const timeslotTime = timeslot.time;
-
-      push({
-        path: `/booking/${userName}/${timeslotTime}/${timeslot.id}`,
-        params: {
-          user: userName,
-          timeslot: timeslotTime,
-          timeslotId: timeslot.id,
-        },
-      });
-    },
-    timeoutSignout() {
-      if (this.$store.state.authenticated !== false) {
-        fetch("/api/logout", {
-          credentials: "include",
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-        })
-          .then((res) => {
-            if (res.status === 200) return res.json();
-            throw new Error("Failed to sign out");
-          })
-          .then(({ authenticated }) => {
-            this.$store.commit("setAuthenticated", authenticated);
-            this.$router.push("/");
-          })
-          .catch(console.error);
-      }
-    },
+    
   },
 };
 </script>

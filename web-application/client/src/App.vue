@@ -6,13 +6,16 @@
               <span class="navbar-toggler-icon"></span>
           </button>
           <div id="navbarCollapse" class="collapse navbar-collapse">
-              <div class="navbar-nav">
+              <div v-if="$store.state.authenticated" class="navbar-nav">
                   <a href="#" class="nav-item nav-link active">Chatbot 1</a>
                   <a href="#" class="nav-item nav-link active">Chatbot 2</a>
                   <a href="#" class="nav-item nav-link active">Chatbot 3</a>
               </div>
-              <div class="navbar-nav ms-auto">
-                  <a href="#" class="nav-item nav-link">Login</a>
+              <div v-if="!$store.state.authenticated" class="navbar-nav ms-auto">
+                  <button class="btn btn-primary">Sign in <i class="bi bi-box-arrow-in-right"></i></button>
+              </div>
+              <div v-if="$store.state.authenticated" class="navbar-nav ms-auto">
+                  <button class="btn btn-danger">Sign out <i class="bi bi-box-arrow-left"></i></button>
               </div>
           </div>
       </div>
@@ -37,8 +40,8 @@ export default {
     const { commit, getters } = this.$store;
     const { push } = this.$router;
 
-    commit("setAuthenticated", true);
-    push(getters.isAuthenticated === true ? "/login" : "/chat");
+    commit("setAuthenticated", false);
+    push(getters.isAuthenticated === true ? "/chat" : "/login");
   },
   methods: {
     redirect(target) {

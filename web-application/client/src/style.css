@@ -55,20 +55,6 @@ body{
     margin-bottom: 0px
 }
 
-.chat .chat-history .message-data {
-    margin-bottom: 15px
-}
-
-.chat .chat-history .message-data img {
-    border-radius: 40px;
-    width: 40px
-}
-
-.chat .chat-history .message-data-time {
-    color: #434651;
-    padding-left: 6px
-}
-
 .chat .chat-history .message {
     color: #444;
     padding: 18px 20px;
@@ -154,8 +140,21 @@ body{
     width: 50%;
 }
 
-@media only screen and (max-width: 767px) {
+.nav-item:hover {
+    text-decoration: underline;
+}
+
+.ms-auto button {
+    margin-left: 10px;
+}
+
+@media only screen and (max-width: 992px) {
     .card {
         width: 90%
+    }
+
+    .ms-auto button {
+        margin-left: 10px;
+        margin-top: 10px;
     }
 }

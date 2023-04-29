@@ -19,15 +19,9 @@
                   <div id="chat-history" class="chat-history">
                       <ul class="m-b-0">
                           <li class="clearfix message-list">
-                              <div class="message-data text-right">
-                                  <span class="message-data-time">10:10 AM, Today</span>
-                              </div>
                               <div class="message other-message"> Hi Aiden, how are you? How is the project coming along? </div>
                           </li>
                           <li class="clearfix message-list">
-                              <div class="message-data">
-                                  <span class="message-data-time">10:12 AM, Today</span>
-                              </div>
                               <div class="message my-message">Are we meeting today?</div>                                    
                           </li>
                       </ul>
@@ -35,9 +29,7 @@
                   <div class="chat-message clearfix">
                         <div class="input-group mb-0">
                         <input type="text" class="form-control" placeholder="Enter text here...">
-                          <div class="input-group-prepend">
-                              <span class="input-group-text"><i class="fa fa-send"></i></span>
-                          </div>                                    
+                        <button type="button" class="btn btn-primary">Send  <i class="bi bi-send-fill"></i></button>                                   
                       </div>
                   </div>
               </div>

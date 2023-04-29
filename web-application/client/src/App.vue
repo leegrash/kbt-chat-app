@@ -6,17 +6,20 @@
               <span class="navbar-toggler-icon"></span>
           </button>
           <div id="navbarCollapse" class="collapse navbar-collapse">
-              <div v-if="$store.state.authenticated" class="navbar-nav">
-                  <a href="#" class="nav-item nav-link active">Chatbot 1</a>
-                  <a href="#" class="nav-item nav-link active">Chatbot 2</a>
-                  <a href="#" class="nav-item nav-link active">Chatbot 3</a>
+              <div class="navbar-nav">
+                  <a v-if="$store.state.authenticated" href="#" class="nav-item nav-link active">Chatbot 1</a>
+                  <a v-if="$store.state.authenticated" href="#" class="nav-item nav-link active">Chatbot 2</a>
+                  <a v-if="$store.state.authenticated" href="#" class="nav-item nav-link active">Chatbot 3</a>
+                  <a v-if="$store.state.authenticated" href="#" class="nav-item nav-link active">Survey form <i class="bi bi-box-arrow-up-right"></i></a>
               </div>
               <div v-if="!$store.state.authenticated" class="navbar-nav ms-auto">
+                  <button type="button" class="btn btn-info">Contact <i class="bi bi-envelope"></i></button>
                   <button v-if="isSigninRoute()" type="button" class="btn btn-primary" @click="redirect('/signup')">Sign up <i class="bi bi-box-arrow-in-right"></i></button>
                   <button v-if="!isSigninRoute()" type="button" class="btn btn-primary" @click="redirect('/login')">Sign in <i class="bi bi-box-arrow-in-right"></i></button>
               </div>
               <div v-if="$store.state.authenticated" class="navbar-nav ms-auto">
-                  <button type="button" class="btn btn-danger" @click="signOut()">Sign out <i class="bi bi-box-arrow-left"></i></button>
+                  <button type="button" class="btn btn-info">Contact <i class="bi bi-envelope"></i></button>
+                  <button type="button" class="btn btn-danger" @click="signOut()"><i class="bi bi-box-arrow-left"></i> Sign out</button>
               </div>
           </div>
       </div>
@@ -41,7 +44,7 @@ export default {
     const { commit, getters } = this.$store;
     const { push } = this.$router;
 
-    commit("setAuthenticated", false);
+    commit("setAuthenticated", true);
     push(getters.isAuthenticated === true ? "/chat" : "/login");
   },
   methods: {

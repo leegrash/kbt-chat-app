@@ -24,6 +24,15 @@
                   >
                     Password requirements not met
                   </div>
+                  <div
+                    v-if="$store.state.msg === 'Fill out all fields'"
+                    role="alert"
+                    aria-live="polite"
+                    aria-atomic="true"
+                    class="alert text-center alert-danger"
+                  >
+                    Fill out all fields
+                  </div>
                   <div class="form-group input-group">
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="bi bi-person-circle"></i></span>
@@ -55,6 +64,12 @@
 <script>
 export default {
   name: "LoginView",
+  beforeRouteLeave(to, from, next) {
+    if (this.$store.state.msg !== "User created") {
+      this.$store.state.msg = "";
+    }
+    next();
+  },
   data: () => ({
     username: "",
     password: "",
@@ -62,6 +77,10 @@ export default {
   }),
   methods: {
     createUser() {
+      if (this.password==="" || this.username==="" || this.confirmPassword==="") {
+        this.$store.state.msg = "Fill out all fields";
+        return;
+      }
       if (this.password !== this.confirmPassword) {
         this.$store.state.msg = "Passwords don't match";
         return;
@@ -70,7 +89,7 @@ export default {
         this.$store.state.msg = "Password requirements not met";
         return;
       }
-      this.$store.state.msg = "";
+      this.$store.state.msg = "User created";
       console.log("Creating user");
       this.$router.push("/login");
     }

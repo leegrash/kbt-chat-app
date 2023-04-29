@@ -6,6 +6,33 @@
               <div class="chat">
                 <h1 class="sign-in-header">Sign in</h1>
                 <form action="" class="sign-in-form align-items-center">
+                  <div
+                    v-if="$store.state.msg === 'User created'"
+                    role="alert"
+                    aria-live="polite"
+                    aria-atomic="true"
+                    class="alert text-center alert-success"
+                  >
+                    User created!
+                  </div>
+                  <div
+                    v-if="$store.state.msg === 'Wrong credentials'"
+                    role="alert"
+                    aria-live="polite"
+                    aria-atomic="true"
+                    class="alert text-center alert-danger"
+                  >
+                    Passwords don't match
+                  </div>
+                  <div
+                    v-if="$store.state.msg === 'Fill out all fields'"
+                    role="alert"
+                    aria-live="polite"
+                    aria-atomic="true"
+                    class="alert text-center alert-danger"
+                  >
+                    Fill out all fields
+                  </div>
                   <div class="form-group input-group">
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="bi bi-person-circle"></i></span>
@@ -42,6 +69,11 @@ export default {
     authenticate() {
       const { commit } = this.$store;
       const { push } = this.$router;
+
+      if (this.password==="" || this.username==="" || this.confirmPassword==="") {
+        this.$store.state.msg = "Fill out all fields";
+        return;
+      }
 
       fetch("/api/login", {
         method: "POST",

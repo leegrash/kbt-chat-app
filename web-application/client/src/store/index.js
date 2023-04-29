@@ -3,6 +3,7 @@ import { createStore } from "vuex";
 export default createStore({
   state: {
     authenticated: false,
+    msg: "",
   },
   getters: {
     isAuthenticated(state) {

@@ -15,7 +15,7 @@
                   <button type="button" class="btn btn-primary" @click="redirect('/login')">Sign in <i class="bi bi-box-arrow-in-right"></i></button>
               </div>
               <div v-if="$store.state.authenticated" class="navbar-nav ms-auto">
-                  <button type="button" class="btn btn-danger">Sign out <i class="bi bi-box-arrow-left"></i></button>
+                  <button type="button" class="btn btn-danger" @click="signOut()">Sign out <i class="bi bi-box-arrow-left"></i></button>
               </div>
           </div>
       </div>
@@ -46,6 +46,11 @@ export default {
   methods: {
     redirect(target) {
       this.$router.push(target);
+    },
+    signOut() {
+      this.$store.commit("setAuthenticated", false);
+      console.log("Signed out");
+      this.$router.push("/login");
     },
   },
 };

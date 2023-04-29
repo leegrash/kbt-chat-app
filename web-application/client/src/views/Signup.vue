@@ -5,25 +5,43 @@
           <div class="card chat-app">
               <div class="chat">
                 <h1 class="sign-in-header">Sign up</h1>
-                <form action="" class="sign-in-form align-items-center">
+                <form class="sign-in-form" @submit.prevent="createUser()">
+                  <div
+                    v-if="$store.state.msg === 'Passwords don\'t match'"
+                    role="alert"
+                    aria-live="polite"
+                    aria-atomic="true"
+                    class="alert text-center alert-danger"
+                  >
+                    Passwords don't match
+                  </div>
+                  <div
+                    v-if="$store.state.msg === 'Password requirements not met'"
+                    role="alert"
+                    aria-live="polite"
+                    aria-atomic="true"
+                    class="alert text-center alert-danger"
+                  >
+                    Password requirements not met
+                  </div>
                   <div class="form-group input-group">
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="bi bi-person-circle"></i></span>
                     </div>
-                    <input type="email" class="form-control" placeholder="Username">
+                    <input v-model="username" type="text" class="form-control" placeholder="Username">
                   </div>                  
                   <div class="form-group input-group">
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
                     </div>
-                    <input type="password" class="form-control" placeholder="Password">
+                    <input v-model="password" type="password" class="form-control" placeholder="Password">
                     <small class="form-text text-muted">Password must be longer than 5 characters and include at least 1 number</small>
                   </div>
                   <div class="form-group input-group">
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="bi bi-lock"></i></span>
                     </div>
-                    <input type="password" class="form-control" placeholder="Confirm password">
+                    <input v-model="confirmPassword" type="password" class="form-control" placeholder="Confirm password">
                   </div>
                   <button type="submit" class="btn btn-primary">Sign up</button>
                 </form>
@@ -40,36 +58,22 @@ export default {
   data: () => ({
     username: "",
     password: "",
-    msg: "",
+    confirmPassword: "",
   }),
   methods: {
-    authenticate() {
-      const { commit } = this.$store;
-      const { push } = this.$router;
-
-      fetch("/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          username: this.username,
-          password: this.password,
-        }),
-      })
-        .then((res) => {
-          if (res.status === 200) return res.json();
-
-          this.msg = "Bad credentials";
-          throw new Error("Authentication failed");
-        })
-        .then(({ authenticated }) => {
-          this.msg =
-            authenticated === true ? "Login successful" : "Bad credentials";
-          commit("setAuthenticated", authenticated);
-          commit("setUsername", this.username);
-          push(authenticated === true ? "/admin" : "/login");
-        })
-        .catch(console.error);
-    },
+    createUser() {
+      if (this.password !== this.confirmPassword) {
+        this.$store.state.msg = "Passwords don't match";
+        return;
+      }
+      if (this.password.length < 5 || !/\d/.test(this.password)) {
+        this.$store.state.msg = "Password requirements not met";
+        return;
+      }
+      this.$store.state.msg = "";
+      console.log("Creating user");
+      this.$router.push("/login");
+    }
   },
 };
 </script>

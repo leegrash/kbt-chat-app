@@ -19,7 +19,7 @@
                     <input type="password" class="form-control" placeholder="Password">
                   </div>
                   <div class="form-group">
-                    <p>Don't have an account? <router-link to="/signup">Sign up</router-link></p>
+                    <p>Don't have an account? <a href="">Sign up!</a></p>
                   </div>
                   <button type="submit" class="btn btn-primary">Login</button>
                 </form>

@@ -33,7 +33,12 @@ router.post("/signup", (req, res) => {
   const { username } = req.body;
   const { password } = req.body;
 
-  console.log("username: " + username);
+  if (password.length < 5 || !/\d/.test(this.password)) {
+    res.status(400).end();
+    return;
+  }
+
+  // check if username already exists otherwise create new user with hashed password
 
   res.status(200).end();
 });

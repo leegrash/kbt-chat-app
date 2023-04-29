@@ -54,6 +54,11 @@ io.use(
 // Serve static files
 app.use(express.static(resolvePath("client", "dist")));
 
+// Catch-all route that redirects all requests to the Vue.js application
+app.get("*", (req, res) => {
+  res.sendFile(resolvePath("client", "dist", "index.html"));
+});
+
 // Register middlewares that parse the body of the request, available under req.body property
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

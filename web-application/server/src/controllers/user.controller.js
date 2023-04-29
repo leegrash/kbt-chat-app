@@ -88,7 +88,40 @@ router.post("/signup", async (req, res) => {
   }  
 });
 
+router.post("/signin", async (req, res) => {
+  const { username } = req.body;
+  const { password } = req.body;
 
+  const query = `
+    SELECT * FROM users WHERE username = ?
+  `;
 
+  try {
+    await db.each(query, username, async (err, row) => {
+      if (err) {
+        throw new Error(err);
+      } else if (row === undefined) {
+        res.status(401).end();
+      } else {
+        const match = await bcrypt.compare(password, row.password);
+        if (match) {
+          const authCookie = uuidv4();
+          model.addAuthCookie(authCookie);
+          res.cookie("authCookie", authCookie, {
+            maxAge: 900000,
+            httpOnly: true,
+          });
+          res.status(202).end();
+        } else {
+          res.status(401).end();
+        }
+      }
+    });
+    res.status(401).end();
+  } catch (error) {
+    console.error(error);
+    res.status(400).end();
+  }
+});
 
 export { router, requireAuth };

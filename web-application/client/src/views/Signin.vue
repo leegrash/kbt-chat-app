@@ -79,10 +79,25 @@ export default {
         return;
       }
 
-      //confirm credentials in database
-      
-      commit("setAuthenticated", true);
-      push("/chat");
+      fetch("/api/signin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: this.username,
+          password: this.password,
+        }),
+      })
+        .then((res) => {
+          if (res.status === 202) return;
+
+          this.$store.state.msg = "Wrong credentials";
+          throw new Error("Wrong credentials");
+        })
+        .then(() => {
+          commit("setAuthenticated", true);
+          push("/chat");
+        })
+        .catch(console.error);
     },
   },
 };

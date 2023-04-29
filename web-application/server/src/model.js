@@ -1,5 +1,6 @@
 class Model {
   constructor() {
+    this.authCoookies = [];
 
     this.io = undefined;
   }
@@ -11,6 +12,10 @@ class Model {
    */
   init(io) {
     this.io = io;
+  }
+
+  addAuthCookie(authCookie) {
+    this.authCoookies.push(authCookie);
   }
 }
 

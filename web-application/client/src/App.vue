@@ -12,7 +12,7 @@
                   <a href="#" class="nav-item nav-link active">Chatbot 3</a>
               </div>
               <div v-if="!$store.state.authenticated" class="navbar-nav ms-auto">
-                  <button class="btn btn-primary">Sign in <i class="bi bi-box-arrow-in-right"></i></button>
+                  <button @click="signInRoute()" class="btn btn-primary">Sign in <i class="bi bi-box-arrow-in-right"></i></button>
               </div>
               <div v-if="$store.state.authenticated" class="navbar-nav ms-auto">
                   <button class="btn btn-danger">Sign out <i class="bi bi-box-arrow-left"></i></button>
@@ -47,6 +47,12 @@ export default {
     redirect(target) {
       this.$router.push(target);
     },
+    signInRoute() {
+      const { push } = this.$router;
+
+      push("/login");
+    },
+    }
   },
 };
 </script>

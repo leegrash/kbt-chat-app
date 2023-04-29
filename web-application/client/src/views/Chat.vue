@@ -20,14 +20,13 @@
                   </div>
                   <div id="chat-history" class="chat-history">
                       <ul class="m-b-0">
-                          <li class="clearfix">
+                          <li class="clearfix message-list">
                               <div class="message-data text-right">
                                   <span class="message-data-time">10:10 AM, Today</span>
-                                  <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="avatar">
                               </div>
-                              <div class="message other-message float-right"> Hi Aiden, how are you? How is the project coming along? </div>
+                              <div class="message other-message"> Hi Aiden, how are you? How is the project coming along? </div>
                           </li>
-                          <li class="clearfix">
+                          <li class="clearfix message-list">
                               <div class="message-data">
                                   <span class="message-data-time">10:12 AM, Today</span>
                               </div>

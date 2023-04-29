@@ -140,6 +140,20 @@ body{
     height: 0
 }
 
+.sign-in-header {
+    margin-top: 3%;
+    margin-left: 5%;
+}
+
+.form-group {
+    margin-bottom: 1rem
+}
+
+.sign-in-form {
+    margin: 0 auto;
+    width: 50%;
+}
+
 @media only screen and (max-width: 767px) {
     .card {
         width: 90%

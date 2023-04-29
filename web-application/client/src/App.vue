@@ -17,6 +17,9 @@
           </div>
       </div>
   </nav>
+
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
   <section class="container-fluid py-4">
     <router-view />
   </section>
@@ -34,7 +37,7 @@ export default {
     const { commit, getters } = this.$store;
     const { push } = this.$router;
 
-    commit("setAuthenticated", false);
+    commit("setAuthenticated", true);
     push(getters.isAuthenticated === true ? "/login" : "/chat");
   },
   methods: {
@@ -47,5 +50,6 @@ export default {
 
 <style>
 @import url("bootstrap/dist/css/bootstrap.css");
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css");
 @import "./style.css";
 </style>

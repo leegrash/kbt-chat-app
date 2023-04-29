@@ -1,43 +1,32 @@
 <template>
-  <head> </head>
-
-  <div class="row">
-    <div class="col"></div>
-
-    <!-- .prevent prevents the submit action and instead calls the function -->
-    <form class="col" @submit.prevent="authenticate()">
-      <div
-        v-if="msg === 'Bad credentials'"
-        role="alert"
-        aria-live="polite"
-        aria-atomic="true"
-        class="alert text-center alert-danger"
-      >
-        <!---->
-        Bad credentials
+  <div class="container">
+  <div class="row clearfix">
+      <div class="col-lg-12">
+          <div class="card chat-app">
+              <div class="chat">
+                <h1 class="sign-in-header">Sign in</h1>
+                <form action="" class="sign-in-form align-items-center">
+                  <div class="form-group input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="bi bi-person-circle"></i></span>
+                    </div>
+                    <input type="email" class="form-control" placeholder="Username">
+                  </div>                  
+                  <div class="form-group input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+                    </div>
+                    <input type="password" class="form-control" placeholder="Password">
+                  </div>
+                  <div class="form-group">
+                    <p>Don't have an account? <a href="">Sign up!</a></p>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Login</button>
+                </form>
+              </div>
+          </div>
       </div>
-
-      <label for="username" class="form-label h4">What is Your name?</label>
-      <input
-        id="username"
-        v-model="username"
-        type="text"
-        class="form-control"
-        placeholder="username..."
-        required
-      />
-      <label for="password" class="form-label h4">What is Your password?</label>
-      <input
-        id="password"
-        v-model="password"
-        type="password"
-        class="form-control"
-        placeholder="password..."
-        required
-      />
-      <button type="submit" class="btn btn-dark mt-4 float-end">Login</button>
-    </form>
-    <div class="col"></div>
+  </div>
   </div>
 </template>
 

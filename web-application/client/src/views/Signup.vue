@@ -25,6 +25,15 @@
                     Password requirements not met
                   </div>
                   <div
+                    v-if="$store.state.msg === 'Sign up failed'"
+                    role="alert"
+                    aria-live="polite"
+                    aria-atomic="true"
+                    class="alert text-center alert-danger"
+                  >
+                    Sign up failed
+                  </div>
+                  <div
                     v-if="$store.state.msg === 'Fill out all fields'"
                     role="alert"
                     aria-live="polite"
@@ -77,6 +86,9 @@ export default {
   }),
   methods: {
     createUser() {
+      const { commit } = this.$store;
+      const { push } = this.$router;
+
       if (this.password==="" || this.username==="" || this.confirmPassword==="") {
         this.$store.state.msg = "Fill out all fields";
         return;
@@ -89,9 +101,27 @@ export default {
         this.$store.state.msg = "Password requirements not met";
         return;
       }
-      this.$store.state.msg = "User created";
-      console.log("Creating user");
-      this.$router.push("/login");
+
+      fetch("/api/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: this.username,
+          password: this.password,
+        }),
+      })
+        .then((res) => {
+          if (res.status === 200) return;
+
+          this.msg = "Sign up failed";
+          throw new Error("Sign up failed");
+        })
+        .then(() => {
+          this.$store.state.msg = "User created";
+          console.log("Creating user");
+          this.$router.push("/login");
+        })
+        .catch(console.error);
     }
   },
 };

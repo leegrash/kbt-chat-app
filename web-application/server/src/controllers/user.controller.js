@@ -29,5 +29,13 @@ const requireAuth = (req, res, next) => {
   next();
 };
 
+router.post("/signup", (req, res) => {
+  const { username } = req.body;
+  const { password } = req.body;
+
+  console.log("username: " + username);
+
+  res.status(200).end();
+});
 
 export { router, requireAuth };

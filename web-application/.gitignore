@@ -121,3 +121,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+#sqlite3 database
+*.sqlite3
+*.db

@@ -15,7 +15,7 @@
               <div v-if="!$store.state.authenticated" class="navbar-nav ms-auto">
                   <button type="button" class="btn btn-info">Contact <i class="bi bi-envelope"></i></button>
                   <button v-if="isSigninRoute()" type="button" class="btn btn-primary" @click="redirect('/signup')">Sign up <i class="bi bi-box-arrow-in-right"></i></button>
-                  <button v-if="!isSigninRoute()" type="button" class="btn btn-primary" @click="redirect('/login')">Sign in <i class="bi bi-box-arrow-in-right"></i></button>
+                  <button v-if="!isSigninRoute()" type="button" class="btn btn-primary" @click="redirect('/signin')">Sign in <i class="bi bi-box-arrow-in-right"></i></button>
               </div>
               <div v-if="$store.state.authenticated" class="navbar-nav ms-auto">
                   <button type="button" class="btn btn-info">Contact <i class="bi bi-envelope"></i></button>
@@ -44,8 +44,8 @@ export default {
     const { commit, getters } = this.$store;
     const { push } = this.$router;
 
-    commit("setAuthenticated", true);
-    push(getters.isAuthenticated === true ? "/chat" : "/login");
+    commit("setAuthenticated", false);
+    push(getters.isAuthenticated === true ? "/chat" : "/signin");
   },
   methods: {
     redirect(target) {
@@ -54,10 +54,10 @@ export default {
     signOut() {
       this.$store.commit("setAuthenticated", false);
       console.log("Signed out");
-      this.$router.push("/login");
+      this.$router.push("/signin");
     },
     isSigninRoute() {
-      return this.$route.path === "/login";
+      return this.$route.path === "/signin";
     },
   },
 };

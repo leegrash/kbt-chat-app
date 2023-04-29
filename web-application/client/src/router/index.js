@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Login from "../views/Login.vue";
+import Signin from "../views/Signin.vue";
 import Chat from "../views/Chat.vue";
 import Signup from "../views/Signup.vue";
 
@@ -9,8 +9,8 @@ const routes = [
     redirect: "/chat",
   },
   {
-    path: "/login",
-    component: Login,
+    path: "/signin",
+    component: Signin,
   },
   {
     path: "/chat",

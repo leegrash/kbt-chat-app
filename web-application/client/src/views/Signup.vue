@@ -119,7 +119,7 @@ export default {
         .then(() => {
           this.$store.state.msg = "User created";
           console.log("Creating user");
-          this.$router.push("/login");
+          this.$router.push("/signin");
         })
         .catch(console.error);
     }

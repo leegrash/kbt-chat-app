@@ -1,4 +1,6 @@
 import { Router } from "express";
+import bcrypt from "bcrypt";
+import { v4 as uuidv4 } from 'uuid';
 import model from "../model.js";
 import db from "../db.js";
 
@@ -29,18 +31,64 @@ const requireAuth = (req, res, next) => {
   next();
 };
 
-router.post("/signup", (req, res) => {
+router.post("/signup", async (req, res) => {
   const { username } = req.body;
   const { password } = req.body;
 
-  if (password.length < 5 || !/\d/.test(this.password)) {
+  if (password.length < 5 || !/\d/.test(password)) {
     res.status(400).end();
     return;
   }
 
-  // check if username already exists otherwise create new user with hashed password
-
-  res.status(200).end();
+  const userExistPromise = await new Promise((resolve, reject) => {
+    (async () => {
+      try {
+        await db.each(
+          `SELECT * FROM users WHERE username = ?`,
+          username,
+          (err, row) => {
+            if (err) {
+              reject();
+              throw new Error(err);
+            } else if (row !== undefined) {
+              res.status(400).end();
+              resolve(true);
+            } else {
+              resolve(false);
+            }
+          }
+        );
+        resolve(false);
+      } catch (error) {
+        reject(error);
+      }
+    })();
+  });
+  
+  const saltRounds = 10;
+  
+  let hashedPassword = "";
+  const query = `
+    INSERT INTO users (userId, username, password)
+    SELECT ?, ?, ?
+    WHERE NOT EXISTS (SELECT 1 FROM users WHERE username = ?)
+  `;
+  
+  if (!userExistPromise) {
+    try {
+      hashedPassword = await bcrypt.hash(password, saltRounds);
+      const userId = uuidv4();
+      const params = [userId, username, hashedPassword, username];
+      await db.run(query, params);
+      res.status(201).end();
+    } catch (error) {
+      console.error(error);
+      res.status(400).end();
+    }
+  }  
 });
+
+
+
 
 export { router, requireAuth };

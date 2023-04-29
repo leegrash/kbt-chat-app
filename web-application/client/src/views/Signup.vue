@@ -111,9 +111,9 @@ export default {
         }),
       })
         .then((res) => {
-          if (res.status === 200) return;
+          if (res.status === 201) return;
 
-          this.msg = "Sign up failed";
+          this.$store.state.msg = "Sign up failed";
           throw new Error("Sign up failed");
         })
         .then(() => {

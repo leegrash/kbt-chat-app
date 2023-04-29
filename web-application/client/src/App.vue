@@ -12,7 +12,8 @@
                   <a href="#" class="nav-item nav-link active">Chatbot 3</a>
               </div>
               <div v-if="!$store.state.authenticated" class="navbar-nav ms-auto">
-                  <button type="button" class="btn btn-primary" @click="redirect('/login')">Sign in <i class="bi bi-box-arrow-in-right"></i></button>
+                  <button v-if="isSigninRoute()" type="button" class="btn btn-primary" @click="redirect('/signup')">Sign up <i class="bi bi-box-arrow-in-right"></i></button>
+                  <button v-if="!isSigninRoute()" type="button" class="btn btn-primary" @click="redirect('/login')">Sign in <i class="bi bi-box-arrow-in-right"></i></button>
               </div>
               <div v-if="$store.state.authenticated" class="navbar-nav ms-auto">
                   <button type="button" class="btn btn-danger" @click="signOut()">Sign out <i class="bi bi-box-arrow-left"></i></button>
@@ -51,6 +52,9 @@ export default {
       this.$store.commit("setAuthenticated", false);
       console.log("Signed out");
       this.$router.push("/login");
+    },
+    isSigninRoute() {
+      return this.$route.path === "/login";
     },
   },
 };

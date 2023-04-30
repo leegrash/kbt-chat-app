@@ -53,7 +53,6 @@ export default {
     },
     signOut() {
       this.$store.commit("setAuthenticated", false);
-      console.log("Signed out");
       this.$router.push("/signin");
     },
     isSigninRoute() {

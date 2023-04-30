@@ -22,7 +22,7 @@
                     aria-atomic="true"
                     class="alert text-center alert-danger"
                   >
-                    Passwords don't match
+                    Wrong username or password
                   </div>
                   <div
                     v-if="$store.state.msg === 'Fill out all fields'"

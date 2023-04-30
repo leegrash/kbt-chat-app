@@ -96,31 +96,23 @@ router.post("/signin", async (req, res) => {
     SELECT * FROM users WHERE username = ?
   `;
 
-  try {
-    await db.each(query, username, async (err, row) => {
-      if (err) {
-        throw new Error(err);
-      } else if (row === undefined) {
-        res.status(401).end();
-      } else {
-        const match = await bcrypt.compare(password, row.password);
-        if (match) {
-          const authCookie = uuidv4();
-          model.addAuthCookie(authCookie);
-          res.cookie("authCookie", authCookie, {
-            maxAge: 900000,
-            httpOnly: true,
-          });
-          res.status(202).end();
-        } else {
-          res.status(401).end();
-        }
-      }
-    });
+  const row = await db.get(query, username);
+
+  if (row !== undefined) {
+    const match = await bcrypt.compare(password, row.password);
+    if (match) {
+      const authCookie = uuidv4();
+      model.addAuthCookie(authCookie);
+      res.cookie("authCookie", authCookie, {
+        httpOnly: true,
+        sameSite: "strict",
+      });
+      res.status(202).end();
+    } else {
+      res.status(401).end();
+    }
+  } else {
     res.status(401).end();
-  } catch (error) {
-    console.error(error);
-    res.status(400).end();
   }
 });
 

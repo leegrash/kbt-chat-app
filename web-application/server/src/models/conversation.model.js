@@ -6,11 +6,13 @@ import db from "../db.js";
  */
 
 class Conversation {
-    constructor(conversationId, newConversation = false, botVersion, title) {
+    constructor(conversationId, botVersion, title, newConversation = false) {
         this.conversationId = conversationId;
 
+        this.messages = [];
+
         if (newConversation === false) {
-            this.messages = this.loadConversation();
+            this.loadConversation();
         } else {
             this.messages.push(new Message("Hi! I'm an AI Psychologist, how may I help you?", "bot"));
         }

@@ -13,8 +13,6 @@ class User {
         this.activeConversation = conversationId;
 
         this.loadConversations();
-
-        this.conversations.push(new Conversation(conversationId));
     }
 
     async loadConversations() {

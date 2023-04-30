@@ -78,31 +78,6 @@ export default {
     const chatHistory = document.getElementById("chat-history");
     chatHistory.scrollTop = chatHistory.scrollHeight;
 
-    this.socket.on("booking-timeslot", (data) => {
-      const btnId = data[0];
-      const action = data[1];
-
-      if (action === "reserved") {
-        document.getElementById(btnId).disabled = true;
-        document.getElementById(btnId).classList.remove("btn-info");
-        document.getElementById(btnId).classList.add("btn-warning");
-      } else if (action === "available") {
-        if (document.getElementById(btnId).classList.contains("btn-danger")) {
-          return;
-        }
-        document.getElementById(btnId).disabled = false;
-        document.getElementById(btnId).classList.remove("btn-warning");
-        document.getElementById(btnId).classList.add("btn-info");
-      } else if (action === "booked") {
-        document.getElementById(btnId).disabled = true;
-        document.getElementById(btnId).classList.remove("btn-info");
-        document.getElementById(btnId).classList.add("btn-danger");
-      }
-    });
-
-    this.socket.on("all-timeslots", (data) => {
-      this.availabletimeslots = data;
-    });
   },
   created() {},
   methods: {},

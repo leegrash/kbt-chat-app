@@ -42,7 +42,11 @@
                     ><i class="bi bi-person-circle"></i
                   ></span>
                 </div>
+                <label for="username" class="visually-hidden"
+                  >Enter username</label
+                >
                 <input
+                  id="username"
                   v-model="username"
                   type="text"
                   class="form-control"
@@ -55,7 +59,11 @@
                     ><i class="bi bi-lock-fill"></i
                   ></span>
                 </div>
+                <label for="password" class="visually-hidden"
+                  >Enter password</label
+                >
                 <input
+                  id="password"
                   v-model="password"
                   type="password"
                   class="form-control"

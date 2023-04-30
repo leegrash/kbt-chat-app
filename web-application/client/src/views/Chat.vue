@@ -37,7 +37,11 @@
             </div>
             <div class="chat-message clearfix">
               <div class="input-group mb-0">
+                <label for="message" class="visually-hidden"
+                  >Enter message</label
+                >
                 <input
+                  id="message"
                   type="text"
                   class="form-control"
                   placeholder="Enter text here..."

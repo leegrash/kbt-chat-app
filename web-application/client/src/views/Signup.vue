@@ -48,7 +48,11 @@
                     ><i class="bi bi-person-circle"></i
                   ></span>
                 </div>
+                <label for="username" class="visually-hidden"
+                  >Enter username</label
+                >
                 <input
+                  id="username"
                   v-model="username"
                   type="text"
                   class="form-control"
@@ -61,7 +65,11 @@
                     ><i class="bi bi-lock-fill"></i
                   ></span>
                 </div>
+                <label for="password" class="visually-hidden"
+                  >Enter password</label
+                >
                 <input
+                  id="password"
                   v-model="password"
                   type="password"
                   class="form-control"
@@ -78,7 +86,11 @@
                     ><i class="bi bi-lock"></i
                   ></span>
                 </div>
+                <label for="confirmPassword" class="visually-hidden"
+                  >Confirm password</label
+                >
                 <input
+                  id="confirmPassword"
                   v-model="confirmPassword"
                   type="password"
                   class="form-control"
@@ -110,7 +122,6 @@ export default {
   }),
   methods: {
     createUser() {
-      const { commit } = this.$store;
       const { push } = this.$router;
 
       if (
@@ -147,7 +158,7 @@ export default {
         .then(() => {
           this.$store.state.msg = "User created";
           console.log("Creating user");
-          this.$router.push("/signin");
+          push("/signin");
         })
         .catch(console.error);
     },

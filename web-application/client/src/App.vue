@@ -13,12 +13,12 @@
                   <a v-if="$store.state.authenticated" href="#" class="nav-item nav-link active">Survey form <i class="bi bi-box-arrow-up-right"></i></a>
               </div>
               <div v-if="!$store.state.authenticated" class="navbar-nav ms-auto">
-                  <button type="button" class="btn btn-info">Contact <i class="bi bi-envelope"></i></button>
+                  <a href="mailto:email@example.com?subject=Kbt bot contact" class="btn btn-info">Contact <i class="bi bi-envelope"></i></a>
                   <button v-if="isSigninRoute()" type="button" class="btn btn-primary" @click="redirect('/signup')">Sign up <i class="bi bi-box-arrow-in-right"></i></button>
                   <button v-if="!isSigninRoute()" type="button" class="btn btn-primary" @click="redirect('/signin')">Sign in <i class="bi bi-box-arrow-in-right"></i></button>
               </div>
               <div v-if="$store.state.authenticated" class="navbar-nav ms-auto">
-                  <button type="button" class="btn btn-info">Contact <i class="bi bi-envelope"></i></button>
+                <a href="mailto:email@example.com?subject=Kbt bot contact" class="btn btn-info">Contact <i class="bi bi-envelope"></i></a>
                   <button type="button" class="btn btn-danger" @click="signOut()"><i class="bi bi-box-arrow-left"></i> Sign out</button>
               </div>
           </div>

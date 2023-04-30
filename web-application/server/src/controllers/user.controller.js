@@ -1,6 +1,6 @@
 import { Router } from "express";
 import bcrypt from "bcrypt";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import model from "../model.js";
 import db from "../db.js";
 
@@ -64,16 +64,16 @@ router.post("/signup", async (req, res) => {
       }
     })();
   });
-  
+
   const saltRounds = 10;
-  
+
   let hashedPassword = "";
   const query = `
     INSERT INTO users (userId, username, password)
     SELECT ?, ?, ?
     WHERE NOT EXISTS (SELECT 1 FROM users WHERE username = ?)
   `;
-  
+
   if (!userExistPromise) {
     try {
       hashedPassword = await bcrypt.hash(password, saltRounds);
@@ -85,7 +85,7 @@ router.post("/signup", async (req, res) => {
       console.error(error);
       res.status(400).end();
     }
-  }  
+  }
 });
 
 router.post("/signin", async (req, res) => {

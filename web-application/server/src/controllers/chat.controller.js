@@ -5,6 +5,4 @@ import { requireAuth } from "./user.controller.js";
 
 const router = Router();
 
-
-
 export default { router };

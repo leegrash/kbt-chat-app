@@ -92,7 +92,7 @@ router.post("/signin", async (req, res) => {
   const { username } = req.body;
   const { password } = req.body;
 
-  const query = `
+  let query = `
     SELECT * FROM users WHERE username = ?
   `;
 
@@ -101,12 +101,24 @@ router.post("/signin", async (req, res) => {
   if (row !== undefined) {
     const match = await bcrypt.compare(password, row.password);
     if (match) {
-      const authCookie = uuidv4();
-      model.addAuthCookie(authCookie);
-      res.cookie("authCookie", authCookie, {
-        httpOnly: true,
-        sameSite: "strict",
-      });
+      const sessionId = uuidv4();
+      const conversationId = uuidv4();
+      model.addAuthCookie(sessionId);
+      res.cookie("sessionId", sessionId);
+
+      query = `
+        INSERT INTO activeSessions (sessionUUID, userId)
+        VALUES (?, ?)
+      `;
+
+      const params = [sessionId, row.userId];
+
+      await db.run(query, params);
+
+      res.cookie("conversationId", conversationId);
+
+      model.addUser(row.userId, row.username, conversationId);
+
       res.status(202).end();
     } else {
       res.status(401).end();

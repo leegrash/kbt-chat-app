@@ -84,7 +84,26 @@ export default {
     messages: [],
     prevConversations: [],
   }),
-
+  watch: {
+    '$store.state.version'(to, from) {
+      fetch("/api/load-conversation", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ version: this.$store.state.version }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          this.messages = data.messages;
+          this.prevConversations = data.prevTitles;
+          console.log(data);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    },
+  },
   mounted() {
     const chatHistory = document.getElementById("chat-history");
     chatHistory.scrollTop = chatHistory.scrollHeight;

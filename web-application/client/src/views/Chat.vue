@@ -19,6 +19,7 @@
                   </a>
                   <div class="chat-about">
                     <h6 class="m-b-0">{{ $store.state.version }} domain chatbot</h6>
+                    <small><button type="button" class="btn btn-primary">New conversation</button></small>
                   </div>
                 </div>
               </div>
@@ -54,17 +55,6 @@
             </div>
             <div class="past-conversations">
               <button type="button" class="btn btn-primary">Help me</button>
-              <button type="button" class="btn btn-primary">I need help sleep</button>
-              <button type="button" class="btn btn-primary">Hi</button>
-              <button type="button" class="btn btn-primary">Help me</button>
-              <button type="button" class="btn btn-primary">I need help sleep</button>
-              <button type="button" class="btn btn-primary">Hi</button>
-              <button type="button" class="btn btn-primary">Help me</button>
-              <button type="button" class="btn btn-primary">I need help sleep</button>
-              <button type="button" class="btn btn-primary">Hi</button>
-              <button type="button" class="btn btn-primary">Help me</button>
-              <button type="button" class="btn btn-primary">I need help sleep</button>
-              <button type="button" class="btn btn-primary">Hi</button>
             </div>
           </div>
         </div>

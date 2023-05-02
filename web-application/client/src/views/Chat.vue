@@ -61,6 +61,7 @@
 
 <script>
 import io from "socket.io-client";
+import Cookies from 'js-cookie'
 
 export default {
   name: "ChatView",
@@ -79,8 +80,33 @@ export default {
     const chatHistory = document.getElementById("chat-history");
     chatHistory.scrollTop = chatHistory.scrollHeight;
 
+    this.socket.on("userIdle", () => {
+      this.$store.commit("setAuthenticated", false);
+      document.cookie =
+        "authCookie=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      this.$store.state.msg = "idleSignout";
+      this.$router.push("/signin");
+    });
   },
-  created() {},
+  created() {
+    const sessionId = Cookies.get("sessionId");
+    
+    document.onmousemove = () => {
+      if (this.$store.state.authenticated !== false) {
+        this.socket.emit("userNotIdle", sessionId);
+      }
+    };
+    document.onkeydown = () => {
+      if (this.$store.state.authenticated !== false) {
+        this.socket.emit("userNotIdle", sessionId);
+      }
+    };
+    document.onmousedown = () => {
+      if (this.$store.state.authenticated !== false) {
+        this.socket.emit("userNotIdle", sessionId);
+      }
+    };
+  },
   methods: {
     sendMessage() {
       const message = document.getElementById("message").value;

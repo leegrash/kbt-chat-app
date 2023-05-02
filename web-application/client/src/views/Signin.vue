@@ -54,6 +54,15 @@
                 <label for="username" class="visually-hidden"
                   >Enter username</label
                 >
+                <div
+                v-if="$store.state.msg === 'idleSignout'"
+                role="alert"
+                aria-live="polite"
+                aria-atomic="true"
+                class="alert text-center alert-warning"
+              >
+                Signed out du to inactivity
+              </div>
                 <input
                   id="username"
                   v-model="username"

@@ -9,6 +9,7 @@ import { resolvePath } from "./util.js";
 import { router } from "./controllers/user.controller.js";
 import timeslot from "./controllers/chat.controller.js";
 import model from "./model.js";
+import db from "./db.js";
 
 const port = 8989;
 const app = express();
@@ -75,6 +76,25 @@ io.on("connection", (socket) => {
   session.save((err) => {
     if (err) console.error(err);
     else console.debug(`Saved socketID: ${session.socketID}`);
+  });
+  
+  let idleTimer = null;
+  socket.on("userNotIdle", (sessionId) => {
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(async () => {
+      console.debug("User is idle");
+      const successDeletion = await new Promise((resolve) => {
+        db.run("DELETE from activeSessions where sessionUUID = ?", [sessionId]);
+        resolve(true);
+      });
+
+      if (!successDeletion) {
+        throw new Error("Failed to delete session info");
+      }
+      model.signOutUser(sessionId);
+
+      socket.emit("userIdle");
+    }, 5 * 1000);
   });
 });
 

@@ -34,6 +34,7 @@
   
   <script>
   import io from "socket.io-client";
+  import Cookies from 'js-cookie'
   
   export default {
     name: "SurveryInfoView",
@@ -47,8 +48,33 @@
     }),
   
     mounted() {
+      this.socket.on("userIdle", () => {
+      this.$store.commit("setAuthenticated", false);
+      document.cookie =
+        "sessionId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      this.$store.state.msg = "idleSignout";
+      this.$router.push("/signin");
+    });
     },
-    created() {},
+    created() {
+    const sessionId = Cookies.get("sessionId");
+    
+    document.onmousemove = () => {
+      if (this.$store.state.authenticated !== false) {
+        this.socket.emit("userNotIdle", sessionId);
+      }
+    };
+    document.onkeydown = () => {
+      if (this.$store.state.authenticated !== false) {
+        this.socket.emit("userNotIdle", sessionId);
+      }
+    };
+    document.onmousedown = () => {
+      if (this.$store.state.authenticated !== false) {
+        this.socket.emit("userNotIdle", sessionId);
+      }
+    };
+    },
     methods: {
       redirect(target, version=null) {
       if (version==null) {

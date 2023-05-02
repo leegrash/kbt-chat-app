@@ -45,8 +45,9 @@
                   type="text"
                   class="form-control"
                   placeholder="Enter text here..."
+                  @keyup.enter="sendMessage()"
                 />
-                <button type="button" class="btn btn-primary">
+                <button type="button" class="btn btn-primary" @click="sendMessage()">
                   Send <i class="bi bi-send-fill"></i>
                 </button>
               </div>
@@ -77,8 +78,17 @@ export default {
   mounted() {
     const chatHistory = document.getElementById("chat-history");
     chatHistory.scrollTop = chatHistory.scrollHeight;
+
   },
   created() {},
-  methods: {},
+  methods: {
+    sendMessage() {
+      const message = document.getElementById("message").value;
+
+      if(message === "") return;
+
+      console.log(`Sent message: ${message}`);
+    }
+  },
 };
 </script>

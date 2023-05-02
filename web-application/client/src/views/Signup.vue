@@ -4,7 +4,7 @@
       <div class="col-lg-12">
         <div class="card chat-app">
           <div class="chat">
-            <h1 class="sign-in-header">Sign up</h1>
+            <h1 class="page-title">Sign up</h1>
             <form class="sign-in-form" @submit.prevent="createUser()">
               <div
                 v-if="$store.state.msg === 'Passwords don\'t match'"

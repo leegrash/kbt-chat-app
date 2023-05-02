@@ -16,18 +16,28 @@
             v-if="$store.state.authenticated"
             href="#"
             class="nav-item nav-link active"
+            @click="redirect('/survey-info')"
+            >Survey Info</a
+          >
+          <a
+            v-if="$store.state.authenticated"
+            href="#"
+            class="nav-item nav-link active"
+            @click="redirect('/chat')"
             >Chatbot 1</a
           >
           <a
             v-if="$store.state.authenticated"
             href="#"
             class="nav-item nav-link active"
+            @click="redirect('/chat')"
             >Chatbot 2</a
           >
           <a
             v-if="$store.state.authenticated"
             href="#"
             class="nav-item nav-link active"
+            @click="redirect('/chat')"
             >Chatbot 3</a
           >
           <a
@@ -97,7 +107,7 @@ export default {
     const { push } = this.$router;
 
     commit("setAuthenticated", false);
-    push(getters.isAuthenticated === true ? "/chat" : "/signin");
+    push(getters.isAuthenticated === true ? "/survey-info" : "/signin");
   },
   methods: {
     redirect(target) {

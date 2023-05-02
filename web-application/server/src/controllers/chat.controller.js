@@ -115,4 +115,18 @@ router.post("/send-message", requireAuth, async (req, res) => {
     }
 });
 
+router.put("/clear-empty-conversations", requireAuth, async (req, res) => {
+    const { sessionId } = req.cookies;
+
+    const user = model.users.get(sessionId);
+
+    try {
+        user.clearEmptyConversations();
+        res.status(200).end();
+    }
+    catch (error) {
+        res.status(500).end();
+    }
+});
+
 export default { router };

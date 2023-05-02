@@ -74,6 +74,19 @@ export default {
   name: "ChatView",
   components: {},
   beforeRouteLeave(to, from, next) {
+    fetch("/api/clear-empty-conversations", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        if (res.status !== 200) throw new Error("Failed to clear empty conversations");
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+    
     this.socket.disconnect();
     next();
   },
@@ -87,6 +100,19 @@ export default {
   watch: {
     '$store.state.version': {
       handler(to, from) {
+        fetch("/api/clear-empty-conversations", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((res) => {
+            if (res.status !== 200) throw new Error("Failed to clear empty conversations");
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+
         fetch("/api/load-conversation", {
           method: "POST",
           headers: {

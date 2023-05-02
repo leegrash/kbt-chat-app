@@ -43,6 +43,10 @@ class User {
     getConversation(conversationId) {
         return this.conversations.find((conversation) => conversation.conversationId === conversationId);
     }
+
+    clearEmptyConversations() {
+        this.conversations = this.conversations.filter((conversation) => conversation.messages.length > 1);
+    }
 }
 
 export default User;

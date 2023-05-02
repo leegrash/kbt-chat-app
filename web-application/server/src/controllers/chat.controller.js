@@ -129,4 +129,35 @@ router.put("/clear-empty-conversations", requireAuth, async (req, res) => {
     }
 });
 
+router.post("/load-prev-conversation", requireAuth, async (req, res) => {
+    const { sessionId } = req.cookies;
+    const { conversationId } = req.body;
+    const { version } = req.body;
+
+    const user = model.users.get(sessionId);
+
+    const conversation = user.getConversation(conversationId);
+
+    const messages = conversation.getMessages();
+
+    const formatedMessages = [];
+
+    for (let index = 0; index < messages.length; index+=1) {
+        formatedMessages.push({"message": messages[index].message, "sender": messages[index].sender});
+    }
+
+    const prevTitles = [];
+
+    const conversations = user.getConversations(version);
+    for (let index = 0; index < conversations.length; index+=1) {
+        if (conversations[index].title !== null && conversations[index].conversationId !== conversationId) {
+            prevTitles.push({"title": conversations[index].title, "id": conversations[index].conversationId});
+        }
+    }
+    
+    res.cookie("conversationId", conversationId);
+    res.json({ formatedMessages, prevTitles });
+    res.status(200).end();
+});
+
 export default { router };

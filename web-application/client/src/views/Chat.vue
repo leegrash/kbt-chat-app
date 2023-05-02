@@ -55,7 +55,7 @@
             </div>
             <div v-if="prevConversations.length !== 0" class="past-conversations">
               <button 
-              v-for="prevConversation in prevConversations" :key="prevConversation.id" type="button" class="btn btn-primary">
+              v-for="prevConversation in prevConversations" :key="prevConversation.id" type="button" class="btn btn-primary" @click="loadPrevConversation(prevConversation.id)">
               {{ prevConversation.title }}
             </button>
             </div>
@@ -211,6 +211,33 @@ export default {
             const chatHistory = document.getElementById("chat-history");
             chatHistory.scrollTop = chatHistory.scrollHeight;
             this.conversationInProgress = true;
+          });
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    },
+
+    loadPrevConversation(conversationId) {  
+      fetch("/api/load-prev-conversation", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          conversationId: conversationId,
+          version: this.$store.state.version,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          this.messages = data.formatedMessages;
+          this.prevConversations = data.prevTitles;
+          this.conversationInProgress = true;
+
+          this.$nextTick(() => {
+            const chatHistory = document.getElementById("chat-history");
+            chatHistory.scrollTop = chatHistory.scrollHeight;
           });
         })
         .catch((error) => {

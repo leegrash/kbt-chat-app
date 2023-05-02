@@ -32,7 +32,7 @@ class Conversation {
                 throw new Error(err);
             } else {
                 this.messages.push(new Message(row.message, "user"));
-                this.messages.push(new Message(row.message, "bot"));
+                this.messages.push(new Message(row.response, "bot"));
             }
         });
     }

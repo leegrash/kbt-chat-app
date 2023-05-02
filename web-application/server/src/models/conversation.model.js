@@ -44,6 +44,10 @@ class Conversation {
     addMessage(message, sender) {
         this.messages.push(new Message(message, sender));
     }
+
+    setTitle(title) {
+        this.title = title;
+    }
 }
 
 export default Conversation;

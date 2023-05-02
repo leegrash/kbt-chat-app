@@ -60,6 +60,8 @@ router.post("/send-message", requireAuth, async (req, res) => {
         const modelResponse = "I'm sorry, I don't understand. Could you rephrase that?";
         const conversationTitle = "Test conversation";
 
+        conversation.setTitle(conversationTitle);
+
         conversation.addMessage(modelResponse, "bot");
 
         formatedMessages.push({"message": modelResponse, "sender": "bot"});
@@ -80,6 +82,15 @@ router.post("/send-message", requireAuth, async (req, res) => {
 
             params = [conversationId, user.id, version, conversationTitle];
 
+            await db.run(dbQuery, params);
+        }
+        else {
+            dbQuery = `
+                UPDATE userConversations
+                SET messageTitle = ?
+                WHERE conversationUUID = ?
+            `;
+            params = [conversationTitle, conversationId];
             await db.run(dbQuery, params);
         }
 

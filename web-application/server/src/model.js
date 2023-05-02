@@ -37,6 +37,12 @@ class Model {
       (authCookie) => authCookie !== userSessionId
     );
   }
+
+  getConversations(sessionId, version) {
+    const user = this.users.get(sessionId);
+
+    return user.getConversations(version);
+  }
 }
 
 export default new Model();

@@ -19,20 +19,20 @@
                   </a>
                   <div class="chat-about">
                     <h6 class="m-b-0">{{ $store.state.version }} domain chatbot</h6>
-                    <small><button type="button" class="btn btn-primary">New conversation</button></small>
+                    <small><button v-if="conversationInProgress" type="button" class="btn btn-primary">New conversation</button></small>
                   </div>
                 </div>
               </div>
             </div>
             <div id="chat-history" class="chat-history">
               <ul class="m-b-0">
-                <li class="clearfix message-list">
-                  <div class="message other-message">
-                    Hi Aiden, how are you? How is the project coming along?
-                  </div>
-                </li>
-                <li class="clearfix message-list">
-                  <div class="message my-message">Are we meeting today?</div>
+                <li v-for="currMessage in messages" :key="currMessage.message"  class="clearfix message-list">
+                  <div 
+                  :class="
+                    currMessage.sender !== 'bot'
+                      ? 'message my-message'
+                      : 'message other-message'
+                  ">{{ currMessage.message }}</div>
                 </li>
               </ul>
             </div>
@@ -53,8 +53,11 @@
                 </button>
               </div>
             </div>
-            <div class="past-conversations">
-              <button type="button" class="btn btn-primary">Help me</button>
+            <div v-if="prevConversations.length !== 0" class="past-conversations">
+              <button 
+              v-for="(title, id) in prevConversations" :key="id" type="button" class="btn btn-primary">
+              {{ title }}
+            </button>
             </div>
           </div>
         </div>
@@ -72,12 +75,14 @@ export default {
   components: {},
   beforeRouteLeave(to, from, next) {
     this.socket.disconnect();
-    clearTimeout(this.adminTimeout);
     next();
   },
   data: () => ({
     socket: io.connect(),
     availabletimeslots: [],
+    conversationInProgress: false,
+    messages: [],
+    prevConversations: [],
   }),
 
   mounted() {
@@ -94,6 +99,23 @@ export default {
   },
   created() {
     const sessionId = Cookies.get("sessionId");
+
+    fetch("/api/load-conversation", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ version: this.$store.state.version }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        this.messages = data.messages;
+        this.prevConversation = data.titles;
+        console.log(this.messages);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
     
     document.onmousemove = () => {
       if (this.$store.state.authenticated !== false) {

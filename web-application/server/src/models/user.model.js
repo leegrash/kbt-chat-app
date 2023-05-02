@@ -30,6 +30,15 @@ class User {
             }
         });
     }
+
+    createConversation(conversationId, version) {
+        const conversation = new Conversation(conversationId, version, null, true);
+        this.conversations.push(conversation);
+    }
+
+    getConversations(version) {
+        return this.conversations.filter((conversation) => conversation.botVersion === version);
+    }
 }
 
 export default User;

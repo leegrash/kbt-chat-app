@@ -6,7 +6,7 @@ import db from "../db.js";
  */
 
 class Conversation {
-    constructor(conversationId, botVersion, title, newConversation = false) {
+    constructor(conversationId, botVersion, title=null, newConversation = false) {
         this.conversationId = conversationId;
 
         this.messages = [];

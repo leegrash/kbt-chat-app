@@ -115,10 +115,7 @@ export default {
         this.$router.push(target); 
       }
       else {
-        console.log("version: " + version)
-        this.$store.state.version = version
-
-        console.log("version-state: " + this.$store.state.version)
+        this.$store.state.version = version;
         this.$router.push(target);
       }
     },

@@ -36,7 +36,7 @@
   import io from "socket.io-client";
   
   export default {
-    name: "ShowTimeslotsView",
+    name: "SurveryInfoView",
     components: {},
     beforeRouteLeave(to, from, next) {
         this.socket.disconnect();

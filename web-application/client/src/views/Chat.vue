@@ -5,7 +5,6 @@
         <div class="card chat-app">
           <div class="chat">
             <div class="chat-header clearfix">
-              <h1 class="page-title">{{ $store.state.version }} domaini chatbot</h1>
               <div class="row">
                 <div class="col-lg-6">
                   <a
@@ -19,7 +18,7 @@
                     />
                   </a>
                   <div class="chat-about">
-                    <h6 class="m-b-0">Aiden Chavez</h6>
+                    <h6 class="m-b-0">{{ $store.state.version }} domain chatbot</h6>
                   </div>
                 </div>
               </div>
@@ -63,7 +62,7 @@
 import io from "socket.io-client";
 
 export default {
-  name: "ShowTimeslotsView",
+  name: "ChatView",
   components: {},
   beforeRouteLeave(to, from, next) {
     this.socket.disconnect();
@@ -78,7 +77,6 @@ export default {
   mounted() {
     const chatHistory = document.getElementById("chat-history");
     chatHistory.scrollTop = chatHistory.scrollHeight;
-    console.log("state-version (chat): " +  this.$store.state.version)
   },
   created() {},
   methods: {},

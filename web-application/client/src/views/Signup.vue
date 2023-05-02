@@ -108,7 +108,7 @@
 
 <script>
 export default {
-  name: "LoginView",
+  name: "SignupView",
   beforeRouteLeave(to, from, next) {
     if (this.$store.state.msg !== "User created") {
       this.$store.state.msg = "";

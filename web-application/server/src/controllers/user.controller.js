@@ -102,7 +102,6 @@ router.post("/signin", async (req, res) => {
     const match = await bcrypt.compare(password, row.password);
     if (match) {
       const sessionId = uuidv4();
-      const conversationId = uuidv4();
       model.addAuthCookie(sessionId);
       res.cookie("sessionId", sessionId);
 
@@ -115,9 +114,7 @@ router.post("/signin", async (req, res) => {
 
       await db.run(query, params);
 
-      res.cookie("conversationId", conversationId);
-
-      model.addUser(sessionId, row.userId, row.username, conversationId);
+      model.addUser(sessionId, row.userId, row.username);
 
       res.status(202).end();
     } else {

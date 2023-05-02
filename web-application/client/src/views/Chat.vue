@@ -52,6 +52,20 @@
                 </button>
               </div>
             </div>
+            <div class="past-conversations">
+              <button type="button" class="btn btn-primary">Help me</button>
+              <button type="button" class="btn btn-primary">I need help sleep</button>
+              <button type="button" class="btn btn-primary">Hi</button>
+              <button type="button" class="btn btn-primary">Help me</button>
+              <button type="button" class="btn btn-primary">I need help sleep</button>
+              <button type="button" class="btn btn-primary">Hi</button>
+              <button type="button" class="btn btn-primary">Help me</button>
+              <button type="button" class="btn btn-primary">I need help sleep</button>
+              <button type="button" class="btn btn-primary">Hi</button>
+              <button type="button" class="btn btn-primary">Help me</button>
+              <button type="button" class="btn btn-primary">I need help sleep</button>
+              <button type="button" class="btn btn-primary">Hi</button>
+            </div>
           </div>
         </div>
       </div>

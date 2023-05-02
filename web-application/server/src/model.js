@@ -22,8 +22,8 @@ class Model {
     this.authCookies.push(authCookie);
   }
 
-  addUser(sessionId, userId, username, conversationId) {
-    this.users.set(sessionId, new User(userId, username, conversationId));
+  addUser(sessionId, userId, username) {
+    this.users.set(sessionId, new User(userId, username));
   }
 
   authCookieExists(authCookie) {

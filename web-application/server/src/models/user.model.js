@@ -6,11 +6,11 @@ import db from "../db.js";
  */
 
 class User {
-    constructor(id, name, conversationId) {
+    constructor(id, name) {
         this.id = id;
         this.name = name;
         this.conversations = [];
-        this.activeConversation = conversationId;
+        this.activeConversation = null;
 
         this.loadConversations();
     }

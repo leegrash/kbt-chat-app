@@ -102,6 +102,8 @@ export default {
         .catch((error) => {
           console.error("Error:", error);
         });
+      
+      this.conversationInProgress = false;
     },
   },
   mounted() {
@@ -118,6 +120,7 @@ export default {
   },
   created() {
     const sessionId = Cookies.get("sessionId");
+    this.conversationInProgress = false;
 
     fetch("/api/load-conversation", {
       method: "POST",
@@ -178,12 +181,12 @@ export default {
           this.$nextTick(() => {
             const chatHistory = document.getElementById("chat-history");
             chatHistory.scrollTop = chatHistory.scrollHeight;
+            this.conversationInProgress = true;
           });
         })
         .catch((error) => {
           console.error("Error:", error);
         });
-
     }
   },
 };

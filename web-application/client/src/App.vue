@@ -23,21 +23,21 @@
             v-if="$store.state.authenticated"
             href="#"
             class="nav-item nav-link active"
-            @click="redirect('/chat')"
+            @click="redirect('/chat', 'Closed')"
             >Chatbot 1</a
           >
           <a
             v-if="$store.state.authenticated"
             href="#"
             class="nav-item nav-link active"
-            @click="redirect('/chat')"
+            @click="redirect('/chat', 'Open')"
             >Chatbot 2</a
           >
           <a
             v-if="$store.state.authenticated"
             href="#"
             class="nav-item nav-link active"
-            @click="redirect('/chat')"
+            @click="redirect('/chat', 'Mixed')"
             >Chatbot 3</a
           >
           <a
@@ -110,8 +110,17 @@ export default {
     push(getters.isAuthenticated === true ? "/survey-info" : "/signin");
   },
   methods: {
-    redirect(target) {
-      this.$router.push(target);
+    redirect(target, version=null) {
+      if (version==null) {
+        this.$router.push(target); 
+      }
+      else {
+        console.log("version: " + version)
+        this.$store.state.version = version
+
+        console.log("version-state: " + this.$store.state.version)
+        this.$router.push(target);
+      }
     },
     signOut() {
       this.$store.commit("setAuthenticated", false);

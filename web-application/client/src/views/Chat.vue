@@ -5,6 +5,7 @@
         <div class="card chat-app">
           <div class="chat">
             <div class="chat-header clearfix">
+              <h1 class="page-title">{{ $store.state.version }} domaini chatbot</h1>
               <div class="row">
                 <div class="col-lg-6">
                   <a
@@ -77,7 +78,7 @@ export default {
   mounted() {
     const chatHistory = document.getElementById("chat-history");
     chatHistory.scrollTop = chatHistory.scrollHeight;
-
+    console.log("state-version (chat): " +  this.$store.state.version)
   },
   created() {},
   methods: {},

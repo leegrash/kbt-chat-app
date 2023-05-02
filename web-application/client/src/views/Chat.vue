@@ -85,27 +85,31 @@ export default {
     prevConversations: [],
   }),
   watch: {
-    '$store.state.version'(to, from) {
-      fetch("/api/load-conversation", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ version: this.$store.state.version }),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          this.messages = data.messages;
-          this.prevConversations = data.prevTitles;
-          console.log(data);
+    '$store.state.version': {
+      handler(to, from) {
+        fetch("/api/load-conversation", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ version: this.$store.state.version }),
         })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
-      
-      this.conversationInProgress = false;
+          .then((response) => response.json())
+          .then((data) => {
+            this.messages = data.messages;
+            this.prevConversations = data.prevTitles;
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+        
+        this.conversationInProgress = false;
+      },
+      deep: false,
+      immediate: true,
     },
   },
+
   mounted() {
     const chatHistory = document.getElementById("chat-history");
     chatHistory.scrollTop = chatHistory.scrollHeight;
@@ -133,7 +137,6 @@ export default {
       .then((data) => {
         this.messages = data.messages;
         this.prevConversations = data.prevTitles;
-        console.log(data);
       })
       .catch((error) => {
         console.error("Error:", error);

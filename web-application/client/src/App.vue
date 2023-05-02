@@ -120,7 +120,14 @@ export default {
       }
     },
     signOut() {
+      fetch("/api/signout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      });
+
       this.$store.commit("setAuthenticated", false);
+      this.$store.state.version = null;
+      this.$store.state.msg = "Successfully signed out!";
       this.$router.push("/signin");
     },
     isSigninRoute() {

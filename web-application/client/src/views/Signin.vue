@@ -19,6 +19,15 @@
                 User created!
               </div>
               <div
+                v-if="$store.state.msg === 'Successfully signed out!'"
+                role="alert"
+                aria-live="polite"
+                aria-atomic="true"
+                class="alert text-center alert-success"
+              >
+                Successfully signed out!
+              </div>
+              <div
                 v-if="$store.state.msg === 'Wrong credentials'"
                 role="alert"
                 aria-live="polite"

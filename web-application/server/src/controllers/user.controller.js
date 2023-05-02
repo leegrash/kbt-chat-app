@@ -15,15 +15,15 @@ const router = Router();
  */
 const requireAuth = (req, res, next) => {
   // Use an unique session identifier to access information about the user making the request
-  const { authCookie } = req.cookies;
+  const { sessionId } = req.cookies;
 
-  if (authCookie === undefined) {
+  if (sessionId === undefined) {
     // Choose the appropriate HTTP response status code and send an HTTP response, if any, back to the client
     res.status(401).end();
     return;
   }
 
-  if (!model.authCookieExists(authCookie)) {
+  if (!model.authCookieExists(sessionId)) {
     res.status(401).end();
     return;
   }
@@ -117,7 +117,7 @@ router.post("/signin", async (req, res) => {
 
       res.cookie("conversationId", conversationId);
 
-      model.addUser(row.userId, row.username, conversationId);
+      model.addUser(sessionId, row.userId, row.username, conversationId);
 
       res.status(202).end();
     } else {
@@ -126,6 +126,24 @@ router.post("/signin", async (req, res) => {
   } else {
     res.status(401).end();
   }
+});
+
+router.post("/signout", requireAuth, async (req, res) => {
+  const { sessionId } = req.cookies;
+
+  model.signOutUser(sessionId);
+
+  const query = `
+    DELETE FROM activeSessions WHERE sessionUUID = ?
+  `;
+  const params = [sessionId];
+
+  await db.run(query, params);
+
+  res.clearCookie("sessionId");
+  res.clearCookie("conversationId");
+
+  res.status(200).end();
 });
 
 export { router, requireAuth };

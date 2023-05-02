@@ -78,7 +78,7 @@ router.post("/send-message", requireAuth, async (req, res) => {
                 VALUES (?, ?, ?, ?)
             `;
 
-            params = [user.id, conversationId, version, conversationTitle];
+            params = [conversationId, user.id, version, conversationTitle];
 
             await db.run(dbQuery, params);
         }

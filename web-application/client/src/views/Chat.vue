@@ -139,6 +139,8 @@ export default {
 
       if(message === "") return;
 
+      document.getElementById("message").value = "";
+
       fetch("/api/send-message", {
         method: "POST",
         headers: {
@@ -153,6 +155,11 @@ export default {
         .then((data) => {
           this.messages = data.formatedMessages;
           console.log(this.messages);
+          
+          this.$nextTick(() => {
+            const chatHistory = document.getElementById("chat-history");
+            chatHistory.scrollTop = chatHistory.scrollHeight;
+          });
         })
         .catch((error) => {
           console.error("Error:", error);

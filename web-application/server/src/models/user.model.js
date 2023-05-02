@@ -39,6 +39,10 @@ class User {
     getConversations(version) {
         return this.conversations.filter((conversation) => conversation.botVersion === version);
     }
+
+    getConversation(conversationId) {
+        return this.conversations.find((conversation) => conversation.conversationId === conversationId);
+    }
 }
 
 export default User;

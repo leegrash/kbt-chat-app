@@ -36,6 +36,14 @@ class Conversation {
             }
         });
     }
+
+    getMessages() {
+        return this.messages;
+    }
+
+    addMessage(message, sender) {
+        this.messages.push(new Message(message, sender));
+    }
 }
 
 export default Conversation;

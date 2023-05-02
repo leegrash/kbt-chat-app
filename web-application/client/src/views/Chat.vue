@@ -139,7 +139,25 @@ export default {
 
       if(message === "") return;
 
-      console.log(`Sent message: ${message}`);
+      fetch("/api/send-message", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message: message,
+          version: this.$store.state.version,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          this.messages = data.formatedMessages;
+          console.log(this.messages);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+
     }
   },
 };

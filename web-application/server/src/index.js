@@ -94,7 +94,7 @@ io.on("connection", (socket) => {
       model.signOutUser(sessionId);
 
       socket.emit("userIdle");
-    }, 5 * 1000);
+    }, 10 * 60 * 1000);
   });
 });
 

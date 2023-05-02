@@ -55,8 +55,8 @@
             </div>
             <div v-if="prevConversations.length !== 0" class="past-conversations">
               <button 
-              v-for="(title, id) in prevConversations" :key="id" type="button" class="btn btn-primary">
-              {{ title }}
+              v-for="prevConversation in prevConversations" :key="prevConversation.id" type="button" class="btn btn-primary">
+              {{ prevConversation.title }}
             </button>
             </div>
           </div>
@@ -110,8 +110,8 @@ export default {
       .then((response) => response.json())
       .then((data) => {
         this.messages = data.messages;
-        this.prevConversation = data.titles;
-        console.log(this.messages);
+        this.prevConversations = data.prevTitles;
+        console.log(data);
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -155,7 +155,7 @@ export default {
         .then((data) => {
           this.messages = data.formatedMessages;
           console.log(this.messages);
-          
+
           this.$nextTick(() => {
             const chatHistory = document.getElementById("chat-history");
             chatHistory.scrollTop = chatHistory.scrollHeight;

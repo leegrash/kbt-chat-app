@@ -22,7 +22,7 @@ router.post("/load-conversation", requireAuth, async (req, res) => {
 
     for (let index = 0; index < conversations.length; index+=1) {
         if (conversations[index].title !== null) {
-            prevTitles.push({"title": conversations[index].title, "id": conversations[index].id});
+            prevTitles.push({"title": conversations[index].title, "id": conversations[index].conversationId});
         }
     }
 

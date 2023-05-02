@@ -26,7 +26,7 @@ class User {
             if (err) {
                 throw new Error(err);
             } else {
-                this.conversations.push(new Conversation(row.conversationId, row.botVersion, row.messageTitle));
+                this.conversations.push(new Conversation(row.conversationUUID, row.botVersion, row.messageTitle));
             }
         });
     }

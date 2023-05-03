@@ -12,6 +12,7 @@ class Conversation {
         this.messages = [];
 
         if (newConversation === false) {
+            this.messages.push(new Message("Hi! I'm an AI Psychologist, how may I help you?", "bot"));
             this.loadConversation();
         } else {
             this.messages.push(new Message("Hi! I'm an AI Psychologist, how may I help you?", "bot"));
@@ -24,7 +25,7 @@ class Conversation {
         const query = `
             SELECT * FROM messages
             WHERE conversationUUID = ?
-            ORDER BY timestamp DESC
+            ORDER BY timestamp ASC
         `;
 
         await db.each(query, this.conversationId, (err, row) => {

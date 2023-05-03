@@ -216,4 +216,16 @@ body {
   .chat-info .btn {
     width: 100%;
   }
+
+  .page-title {
+    font-size: 22px;
+  }
+
+  h2 {
+    font-size: 18px;
+  }
+
+  p {
+    font-size: 12px;
+  }
 }

@@ -77,7 +77,7 @@ io.on("connection", (socket) => {
     if (err) console.error(err);
     else console.debug(`Saved socketID: ${session.socketID}`);
   });
-  
+
   let idleTimer = null;
   socket.on("userNotIdle", (sessionId) => {
     clearTimeout(idleTimer);

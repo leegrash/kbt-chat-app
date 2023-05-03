@@ -3,10 +3,10 @@
  */
 
 class Message {
-    constructor(message, sender) {
-        this.message = message;
-        this.sender = sender;
-    }
+  constructor(message, sender) {
+    this.message = message;
+    this.sender = sender;
+  }
 }
 
 export default Message;

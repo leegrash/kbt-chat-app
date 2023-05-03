@@ -18,21 +18,39 @@
                     />
                   </a>
                   <div class="chat-about">
-                    <h6 class="m-b-0">{{ $store.state.version }} domain chatbot</h6>
-                    <small><button v-if="conversationInProgress" type="button" class="btn btn-primary" @click="newConversation()">New conversation</button></small>
+                    <h6 class="m-b-0">
+                      {{ $store.state.version }} domain chatbot
+                    </h6>
+                    <small
+                      ><button
+                        v-if="conversationInProgress"
+                        type="button"
+                        class="btn btn-primary"
+                        @click="newConversation()"
+                      >
+                        New conversation
+                      </button></small
+                    >
                   </div>
                 </div>
               </div>
             </div>
             <div id="chat-history" class="chat-history">
               <ul class="m-b-0">
-                <li v-for="currMessage in messages" :key="currMessage.message"  class="clearfix message-list">
-                  <div 
-                  :class="
-                    currMessage.sender !== 'bot'
-                      ? 'message my-message'
-                      : 'message other-message'
-                  ">{{ currMessage.message }}</div>
+                <li
+                  v-for="currMessage in messages"
+                  :key="currMessage.message"
+                  class="clearfix message-list"
+                >
+                  <div
+                    :class="
+                      currMessage.sender !== 'bot'
+                        ? 'message my-message'
+                        : 'message other-message'
+                    "
+                  >
+                    {{ currMessage.message }}
+                  </div>
                 </li>
               </ul>
             </div>
@@ -48,16 +66,28 @@
                   placeholder="Enter text here..."
                   @keyup.enter="sendMessage()"
                 />
-                <button type="button" class="btn btn-primary" @click="sendMessage()">
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  @click="sendMessage()"
+                >
                   Send <i class="bi bi-send-fill"></i>
                 </button>
               </div>
             </div>
-            <div v-if="prevConversations.length !== 0" class="past-conversations">
-              <button 
-              v-for="prevConversation in prevConversations" :key="prevConversation.id" type="button" class="btn btn-primary" @click="loadPrevConversation(prevConversation.id)">
-              {{ prevConversation.title }}
-            </button>
+            <div
+              v-if="prevConversations.length !== 0"
+              class="past-conversations"
+            >
+              <button
+                v-for="prevConversation in prevConversations"
+                :key="prevConversation.id"
+                type="button"
+                class="btn btn-primary"
+                @click="loadPrevConversation(prevConversation.id)"
+              >
+                {{ prevConversation.title }}
+              </button>
             </div>
           </div>
         </div>
@@ -68,7 +98,7 @@
 
 <script>
 import io from "socket.io-client";
-import Cookies from 'js-cookie'
+import Cookies from "js-cookie";
 
 export default {
   name: "ChatView",
@@ -81,12 +111,13 @@ export default {
       },
     })
       .then((res) => {
-        if (res.status !== 200) throw new Error("Failed to clear empty conversations");
+        if (res.status !== 200)
+          throw new Error("Failed to clear empty conversations");
       })
       .catch((error) => {
         console.error("Error:", error);
       });
-    
+
     this.socket.disconnect();
     next();
   },
@@ -98,8 +129,8 @@ export default {
     prevConversations: [],
   }),
   watch: {
-    '$store.state.version': {
-      handler(to, from) {
+    "$store.state.version": {
+      handler() {
         fetch("/api/clear-empty-conversations", {
           method: "PUT",
           headers: {
@@ -107,7 +138,8 @@ export default {
           },
         })
           .then((res) => {
-            if (res.status !== 200) throw new Error("Failed to clear empty conversations");
+            if (res.status !== 200)
+              throw new Error("Failed to clear empty conversations");
           })
           .catch((error) => {
             console.error("Error:", error);
@@ -128,7 +160,7 @@ export default {
           .catch((error) => {
             console.error("Error:", error);
           });
-        
+
         this.conversationInProgress = false;
       },
       deep: false,
@@ -167,7 +199,7 @@ export default {
       .catch((error) => {
         console.error("Error:", error);
       });
-    
+
     document.onmousemove = () => {
       if (this.$store.state.authenticated !== false) {
         this.socket.emit("userNotIdle", sessionId);
@@ -188,7 +220,7 @@ export default {
     sendMessage() {
       const message = document.getElementById("message").value;
 
-      if(message === "") return;
+      if (message === "") return;
 
       document.getElementById("message").value = "";
 
@@ -198,7 +230,7 @@ export default {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          message: message,
+          message,
           version: this.$store.state.version,
         }),
       })
@@ -218,14 +250,14 @@ export default {
         });
     },
 
-    loadPrevConversation(conversationId) {  
+    loadPrevConversation(conversationId) {
       fetch("/api/load-prev-conversation", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          conversationId: conversationId,
+          conversationId,
           version: this.$store.state.version,
         }),
       })
@@ -269,7 +301,7 @@ export default {
         .catch((error) => {
           console.error("Error:", error);
         });
-    }
+    },
   },
 };
 </script>

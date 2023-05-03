@@ -110,11 +110,10 @@ export default {
     push(getters.isAuthenticated === true ? "/survey-info" : "/signin");
   },
   methods: {
-    redirect(target, version=null) {
-      if (version==null) {
-        this.$router.push(target); 
-      }
-      else {
+    redirect(target, version = null) {
+      if (version == null) {
+        this.$router.push(target);
+      } else {
         this.$store.state.version = version;
         this.$router.push(target);
       }

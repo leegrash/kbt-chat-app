@@ -6,49 +6,58 @@ import db from "../db.js";
  */
 
 class Conversation {
-    constructor(conversationId, botVersion, title=null, newConversation = false) {
-        this.conversationId = conversationId;
+  constructor(
+    conversationId,
+    botVersion,
+    title = null,
+    newConversation = false
+  ) {
+    this.conversationId = conversationId;
 
-        this.messages = [];
+    this.messages = [];
 
-        if (newConversation === false) {
-            this.messages.push(new Message("Hi! I'm an AI Psychologist, how may I help you?", "bot"));
-            this.loadConversation();
-        } else {
-            this.messages.push(new Message("Hi! I'm an AI Psychologist, how may I help you?", "bot"));
-        }
-        this.botVersion = botVersion;
-        this.title = title;
+    if (newConversation === false) {
+      this.messages.push(
+        new Message("Hi! I'm an AI Psychologist, how may I help you?", "bot")
+      );
+      this.loadConversation();
+    } else {
+      this.messages.push(
+        new Message("Hi! I'm an AI Psychologist, how may I help you?", "bot")
+      );
     }
+    this.botVersion = botVersion;
+    this.title = title;
+  }
 
-    async loadConversation() {
-        const query = `
+  async loadConversation() {
+    const query = `
             SELECT * FROM messages
             WHERE conversationUUID = ?
             ORDER BY timestamp ASC
         `;
 
-        await db.each(query, this.conversationId, (err, row) => {
-            if (err) {
-                throw new Error(err);
-            } else {
-                this.messages.push(new Message(row.message, "user"));
-                this.messages.push(new Message(row.response, "bot"));
-            }
-        });
-    }
+    await db.each(query, this.conversationId, (err, row) => {
+      if (err) {
+        throw new Error(err);
+      } else {
+        this.messages.push(new Message(row.message, "user"));
+        this.messages.push(new Message(row.response, "bot"));
+      }
+    });
+  }
 
-    getMessages() {
-        return this.messages;
-    }
+  getMessages() {
+    return this.messages;
+  }
 
-    addMessage(message, sender) {
-        this.messages.push(new Message(message, sender));
-    }
+  addMessage(message, sender) {
+    this.messages.push(new Message(message, sender));
+  }
 
-    setTitle(title) {
-        this.title = title;
-    }
+  setTitle(title) {
+    this.title = title;
+  }
 }
 
 export default Conversation;

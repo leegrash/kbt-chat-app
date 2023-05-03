@@ -24,7 +24,7 @@ const routes = [
   {
     path: "/survey-info",
     component: SurveyInfo,
-  }
+  },
 ];
 
 const router = createRouter({

@@ -70,6 +70,12 @@ router.post("/send-message", requireAuth, async (req, res) => {
 
     const modelResponse =
       "I'm sorry, I don't understand. Could you rephrase that?";
+
+    fetch("http://localhost:5000/chatbot", {
+      method: "POST",
+      body: JSON.stringify({ messages, version }),
+      headers: { "Content-Type": "application/json" },
+    })
     const conversationTitle = "Test conversation";
 
     conversation.setTitle(conversationTitle);

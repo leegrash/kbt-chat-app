@@ -160,4 +160,32 @@ router.post("/load-prev-conversation", requireAuth, async (req, res) => {
     res.status(200).end();
 });
 
+router.post("/new-conversation", requireAuth, async (req, res) => {
+    const { sessionId } = req.cookies;
+    const { version } = req.body;
+
+    const user = model.users.get(sessionId);
+
+    const newConversationId = uuidv4();
+
+    user.createConversation(newConversationId, version);
+
+    const conversations = user.getConversations(version);
+
+    const prevTitles = [];
+
+    for (let index = 0; index < conversations.length; index+=1) {
+        if (conversations[index].title !== null) {
+            prevTitles.push({"title": conversations[index].title, "id": conversations[index].conversationId});
+        }
+    }
+
+    const messages = [{"message": "Hi! I'm an AI Psychologist, how may I help you?", "sender": "bot"}];
+
+    res.cookie("conversationId", newConversationId);
+    res.json({ messages, prevTitles });
+
+    res.status(200).end();
+});
+
 export default { router };

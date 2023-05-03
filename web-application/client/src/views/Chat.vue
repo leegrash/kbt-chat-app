@@ -19,7 +19,7 @@
                   </a>
                   <div class="chat-about">
                     <h6 class="m-b-0">{{ $store.state.version }} domain chatbot</h6>
-                    <small><button v-if="conversationInProgress" type="button" class="btn btn-primary">New conversation</button></small>
+                    <small><button v-if="conversationInProgress" type="button" class="btn btn-primary" @click="newConversation()">New conversation</button></small>
                   </div>
                 </div>
               </div>
@@ -234,6 +234,32 @@ export default {
           this.messages = data.formatedMessages;
           this.prevConversations = data.prevTitles;
           this.conversationInProgress = true;
+
+          this.$nextTick(() => {
+            const chatHistory = document.getElementById("chat-history");
+            chatHistory.scrollTop = chatHistory.scrollHeight;
+          });
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    },
+
+    newConversation() {
+      fetch("/api/new-conversation", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          version: this.$store.state.version,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          this.messages = data.messages;
+          this.prevConversations = data.prevTitles;
+          this.conversationInProgress = false;
 
           this.$nextTick(() => {
             const chatHistory = document.getElementById("chat-history");

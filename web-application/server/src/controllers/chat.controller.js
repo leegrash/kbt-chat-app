@@ -68,16 +68,22 @@ router.post("/send-message", requireAuth, async (req, res) => {
 
     // call python model with messages and version
 
-    const modelResponse =
+    let modelResponse =
       "I'm sorry, I don't understand. Could you rephrase that?";
 
+    /*
     fetch("http://localhost:5000/chatbot", {
       method: "POST",
       body: JSON.stringify({ messages, version }),
       headers: { "Content-Type": "application/json" },
     })
-    const conversationTitle = "Test conversation";
+      .then((response) => response.json())
+      .then((data) => {
+        modelResponse = data.message;
+      });*/
 
+    const conversationTitle = "Test conversation";
+    
     conversation.setTitle(conversationTitle);
 
     conversation.addMessage(modelResponse, "bot");

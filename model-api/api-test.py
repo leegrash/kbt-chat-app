@@ -9,9 +9,7 @@ def get_chatbot_response():
     messages = data['messages'] # format: [{'message': "Hi! I'm an AI Psychologist, how may I help you?", 'sender': 'bot'}, {'message': 'hi', 'sender': 'user'}]
     version = data['version'] #string with text 'Closed' or 'Open' or 'Mixed'
 
-
     response = "Hello, I am your chatbot."
-    print(response)
 
     return jsonify({'response': response, 'title': "Test chat"})
 

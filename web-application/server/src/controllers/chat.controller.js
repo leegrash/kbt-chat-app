@@ -67,10 +67,6 @@ router.post("/send-message", requireAuth, async (req, res) => {
       });
     }
 
-    // call python model with messages and version
-
-    const modelResponse = "I'm sorry, I don't understand. Could you rephrase that?";
-
     const data = JSON.stringify({
       messages,
       version
@@ -87,23 +83,40 @@ router.post("/send-message", requireAuth, async (req, res) => {
       }
     };
 
-    const modelReq = http.request(options, (modelRes) => {
-      console.log(`statusCode: ${modelRes.statusCode}`);
+    const sendHttpRequest = (modelOptions, modelData) =>
+      new Promise((resolve, reject) => {
+        const modelReq = http.request(modelOptions, (modelRes) => {
+          let responseData = '';
+          modelRes.on('data', (chunk) => {
+            responseData += chunk;
+          });
+          modelRes.on('end', () => {
+            const statusCode = modelRes.statusCode;
+            if (statusCode >= 200 && statusCode < 300) {
+              resolve(responseData);
+            } else {
+              reject(new Error(`Request failed with status code ${statusCode}`));
+            }
+          });
+        });
 
-      modelRes.on('data', (d) => {
-        process.stdout.write(d);
-      });
+        modelReq.on('error', (error) => {
+          console.error(error);
+          reject(error);
+        });
+
+        modelReq.write(modelData);
+        modelReq.end();
     });
 
-    modelReq.on('error', (error) => {
-      console.error(error);
-    });
+    const modelReqPromise = sendHttpRequest(options, data);
+    const modelRes = await modelReqPromise;
 
-    modelReq.write(data);
-    modelReq.end();
+    const responseData = JSON.parse(modelRes);
+    console.log(responseData);
 
-
-    const conversationTitle = "Test conversation";
+    const modelResponse = responseData.response;
+    const conversationTitle = responseData.title;
     
     conversation.setTitle(conversationTitle);
 

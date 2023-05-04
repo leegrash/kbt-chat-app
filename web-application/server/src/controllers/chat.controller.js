@@ -69,55 +69,56 @@ router.post("/send-message", requireAuth, async (req, res) => {
 
     const data = JSON.stringify({
       messages,
-      version
+      version,
     });
 
     const options = {
-      hostname: '127.0.0.1',
+      hostname: "127.0.0.1",
       port: 5000,
-      path: '/chatbot',
-      method: 'POST',
+      path: "/chatbot",
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Content-Length': data.length
-      }
+        "Content-Type": "application/json",
+        "Content-Length": data.length,
+      },
     };
 
     const sendHttpRequest = (modelOptions, modelData) =>
       new Promise((resolve, reject) => {
         const modelReq = http.request(modelOptions, (modelRes) => {
-          let responseData = '';
-          modelRes.on('data', (chunk) => {
+          let responseData = "";
+          modelRes.on("data", (chunk) => {
             responseData += chunk;
           });
-          modelRes.on('end', () => {
-            const statusCode = modelRes.statusCode;
+          modelRes.on("end", () => {
+            const { statusCode } = modelRes;
             if (statusCode >= 200 && statusCode < 300) {
               resolve(responseData);
             } else {
-              reject(new Error(`Request failed with status code ${statusCode}`));
+              reject(
+                new Error(`Request failed with status code ${statusCode}`)
+              );
             }
           });
         });
 
-        modelReq.on('error', (error) => {
+        modelReq.on("error", (error) => {
           console.error(error);
           reject(error);
         });
 
         modelReq.write(modelData);
         modelReq.end();
-    });
+      });
 
     const modelReqPromise = sendHttpRequest(options, data);
     const modelRes = await modelReqPromise;
 
     const responseData = JSON.parse(modelRes);
-    console.log(responseData);
 
     const modelResponse = responseData.response;
     const conversationTitle = responseData.title;
-    
+
     conversation.setTitle(conversationTitle);
 
     conversation.addMessage(modelResponse, "bot");

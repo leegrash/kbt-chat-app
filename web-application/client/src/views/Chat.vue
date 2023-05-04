@@ -12,7 +12,8 @@
                 aria-atomic="true"
                 class="alert text-center alert-danger"
               >
-                Cant't connect to the server. Please wait a few minutes and try again.
+                Cant't connect to the server. Please wait a few minutes and try
+                again.
               </div>
               <div class="row">
                 <div class="col-lg-6">
@@ -183,20 +184,18 @@ export default {
       this.$store.state.serverDown = true;
     });
     this.socket.on("connect", () => {
-      console.log("Connected to server");
       this.$store.state.serverDown = false;
       this.laodPage();
     });
 
     if (this.$store.state.serverDown === false) {
-      console.log("Init idle timeout");
       this.socket.on("userIdle", () => {
         this.$store.commit("setAuthenticated", false);
         document.cookie =
           "sessionId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         this.$store.state.msg = "idleSignout";
         this.$router.push("/signin");
-      }); 
+      });
     }
 
     const chatHistory = document.getElementById("chat-history");
@@ -212,39 +211,39 @@ export default {
 
       if (this.$store.state.serverDown === false) {
         fetch("/api/load-conversation", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ version: this.$store.state.version }),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          this.messages = data.messages;
-          this.prevConversations = data.prevTitles;
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ version: this.$store.state.version }),
         })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
+          .then((response) => response.json())
+          .then((data) => {
+            this.messages = data.messages;
+            this.prevConversations = data.prevTitles;
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
 
-      document.onmousemove = () => {
-        if (this.$store.state.authenticated !== false) {
-          this.socket.emit("userNotIdle", sessionId);
-        }
-      };
-      document.onkeydown = () => {
-        if (this.$store.state.authenticated !== false) {
-          this.socket.emit("userNotIdle", sessionId);
-        }
-      };
-      document.onmousedown = () => {
-        if (this.$store.state.authenticated !== false) {
-          this.socket.emit("userNotIdle", sessionId);
-        }
-      };
+        document.onmousemove = () => {
+          if (this.$store.state.authenticated !== false) {
+            this.socket.emit("userNotIdle", sessionId);
+          }
+        };
+        document.onkeydown = () => {
+          if (this.$store.state.authenticated !== false) {
+            this.socket.emit("userNotIdle", sessionId);
+          }
+        };
+        document.onmousedown = () => {
+          if (this.$store.state.authenticated !== false) {
+            this.socket.emit("userNotIdle", sessionId);
+          }
+        };
       }
     },
-    
+
     sendMessage() {
       if (this.$store.state.serverDown === true) {
         return;
@@ -269,7 +268,6 @@ export default {
         .then((response) => response.json())
         .then((data) => {
           this.messages = data.formatedMessages;
-          console.log(this.messages);
 
           this.$nextTick(() => {
             const chatHistory = document.getElementById("chat-history");

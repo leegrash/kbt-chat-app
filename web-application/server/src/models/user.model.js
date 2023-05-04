@@ -14,7 +14,7 @@ class User {
     if (name !== null) {
       this.name = name;
     } else {
-      this.loadUsernameFromDB()
+      this.loadUsernameFromDB();
     }
 
     this.loadConversations();

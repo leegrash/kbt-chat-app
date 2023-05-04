@@ -11,7 +11,8 @@
               aria-atomic="true"
               class="alert text-center alert-danger"
             >
-              Cant't connect to the server. Please wait a few minutes and try again.
+              Cant't connect to the server. Please wait a few minutes and try
+              again.
             </div>
             <h1 class="page-title">Information about survey</h1>
             <div class="row page-content">
@@ -115,19 +116,17 @@ export default {
       this.$store.state.serverDown = true;
     });
     this.socket.on("connect", () => {
-      console.log("Connected to server");
       this.$store.state.serverDown = false;
     });
 
     if (this.$store.state.serverDown === false) {
-      console.log("Init idle timeout");
       this.socket.on("userIdle", () => {
         this.$store.commit("setAuthenticated", false);
         document.cookie =
           "sessionId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         this.$store.state.msg = "idleSignout";
         this.$router.push("/signin");
-      }); 
+      });
     }
   },
   created() {

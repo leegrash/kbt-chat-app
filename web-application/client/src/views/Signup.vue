@@ -13,7 +13,8 @@
                 aria-atomic="true"
                 class="alert text-center alert-danger"
               >
-                Cant't connect to the server. Please wait a few minutes and try again.
+                Cant't connect to the server. Please wait a few minutes and try
+                again.
               </div>
               <div
                 v-if="$store.state.msg === 'Passwords don\'t match'"
@@ -170,7 +171,6 @@ export default {
         })
         .then(() => {
           this.$store.state.msg = "User created";
-          console.log("Creating user");
           push("/signin");
         })
         .catch(console.error);

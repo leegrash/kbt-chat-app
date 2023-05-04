@@ -5,6 +5,7 @@ export default createStore({
     authenticated: false,
     msg: "",
     version: "",
+    serverDown: false,
   },
   getters: {
     isAuthenticated(state) {

@@ -4,6 +4,15 @@
       <div class="col-lg-12">
         <div class="card chat-app">
           <div class="chat-info">
+            <div
+                v-if="$store.state.serverDown === true"
+                role="alert"
+                aria-live="polite"
+                aria-atomic="true"
+                class="alert text-center alert-danger"
+              >
+                Cant't connect to the server. Please wait a few minutes and try again.
+              </div>
             <h1 class="page-title">Information about survey</h1>
             <div class="row page-content">
               <h2>Chatbot#1</h2>
@@ -101,13 +110,25 @@ export default {
   }),
 
   mounted() {
-    this.socket.on("userIdle", () => {
-      this.$store.commit("setAuthenticated", false);
-      document.cookie =
-        "sessionId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-      this.$store.state.msg = "idleSignout";
-      this.$router.push("/signin");
+    this.socket.on("connect_error", () => {
+      console.error("Socket connection error");
+      this.$store.state.serverDown = true;
     });
+    this.socket.on("connect", () => {
+      console.log("Connected to server");
+      this.$store.state.serverDown = false;
+    });
+
+    if (this.$store.state.serverDown === false) {
+      console.log("Init idle timeout");
+      this.socket.on("userIdle", () => {
+        this.$store.commit("setAuthenticated", false);
+        document.cookie =
+          "sessionId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        this.$store.state.msg = "idleSignout";
+        this.$router.push("/signin");
+      }); 
+    }
   },
   created() {
     const sessionId = Cookies.get("sessionId");

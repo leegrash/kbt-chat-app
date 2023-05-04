@@ -5,6 +5,15 @@
         <div class="card chat-app">
           <div class="chat">
             <div class="chat-header clearfix">
+              <div
+                v-if="$store.state.serverDown === true"
+                role="alert"
+                aria-live="polite"
+                aria-atomic="true"
+                class="alert text-center alert-danger"
+              >
+                Cant't connect to the server. Please wait a few minutes and try again.
+              </div>
               <div class="row">
                 <div class="col-lg-6">
                   <a
@@ -169,55 +178,78 @@ export default {
   },
 
   mounted() {
+    this.socket.on("connect_error", () => {
+      console.error("Socket connection error");
+      this.$store.state.serverDown = true;
+    });
+    this.socket.on("connect", () => {
+      console.log("Connected to server");
+      this.$store.state.serverDown = false;
+      this.laodPage();
+    });
+
+    if (this.$store.state.serverDown === false) {
+      console.log("Init idle timeout");
+      this.socket.on("userIdle", () => {
+        this.$store.commit("setAuthenticated", false);
+        document.cookie =
+          "sessionId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        this.$store.state.msg = "idleSignout";
+        this.$router.push("/signin");
+      }); 
+    }
+
     const chatHistory = document.getElementById("chat-history");
     chatHistory.scrollTop = chatHistory.scrollHeight;
-
-    this.socket.on("userIdle", () => {
-      this.$store.commit("setAuthenticated", false);
-      document.cookie =
-        "authCookie=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-      this.$store.state.msg = "idleSignout";
-      this.$router.push("/signin");
-    });
   },
   created() {
-    const sessionId = Cookies.get("sessionId");
-    this.conversationInProgress = false;
-
-    fetch("/api/load-conversation", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ version: this.$store.state.version }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        this.messages = data.messages;
-        this.prevConversations = data.prevTitles;
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-
-    document.onmousemove = () => {
-      if (this.$store.state.authenticated !== false) {
-        this.socket.emit("userNotIdle", sessionId);
-      }
-    };
-    document.onkeydown = () => {
-      if (this.$store.state.authenticated !== false) {
-        this.socket.emit("userNotIdle", sessionId);
-      }
-    };
-    document.onmousedown = () => {
-      if (this.$store.state.authenticated !== false) {
-        this.socket.emit("userNotIdle", sessionId);
-      }
-    };
+    this.laodPage();
   },
   methods: {
+    laodPage() {
+      const sessionId = Cookies.get("sessionId");
+      this.conversationInProgress = false;
+
+      if (this.$store.state.serverDown === false) {
+        fetch("/api/load-conversation", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ version: this.$store.state.version }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          this.messages = data.messages;
+          this.prevConversations = data.prevTitles;
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+
+      document.onmousemove = () => {
+        if (this.$store.state.authenticated !== false) {
+          this.socket.emit("userNotIdle", sessionId);
+        }
+      };
+      document.onkeydown = () => {
+        if (this.$store.state.authenticated !== false) {
+          this.socket.emit("userNotIdle", sessionId);
+        }
+      };
+      document.onmousedown = () => {
+        if (this.$store.state.authenticated !== false) {
+          this.socket.emit("userNotIdle", sessionId);
+        }
+      };
+      }
+    },
+    
     sendMessage() {
+      if (this.$store.state.serverDown === true) {
+        return;
+      }
+
       const message = document.getElementById("message").value;
 
       if (message === "") return;
@@ -251,6 +283,10 @@ export default {
     },
 
     loadPrevConversation(conversationId) {
+      if (this.$store.state.serverDown === true) {
+        return;
+      }
+
       fetch("/api/load-prev-conversation", {
         method: "POST",
         headers: {
@@ -278,6 +314,10 @@ export default {
     },
 
     newConversation() {
+      if (this.$store.state.serverDown === true) {
+        return;
+      }
+
       fetch("/api/new-conversation", {
         method: "POST",
         headers: {

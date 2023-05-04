@@ -83,91 +83,102 @@ router.post("/send-message", requireAuth, async (req, res) => {
       },
     };
 
-    const sendHttpRequest = (modelOptions, modelData) =>
-      new Promise((resolve, reject) => {
-        const modelReq = http.request(modelOptions, (modelRes) => {
-          let responseData = "";
-          modelRes.on("data", (chunk) => {
-            responseData += chunk;
-          });
-          modelRes.on("end", () => {
-            const { statusCode } = modelRes;
-            if (statusCode >= 200 && statusCode < 300) {
-              resolve(responseData);
-            } else {
-              reject(
-                new Error(`Request failed with status code ${statusCode}`)
-              );
-            }
-          });
+    const sendHttpRequest = (modelOptions, modelData) => new Promise((resolve, reject) => {
+      const modelReq = http.request(modelOptions, (modelRes) => {
+        let responseData = "";
+        modelRes.on("data", (chunk) => {
+          responseData += chunk;
         });
-
-        modelReq.on("error", (error) => {
-          console.error(error);
-          reject(error);
+        modelRes.on("end", () => {
+          const { statusCode } = modelRes;
+          if (statusCode >= 200 && statusCode < 300) {
+            resolve(responseData);
+          } else {
+            reject(
+              new Error(`Request failed with status code ${statusCode}`)
+            );
+          }
         });
-
-        modelReq.write(modelData);
-        modelReq.end();
+      });
+      
+      modelReq.on("error", (error) => {
+        reject(error);
       });
 
-    const modelReqPromise = sendHttpRequest(options, data);
-    const modelRes = await modelReqPromise;
+      modelReq.write(modelData);
+      modelReq.end();
+    });
 
-    const responseData = JSON.parse(modelRes);
+    let modelResponse = "The bot is not available at the moment. Please try again later.";
+    let conversationTitle = null;
 
-    const modelResponse = responseData.response;
-    const conversationTitle = responseData.title;
+    let apiRequestSuccess = false;
 
-    conversation.setTitle(conversationTitle);
+    try {
+      const modelReqPromise = sendHttpRequest(options, data);
+      const modelRes = await modelReqPromise;
+
+      const responseData = JSON.parse(modelRes);
+
+      modelResponse = responseData.response;
+      conversationTitle = responseData.title;
+
+      apiRequestSuccess = true;
+    } catch (error) {
+      console.error("Model API not available");
+    }
+
+    if (apiRequestSuccess) {
+      conversation.setTitle(conversationTitle);
+
+      let dbQuery = `
+            SELECT EXISTS (SELECT * FROM userConversations where conversationUUID = ?)
+        `;
+
+      let params = [conversationId];
+
+      const row = await db.get(dbQuery, params);
+
+      if (
+        row[
+          "EXISTS (SELECT * FROM userConversations where conversationUUID = ?)"
+        ] === 0
+      ) {
+        dbQuery = `
+                  INSERT INTO userConversations (conversationUUID, userId, botVersion, messageTitle)
+                  VALUES (?, ?, ?, ?)
+              `;
+
+        params = [conversationId, user.id, version, conversationTitle];
+
+        await db.run(dbQuery, params);
+      } else {
+        dbQuery = `
+                  UPDATE userConversations
+                  SET messageTitle = ?
+                  WHERE conversationUUID = ?
+              `;
+        params = [conversationTitle, conversationId];
+        await db.run(dbQuery, params);
+      }
+
+      const messageId = uuidv4();
+
+      dbQuery = `
+              INSERT INTO messages (messageId, message, timestamp, response, conversationUUID)
+              VALUES (?, ?, ?, ?, ?)
+          `;
+
+      const date = new Date().toJSON().slice(0, 19).replace("T", " ");
+
+      params = [messageId, message, date, modelResponse, conversationId];
+
+      await db.run(dbQuery, params);
+    }
 
     conversation.addMessage(modelResponse, "bot");
 
     formatedMessages.push({ message: modelResponse, sender: "bot" });
-
-    let dbQuery = `
-            SELECT EXISTS (SELECT * FROM userConversations where conversationUUID = ?)
-        `;
-
-    let params = [conversationId];
-
-    const row = await db.get(dbQuery, params);
-
-    if (
-      row[
-        "EXISTS (SELECT * FROM userConversations where conversationUUID = ?)"
-      ] === 0
-    ) {
-      dbQuery = `
-                INSERT INTO userConversations (conversationUUID, userId, botVersion, messageTitle)
-                VALUES (?, ?, ?, ?)
-            `;
-
-      params = [conversationId, user.id, version, conversationTitle];
-
-      await db.run(dbQuery, params);
-    } else {
-      dbQuery = `
-                UPDATE userConversations
-                SET messageTitle = ?
-                WHERE conversationUUID = ?
-            `;
-      params = [conversationTitle, conversationId];
-      await db.run(dbQuery, params);
-    }
-
-    const messageId = uuidv4();
-
-    dbQuery = `
-            INSERT INTO messages (messageId, message, timestamp, response, conversationUUID)
-            VALUES (?, ?, ?, ?, ?)
-        `;
-
-    const date = new Date().toJSON().slice(0, 19).replace("T", " ");
-
-    params = [messageId, message, date, modelResponse, conversationId];
-
-    await db.run(dbQuery, params);
 
     res.json({ formatedMessages });
     res.status(200).end();

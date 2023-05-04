@@ -55,6 +55,15 @@
               >
                 Fill out all fields
               </div>
+              <div
+                v-if="$store.state.msg === 'idleSignout'"
+                role="alert"
+                aria-live="polite"
+                aria-atomic="true"
+                class="alert text-center alert-warning"
+              >
+                You have been signed out due to inactivity
+              </div>
               <div class="form-group input-group">
                 <div class="input-group-prepend">
                   <span class="input-group-text"
@@ -64,15 +73,6 @@
                 <label for="username" class="visually-hidden"
                   >Enter username</label
                 >
-                <div
-                  v-if="$store.state.msg === 'idleSignout'"
-                  role="alert"
-                  aria-live="polite"
-                  aria-atomic="true"
-                  class="alert text-center alert-warning"
-                >
-                  Signed out du to inactivity
-                </div>
                 <input
                   id="username"
                   v-model="username"

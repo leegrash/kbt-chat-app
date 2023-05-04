@@ -125,3 +125,6 @@ dist-ssr
 #sqlite3 database
 *.sqlite3
 *.db
+
+# ssl files
+*.pem

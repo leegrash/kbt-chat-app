@@ -116,8 +116,8 @@ io.on("connection", (socket) => {
 
 try {
   const options = {
-    key: fs.readFileSync("./ca-certificates/key.pem"),
-    cert: fs.readFileSync("./ca-certificates/cert.pem"),
+    key: fs.readFileSync("c:/temp/key.pem"),
+    cert: fs.readFileSync("c:/temp/cert.pem"),
   };
 
   https.createServer(options, app).listen(port, () => {
@@ -126,6 +126,7 @@ try {
   });
 }
 catch (err) {
+  console.log(err);
   server.listen(port, () => {
     console.log("Server started, not using HTTPS");
     console.log(`Listening on http://localhost:${port}/`);

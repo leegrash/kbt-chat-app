@@ -87,7 +87,6 @@ async function loadActiveUsers() {
 
 loadActiveUsers();
 
-// Handle socket.io connections
 io.on("connection", (socket) => {
   const { session } = socket.handshake;
   session.socketID = socket.id;

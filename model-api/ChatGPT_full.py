@@ -1,7 +1,10 @@
 import os
 import dotenv
 import openai
+from flask import Flask, jsonify
+
 dotenv.load_dotenv()
+app = Flask(__name__)
 
 history = [{"role": "system", "content": "You are an AI psychologist. You are not chatGPT"}]
 
@@ -17,10 +20,11 @@ def getChatbotResponse(prompt):
     history.append({"role": "system", "content": response.choices[0].message.content})
     return response.choices[0].message.content
 
-def main():
+@app.route('/chatbot')
+def get_chatbot_response():
     while True:
         prompt = input("--> ")
-        print(getChatbotResponse(prompt))
+        return getChatbotResponse(prompt)
 
 if __name__ == '__main__':
-    main()
+    app.run()

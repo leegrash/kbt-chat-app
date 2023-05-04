@@ -5,14 +5,14 @@
         <div class="card chat-app">
           <div class="chat-info">
             <div
-                v-if="$store.state.serverDown === true"
-                role="alert"
-                aria-live="polite"
-                aria-atomic="true"
-                class="alert text-center alert-danger"
-              >
-                Cant't connect to the server. Please wait a few minutes and try again.
-              </div>
+              v-if="$store.state.serverDown === true"
+              role="alert"
+              aria-live="polite"
+              aria-atomic="true"
+              class="alert text-center alert-danger"
+            >
+              Cant't connect to the server. Please wait a few minutes and try again.
+            </div>
             <h1 class="page-title">Information about survey</h1>
             <div class="row page-content">
               <h2>Chatbot#1</h2>

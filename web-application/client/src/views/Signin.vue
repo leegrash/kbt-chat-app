@@ -10,6 +10,15 @@
               @submit.prevent="authenticate()"
             >
               <div
+                v-if="$store.state.serverDown === true"
+                role="alert"
+                aria-live="polite"
+                aria-atomic="true"
+                class="alert text-center alert-danger"
+              >
+                Cant't connect to the server. Please wait a few minutes and try again.
+              </div>
+              <div
                 v-if="$store.state.msg === 'User created'"
                 role="alert"
                 aria-live="polite"
@@ -117,6 +126,10 @@ export default {
   }),
   methods: {
     authenticate() {
+      if (this.$store.state.serverDown === true) {
+        return;
+      }
+
       const { commit } = this.$store;
       const { push } = this.$router;
 

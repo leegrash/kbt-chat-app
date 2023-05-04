@@ -111,6 +111,10 @@ export default {
   },
   methods: {
     redirect(target, version = null) {
+      if (this.$store.state.serverDown === true) {
+        return;
+      }
+
       if (version == null) {
         this.$router.push(target);
       } else {
@@ -119,6 +123,10 @@ export default {
       }
     },
     signOut() {
+      if (this.$store.state.serverDown === true) {
+        return;
+      }
+
       fetch("/api/signout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

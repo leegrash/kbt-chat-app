@@ -7,6 +7,15 @@
             <h1 class="page-title">Sign up</h1>
             <form class="sign-in-form" @submit.prevent="createUser()">
               <div
+                v-if="$store.state.serverDown === true"
+                role="alert"
+                aria-live="polite"
+                aria-atomic="true"
+                class="alert text-center alert-danger"
+              >
+                Cant't connect to the server. Please wait a few minutes and try again.
+              </div>
+              <div
                 v-if="$store.state.msg === 'Passwords don\'t match'"
                 role="alert"
                 aria-live="polite"
@@ -122,6 +131,10 @@ export default {
   }),
   methods: {
     createUser() {
+      if (this.$store.state.serverDown === true) {
+        return;
+      }
+
       const { push } = this.$router;
 
       if (

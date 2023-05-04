@@ -1,10 +1,14 @@
-import re
+from flask import Flask, jsonify
 
-# regex that parses the prompt for the media type and content. parsing should be on the format $[mediatype, content]$
-def parsePrompt(prompt):
-    if re.search("\$\[.*\,.*\]\$", prompt):
-        return re.search("\$\[.*\,.*\]\$", prompt).group(0)
-    else:
-        return "empty"
+app = Flask(__name__)
 
-print(parsePrompt("Hello, I am a chatbot. I can send you media. $[pdf, sleep]$"))
+@app.route('/chatbot')
+def get_chatbot_response():
+    # Call your chatbot code here and return the response
+    # enskilt response, en sträng
+    # Title, bara sträng
+    response = "Hello, I am your chatbot."
+    return jsonify({'response': response})
+
+if __name__ == '__main__':
+    app.run()

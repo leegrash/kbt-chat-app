@@ -121,6 +121,7 @@ try {
   const options = {
     key: fs.readFileSync(path.join(relativeDirectory, 'ss-certificate', 'key.pem')),
     cert: fs.readFileSync(path.join(relativeDirectory, 'ss-certificate', 'cert.pem')),
+    rejectUnauthorized: false,
   };
 
   https.createServer(options, app).listen(port, () => {

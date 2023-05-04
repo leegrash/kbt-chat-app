@@ -107,7 +107,9 @@ export default {
     next();
   },
   data: () => ({
-    socket: io.connect(),
+    socket: io.connect({
+      rejectUnauthorized: false
+    }),
   }),
 
   mounted() {

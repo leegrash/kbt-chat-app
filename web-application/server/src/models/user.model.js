@@ -6,13 +6,31 @@ import db from "../db.js";
  */
 
 class User {
-  constructor(id, name) {
+  constructor(id, name = null) {
     this.id = id;
-    this.name = name;
     this.conversations = [];
     this.activeConversation = null;
 
+    if (name !== null) {
+      this.name = name;
+    } else {
+      this.loadUsernameFromDB()
+    }
+
     this.loadConversations();
+  }
+
+  async loadUsernameFromDB() {
+    const dbQuery = `SELECT * FROM users WHERE userId = ?`;
+    const params = [this.id];
+
+    await db.each(dbQuery, params, (err, row) => {
+      if (err) {
+        throw new Error(err);
+      } else {
+        this.name = row.username;
+      }
+    });
   }
 
   async loadConversations() {

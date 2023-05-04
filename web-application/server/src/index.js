@@ -69,6 +69,20 @@ app.use(cookieParser());
 app.use("/api", router);
 app.use("/api", timeslot.router);
 
+async function loadActiveUsers() {
+  const dbQuery = "SELECT * FROM activeSessions";
+
+  await db.each(dbQuery, [], (err, row) => {
+    if (err) {
+      throw err;
+    }
+    model.addUser(row.sessionUUID, row.userId);
+    model.addAuthCookie(row.sessionUUID);
+  });
+}
+
+loadActiveUsers();
+
 // Handle socket.io connections
 io.on("connection", (socket) => {
   const { session } = socket.handshake;

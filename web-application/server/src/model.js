@@ -22,7 +22,7 @@ class Model {
     this.authCookies.push(authCookie);
   }
 
-  addUser(sessionId, userId, username) {
+  addUser(sessionId, userId, username = null) {
     this.users.set(sessionId, new User(userId, username));
   }
 

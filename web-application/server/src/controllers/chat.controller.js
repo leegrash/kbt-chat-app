@@ -68,7 +68,7 @@ router.post("/send-message", requireAuth, async (req, res) => {
 
     // call python model with messages and version
 
-    let modelResponse =
+    const modelResponse =
       "I'm sorry, I don't understand. Could you rephrase that?";
 
     /*

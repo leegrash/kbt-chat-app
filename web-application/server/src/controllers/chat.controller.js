@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { v4 as uuidv4 } from "uuid";
+import http from "http";
 import model from "../model.js";
 import db from "../db.js";
 import { requireAuth } from "./user.controller.js";
@@ -68,19 +69,39 @@ router.post("/send-message", requireAuth, async (req, res) => {
 
     // call python model with messages and version
 
-    const modelResponse =
-      "I'm sorry, I don't understand. Could you rephrase that?";
+    const modelResponse = "I'm sorry, I don't understand. Could you rephrase that?";
 
-    /*
-    fetch("http://localhost:5000/chatbot", {
-      method: "POST",
-      body: JSON.stringify({ messages, version }),
-      headers: { "Content-Type": "application/json" },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        modelResponse = data.message;
-      });*/
+    const data = JSON.stringify({
+      messages,
+      version
+    });
+
+    const options = {
+      hostname: '127.0.0.1',
+      port: 5000,
+      path: '/chatbot',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Content-Length': data.length
+      }
+    };
+
+    const modelReq = http.request(options, (modelRes) => {
+      console.log(`statusCode: ${modelRes.statusCode}`);
+
+      modelRes.on('data', (d) => {
+        process.stdout.write(d);
+      });
+    });
+
+    modelReq.on('error', (error) => {
+      console.error(error);
+    });
+
+    modelReq.write(data);
+    modelReq.end();
+
 
     const conversationTitle = "Test conversation";
     

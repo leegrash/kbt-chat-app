@@ -7,6 +7,7 @@ import { Server } from "socket.io";
 import cookieParser from "cookie-parser";
 import https from "https";
 import fs from "fs";
+import helmet from "helmet";
 import { fileURLToPath } from 'url';
 import path, { dirname } from 'path';
 import { resolvePath } from "./util.js";
@@ -72,6 +73,7 @@ app.use(cookieParser());
 // Bind REST controllers to /api/*
 app.use("/api", router);
 app.use("/api", timeslot.router);
+app.use(helmet());
 
 async function loadActiveUsers() {
   const dbQuery = "SELECT * FROM activeSessions";
@@ -117,7 +119,12 @@ io.on("connection", (socket) => {
 
 const relativeDirectory = dirname(fileURLToPath(import.meta.url));
 
+const testRequireHttp = true; // False to enable HTTPS
+
 try {
+  if (testRequireHttp) {
+    throw new Error("Testing Requires HTTP");
+  }
   const options = {
     key: fs.readFileSync(path.join(relativeDirectory, 'ss-certificate', 'key.pem')),
     cert: fs.readFileSync(path.join(relativeDirectory, 'ss-certificate', 'cert.pem')),
@@ -130,7 +137,6 @@ try {
   });
 }
 catch (err) {
-  console.log(err);
   server.listen(port, () => {
     console.log("Server started, not using HTTPS");
     console.log(`Listening on http://localhost:${port}/`);

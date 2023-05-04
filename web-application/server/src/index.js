@@ -5,6 +5,8 @@ import socketIOSession from "express-socket.io-session";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import cookieParser from "cookie-parser";
+import https from "https";
+import fs from "fs";
 import { resolvePath } from "./util.js";
 import { router } from "./controllers/user.controller.js";
 import timeslot from "./controllers/chat.controller.js";
@@ -112,6 +114,20 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(port, () => {
-  console.log(`Listening on http://localhost:${port}/`);
-});
+try {
+  const options = {
+    key: fs.readFileSync("./ca-certificates/key.pem"),
+    cert: fs.readFileSync("./ca-certificates/cert.pem"),
+  };
+
+  https.createServer(options, app).listen(port, () => {
+    console.log("Server started, using HTTPS");
+    console.log(`Listening on https://localhost:${port}/`);
+  });
+}
+catch (err) {
+  server.listen(port, () => {
+    console.log("Server started, not using HTTPS");
+    console.log(`Listening on http://localhost:${port}/`);
+  });
+}  

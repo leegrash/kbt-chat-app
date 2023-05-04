@@ -7,6 +7,8 @@ import { Server } from "socket.io";
 import cookieParser from "cookie-parser";
 import https from "https";
 import fs from "fs";
+import { fileURLToPath } from 'url';
+import path, { dirname } from 'path';
 import { resolvePath } from "./util.js";
 import { router } from "./controllers/user.controller.js";
 import timeslot from "./controllers/chat.controller.js";
@@ -114,10 +116,12 @@ io.on("connection", (socket) => {
   });
 });
 
+const relativeDirectory = dirname(fileURLToPath(import.meta.url));
+
 try {
   const options = {
-    key: fs.readFileSync("c:/temp/key.pem"),
-    cert: fs.readFileSync("c:/temp/cert.pem"),
+    key: fs.readFileSync(path.join(relativeDirectory, 'ss-certificate', 'key.pem')),
+    cert: fs.readFileSync(path.join(relativeDirectory, 'ss-certificate', 'cert.pem')),
   };
 
   https.createServer(options, app).listen(port, () => {

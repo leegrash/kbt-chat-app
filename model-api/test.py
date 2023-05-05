@@ -1,14 +1,15 @@
-from flask import Flask, jsonify
+import pinecone
+import pinecone.info
+import os
+import dotenv
+import tensorflow_hub as hub
 
-app = Flask(__name__)
 
-@app.route('/chatbot')
-def get_chatbot_response():
-    # Call your chatbot code here and return the response
-    # enskilt response, en sträng
-    # Title, bara sträng
-    response = "Hello, I am your chatbot."
-    return jsonify({'response': response})
+dotenv.load_dotenv()
+key = os.getenv("PINECONE_API_KEY")
 
-if __name__ == '__main__':
-    app.run()
+pinecone.init(api_key=key, environment='us-west4-gcp')
+
+index = pinecone.Index(index_name="kex23")
+
+print(index.describe_index_stats())

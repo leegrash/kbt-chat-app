@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 from ChatGPT_full import getChatbotResponse as getFullResponse
 from ChatGPT_short import getChatbotResponse as getShortResponse
 from ChatGPT_content import getChatbotResponse as getContentResponse
+from ChatGPT_intent import getChatbotResponse as getIntentResponse
 import re
 import openai
 import os
@@ -24,8 +25,8 @@ def get_chatbot_response():
     return jsonify({'response': response, 'title': title})
 
 def test_get_chatbot_response():
-    messages = [{'message': 'Can you help me sleep better? I feel anxious before bed.', 'sender': 'user'}]
-    version = 'Mixed'
+    messages = [{'message': 'Can you help me feel mindful?', 'sender': 'user'}]
+    version = 'Intent'
 
     response = getResponse(messages, version)
     title = getTitle(messages)
@@ -51,6 +52,8 @@ def getResponse(messages, version):
     elif version == 'Mixed':
         history.insert(0, {"role": "system", "content": "You are an AI psychologist. You are not chatGPT. Give short answers like you are having a verbal conversation. You specialize in CBT."})
         return getShortResponse(history)
+    elif version == 'Intent':
+        return getIntentResponse(history[-1])
     
 def parseMessages(messages):
     history = []

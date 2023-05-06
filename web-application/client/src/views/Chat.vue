@@ -113,6 +113,7 @@ import Cookies from "js-cookie";
 export default {
   name: "ChatView",
   components: {},
+  // sometimes the user will leave the page without starting the conversation
   beforeRouteLeave(to, from, next) {
     fetch("/api/clear-empty-conversations", {
       method: "PUT",
@@ -138,6 +139,7 @@ export default {
     messages: [],
     prevConversations: [],
   }),
+  // when version changes this acts reactively
   watch: {
     "$store.state.version": {
       handler() {
@@ -177,8 +179,9 @@ export default {
       immediate: true,
     },
   },
-
+  // when a component is mounted, the socket connection is established
   mounted() {
+    // checks connection
     this.socket.on("connect_error", () => {
       console.error("Socket connection error");
       this.$store.state.serverDown = true;
@@ -188,6 +191,7 @@ export default {
       this.laodPage();
     });
 
+    // checks if user is idle
     if (this.$store.state.serverDown === false) {
       this.socket.on("userIdle", () => {
         this.$store.commit("setAuthenticated", false);
@@ -198,9 +202,11 @@ export default {
       });
     }
 
+    // gets chat history and scrolls to bottom
     const chatHistory = document.getElementById("chat-history");
     chatHistory.scrollTop = chatHistory.scrollHeight;
   },
+  // when a component is created. Like a constructor
   created() {
     this.laodPage();
   },
@@ -215,17 +221,18 @@ export default {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ version: this.$store.state.version }),
+          body: JSON.stringify({ version: this.$store.state.version }), // sends version
         })
           .then((response) => response.json())
           .then((data) => {
-            this.messages = data.messages;
+            this.messages = data.messages;  // gets data
             this.prevConversations = data.prevTitles;
           })
           .catch((error) => {
             console.error("Error:", error);
           });
 
+        // user idle check
         document.onmousemove = () => {
           if (this.$store.state.authenticated !== false) {
             this.socket.emit("userNotIdle", sessionId);
@@ -253,7 +260,7 @@ export default {
 
       if (message === "") return;
 
-      document.getElementById("message").value = "";
+      document.getElementById("message").value = "";  // clears input
 
       fetch("/api/send-message", {
         method: "POST",
@@ -269,7 +276,7 @@ export default {
         .then((data) => {
           this.messages = data.formatedMessages;
 
-          this.$nextTick(() => {
+          this.$nextTick(() => {  // gets history and scrolls to bottom
             const chatHistory = document.getElementById("chat-history");
             chatHistory.scrollTop = chatHistory.scrollHeight;
             this.conversationInProgress = true;
@@ -291,7 +298,7 @@ export default {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          conversationId,
+          conversationId, 
           version: this.$store.state.version,
         }),
       })
@@ -301,7 +308,7 @@ export default {
           this.prevConversations = data.prevTitles;
           this.conversationInProgress = true;
 
-          this.$nextTick(() => {
+          this.$nextTick(() => {  
             const chatHistory = document.getElementById("chat-history");
             chatHistory.scrollTop = chatHistory.scrollHeight;
           });
@@ -326,7 +333,7 @@ export default {
         }),
       })
         .then((response) => response.json())
-        .then((data) => {
+        .then((data) => { 
           this.messages = data.messages;
           this.prevConversations = data.prevTitles;
           this.conversationInProgress = false;

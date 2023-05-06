@@ -5,8 +5,9 @@
         <div class="card chat-app">
           <div class="chat">
             <div class="chat-header clearfix">
+              <!-- if server is down -->
               <div
-                v-if="$store.state.serverDown === true"
+                v-if="$store.state.serverDown === true" 
                 role="alert"
                 aria-live="polite"
                 aria-atomic="true"

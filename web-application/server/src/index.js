@@ -2,10 +2,10 @@ import betterLogging from "better-logging";
 import express from "express";
 import expressSession from "express-session";
 import socketIOSession from "express-socket.io-session";
-import { createServer } from "http";
+import http from "http";
+import https from "https";
 import { Server } from "socket.io";
 import cookieParser from "cookie-parser";
-import https from "https";
 import fs from "fs";
 import helmet from "helmet";
 import { fileURLToPath } from 'url';
@@ -16,9 +16,26 @@ import timeslot from "./controllers/chat.controller.js";
 import model from "./model.js";
 import db from "./db.js";
 
+const testRequireHttp = false; // False to enable HTTPS
+
 const port = 8989;
 const app = express();
-const server = createServer(app);
+
+let server;
+if (!testRequireHttp) {
+  const relativeDirectory = dirname(fileURLToPath(import.meta.url));
+  const options = {
+    key: fs.readFileSync(path.join(relativeDirectory, 'ss-certificate', 'key.pem')),
+    cert: fs.readFileSync(path.join(relativeDirectory, 'ss-certificate', 'cert.pem')),
+    
+  };
+
+  server = https.createServer(options, app);
+}
+else {
+  server = http.createServer(app);
+}
+
 const io = new Server(server);
 
 model.init(io);
@@ -117,28 +134,15 @@ io.on("connection", (socket) => {
   });
 });
 
-const relativeDirectory = dirname(fileURLToPath(import.meta.url));
-
-const testRequireHttp = true; // False to enable HTTPS
-
-try {
-  if (testRequireHttp) {
-    throw new Error("Testing Requires HTTP");
-  }
-  const options = {
-    key: fs.readFileSync(path.join(relativeDirectory, 'ss-certificate', 'key.pem')),
-    cert: fs.readFileSync(path.join(relativeDirectory, 'ss-certificate', 'cert.pem')),
-    rejectUnauthorized: false,
-  };
-
-  https.createServer(options, app).listen(port, () => {
-    console.log("Server started, using HTTPS");
-    console.log(`Listening on https://localhost:${port}/`);
-  });
-}
-catch (err) {
+if (testRequireHttp) {
   server.listen(port, () => {
     console.log("Server started, not using HTTPS");
     console.log(`Listening on http://localhost:${port}/`);
   });
-}  
+}
+else {
+  server.listen(port, () => {
+    console.log("Server started, using HTTPS");
+    console.log(`Listening on https://localhost:${port}/`);
+  });
+}

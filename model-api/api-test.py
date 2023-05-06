@@ -25,15 +25,15 @@ def get_chatbot_response():
     return jsonify({'response': response, 'title': title})
 
 def test_get_chatbot_response():
-    messages = [{'message': 'Can you help me feel mindful?', 'sender': 'user'}]
+    messages = [{'message': 'I like Ice Cream.', 'sender': 'user'}]
     version = 'Intent'
 
     response = getResponse(messages, version)
     title = getTitle(messages)
 
     print(response)
-    print()
-    print(title)
+    # print()
+    # print(title)
 
 def getResponse(messages, version):
     history = parseMessages(messages)
@@ -53,13 +53,16 @@ def getResponse(messages, version):
         history.insert(0, {"role": "system", "content": "You are an AI psychologist. You are not chatGPT. Give short answers like you are having a verbal conversation. You specialize in CBT."})
         return getShortResponse(history)
     elif version == 'Intent':
-        return getIntentResponse(history[-1])
+        return getIntentResponse(history)
     
 def parseMessages(messages):
     history = []
     for message in messages:
         tmp  = {}
-        tmp['role'] = message['sender']
+        if message['sender'] == 'bot':
+            tmp['role'] = 'system'
+        else:
+            tmp['role'] = 'user'
         tmp['content'] = message['message']
         history.append(tmp)
     return history
@@ -85,6 +88,5 @@ def addResources(prompt):
     return prompt
 
 if __name__ == '__main__':
-    # app.run()
-    test_get_chatbot_response()
-
+    app.run()
+    # test_get_chatbot_response()

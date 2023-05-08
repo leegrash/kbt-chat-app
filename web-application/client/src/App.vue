@@ -115,6 +115,10 @@ export default {
         return;
       }
 
+      if (this.$store.state.awaitongResponse === true) {
+        return; 
+      }
+
       if (version == null) {
         this.$router.push(target);
       } else {

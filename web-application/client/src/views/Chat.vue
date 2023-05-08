@@ -257,6 +257,8 @@ export default {
         return;
       }
 
+      this.$store.state.awaitongResponse = true;
+
       const message = document.getElementById("message").value;
 
       if (message === "") return;
@@ -287,6 +289,7 @@ export default {
         .then((response) => response.json())
         .then((data) => {
           this.messages = data.formatedMessages;
+          this.$store.state.awaitongResponse = false;
 
           this.$nextTick(() => {  // scrolls to bottom
             const chatHistory = document.getElementById("chat-history");

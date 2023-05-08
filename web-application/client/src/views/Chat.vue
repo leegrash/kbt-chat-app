@@ -308,6 +308,10 @@ export default {
         return;
       }
 
+      if (this.$store.state.awaitongResponse === true) {
+        return;
+      }
+
       fetch("/api/load-prev-conversation", {
         method: "POST",
         headers: {
@@ -336,6 +340,10 @@ export default {
 
     newConversation() {
       if (this.$store.state.serverDown === true) {
+        return;
+      }
+
+      if (this.$store.state.awaitongResponse === true) {
         return;
       }
 

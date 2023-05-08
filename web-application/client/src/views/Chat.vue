@@ -299,6 +299,7 @@ export default {
         })
         .catch((error) => {
           console.error("Error:", error);
+          this.$store.state.awaitongResponse = false;
         });
     },
 

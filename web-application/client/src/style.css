@@ -112,7 +112,7 @@ body {
 
 .chat .chat-history .other-message {
   background: #e8f1f3;
-  text-align: right;
+  text-align: left;
 }
 
 .chat .chat-history .other-message:after {

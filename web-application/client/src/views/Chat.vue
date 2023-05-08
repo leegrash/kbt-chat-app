@@ -263,6 +263,17 @@ export default {
 
       document.getElementById("message").value = "";  // clears input
 
+      this.messages.push({
+        message,
+        sender: "user",
+      });
+      
+      this.$nextTick(() => {  // scrolls to bottom
+            const chatHistory = document.getElementById("chat-history");
+            chatHistory.scrollTop = chatHistory.scrollHeight;
+            this.conversationInProgress = true;
+          });
+
       fetch("/api/send-message", {
         method: "POST",
         headers: {
@@ -277,7 +288,7 @@ export default {
         .then((data) => {
           this.messages = data.formatedMessages;
 
-          this.$nextTick(() => {  // gets history and scrolls to bottom
+          this.$nextTick(() => {  // scrolls to bottom
             const chatHistory = document.getElementById("chat-history");
             chatHistory.scrollTop = chatHistory.scrollHeight;
             this.conversationInProgress = true;

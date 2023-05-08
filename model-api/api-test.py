@@ -22,6 +22,8 @@ def get_chatbot_response():
     response = getResponse(messages, version)
     title = getTitle(messages)
 
+    print("response: " + response)
+
     return jsonify({'response': response, 'title': title})
 
 def test_get_chatbot_response():
@@ -70,8 +72,8 @@ def parseMessages(messages):
 def getTitle(history):
     openai.api_key = os.getenv("OPENAI_API_KEY")
 
-    messages = [{"role": "system", "content": "Give a short (max 4 words) title the following conversation"}]
-    messages.extend(parseMessages(history))
+    messages = [{"role": "system", "content": "Give a short (max 4 words) title that summarizes the following conversation: "
+        + str(parseMessages(history))}]
     title = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=messages

@@ -131,3 +131,7 @@ dist
 
 #vs code
 .vscode
+model-api/__pycache__/ChatGPT_content.cpython-311.pyc
+model-api/__pycache__/ChatGPT_full.cpython-311.pyc
+model-api/__pycache__/ChatGPT_intent.cpython-311.pyc
+model-api/__pycache__/ChatGPT_short.cpython-311.pyc

@@ -18,7 +18,7 @@ import db from "./db.js";
 
 const testRequireHttp = true; // False to enable HTTPS
 
-const port = 8989;
+const port = process.env.PORT || 8989;
 const app = express();
 
 let server;

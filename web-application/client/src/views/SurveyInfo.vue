@@ -19,7 +19,8 @@
               <h2>Chatbot#1</h2>
               <p>
                 Please try all the chatbots before filling out the survey form.
-                You can try the chatbots in any order. Click these buttons to go to each of the chatbot.
+                You can try the chatbots in any order. Click these buttons to go
+                to each of the chatbot.
               </p>
               <button
                 type="button"
@@ -103,7 +104,7 @@ export default {
   },
   data: () => ({
     socket: io.connect({
-      rejectUnauthorized: false
+      rejectUnauthorized: false,
     }),
   }),
 

@@ -116,7 +116,7 @@ export default {
       }
 
       if (this.$store.state.awaitongResponse === true) {
-        return; 
+        return;
       }
 
       if (version == null) {

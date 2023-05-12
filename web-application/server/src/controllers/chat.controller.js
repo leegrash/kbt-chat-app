@@ -83,33 +83,35 @@ router.post("/send-message", requireAuth, async (req, res) => {
       },
     };
 
-    const sendHttpRequest = (modelOptions, modelData) => new Promise((resolve, reject) => {
-      const modelReq = http.request(modelOptions, (modelRes) => {
-        let responseData = "";
-        modelRes.on("data", (chunk) => {
-          responseData += chunk;
+    const sendHttpRequest = (modelOptions, modelData) =>
+      new Promise((resolve, reject) => {
+        const modelReq = http.request(modelOptions, (modelRes) => {
+          let responseData = "";
+          modelRes.on("data", (chunk) => {
+            responseData += chunk;
+          });
+          modelRes.on("end", () => {
+            const { statusCode } = modelRes;
+            if (statusCode >= 200 && statusCode < 300) {
+              resolve(responseData);
+            } else {
+              reject(
+                new Error(`Request failed with status code ${statusCode}`)
+              );
+            }
+          });
         });
-        modelRes.on("end", () => {
-          const { statusCode } = modelRes;
-          if (statusCode >= 200 && statusCode < 300) {
-            resolve(responseData);
-          } else {
-            reject(
-              new Error(`Request failed with status code ${statusCode}`)
-            );
-          }
+
+        modelReq.on("error", (error) => {
+          reject(error);
         });
-      });
-      
-      modelReq.on("error", (error) => {
-        reject(error);
+
+        modelReq.write(modelData);
+        modelReq.end();
       });
 
-      modelReq.write(modelData);
-      modelReq.end();
-    });
-
-    let modelResponse = "The bot is not available at the moment. Please try again later.";
+    let modelResponse =
+      "The bot is not available at the moment. Please try again later.";
     let conversationTitle = null;
 
     let apiRequestSuccess = false;

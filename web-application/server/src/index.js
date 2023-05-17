@@ -8,8 +8,8 @@ import { Server } from "socket.io";
 import cookieParser from "cookie-parser";
 import fs from "fs";
 import helmet from "helmet";
-import { fileURLToPath } from 'url';
-import path, { dirname } from 'path';
+import { fileURLToPath } from "url";
+import path, { dirname } from "path";
 import { resolvePath } from "./util.js";
 import { router } from "./controllers/user.controller.js";
 import timeslot from "./controllers/chat.controller.js";
@@ -18,21 +18,27 @@ import db from "./db.js";
 
 const testRequireHttp = true; // False to enable HTTPS
 
-const port = 8989;
+let port = 443;
+if (testRequireHttp) {
+  port = 80;
+}
+
 const app = express();
 
 let server;
 if (!testRequireHttp) {
   const relativeDirectory = dirname(fileURLToPath(import.meta.url));
   const options = {
-    key: fs.readFileSync(path.join(relativeDirectory, 'ss-certificate', 'key.pem')),
-    cert: fs.readFileSync(path.join(relativeDirectory, 'ss-certificate', 'cert.pem')),
-    
+    key: fs.readFileSync(
+      path.join(relativeDirectory, "ss-certificate", "key.pem")
+    ),
+    cert: fs.readFileSync(
+      path.join(relativeDirectory, "ss-certificate", "cert.pem")
+    ),
   };
 
   server = https.createServer(options, app);
-}
-else {
+} else {
   server = http.createServer(app);
 }
 
@@ -139,8 +145,7 @@ if (testRequireHttp) {
     console.log("Server started, not using HTTPS");
     console.log(`Listening on http://localhost:${port}/`);
   });
-}
-else {
+} else {
   server.listen(port, () => {
     console.log("Server started, using HTTPS");
     console.log(`Listening on https://localhost:${port}/`);

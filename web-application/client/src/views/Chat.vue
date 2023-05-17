@@ -7,7 +7,7 @@
             <div class="chat-header clearfix">
               <!-- if server is down -->
               <div
-                v-if="$store.state.serverDown === true" 
+                v-if="$store.state.serverDown === true"
                 role="alert"
                 aria-live="polite"
                 aria-atomic="true"
@@ -226,7 +226,7 @@ export default {
         })
           .then((response) => response.json())
           .then((data) => {
-            this.messages = data.messages;  // gets data
+            this.messages = data.messages; // gets data
             this.prevConversations = data.prevTitles;
           })
           .catch((error) => {
@@ -263,18 +263,19 @@ export default {
 
       if (message === "") return;
 
-      document.getElementById("message").value = "";  // clears input
+      document.getElementById("message").value = ""; // clears input
 
       this.messages.push({
         message,
         sender: "user",
       });
-      
-      this.$nextTick(() => {  // scrolls to bottom
-            const chatHistory = document.getElementById("chat-history");
-            chatHistory.scrollTop = chatHistory.scrollHeight;
-            this.conversationInProgress = true;
-          });
+
+      this.$nextTick(() => {
+        // scrolls to bottom
+        const chatHistory = document.getElementById("chat-history");
+        chatHistory.scrollTop = chatHistory.scrollHeight;
+        this.conversationInProgress = true;
+      });
 
       fetch("/api/send-message", {
         method: "POST",
@@ -291,7 +292,8 @@ export default {
           this.messages = data.formatedMessages;
           this.$store.state.awaitongResponse = false;
 
-          this.$nextTick(() => {  // scrolls to bottom
+          this.$nextTick(() => {
+            // scrolls to bottom
             const chatHistory = document.getElementById("chat-history");
             chatHistory.scrollTop = chatHistory.scrollHeight;
             this.conversationInProgress = true;
@@ -318,7 +320,7 @@ export default {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          conversationId, 
+          conversationId,
           version: this.$store.state.version,
         }),
       })
@@ -328,7 +330,7 @@ export default {
           this.prevConversations = data.prevTitles;
           this.conversationInProgress = true;
 
-          this.$nextTick(() => {  
+          this.$nextTick(() => {
             const chatHistory = document.getElementById("chat-history");
             chatHistory.scrollTop = chatHistory.scrollHeight;
           });
@@ -357,7 +359,7 @@ export default {
         }),
       })
         .then((response) => response.json())
-        .then((data) => { 
+        .then((data) => {
           this.messages = data.messages;
           this.prevConversations = data.prevTitles;
           this.conversationInProgress = false;

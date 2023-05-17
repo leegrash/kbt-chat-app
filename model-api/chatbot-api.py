@@ -27,8 +27,8 @@ def get_chatbot_response():
     return jsonify({'response': response, 'title': title})
 
 def test_get_chatbot_response():
-    messages = [{'message': 'I like Ice Cream.', 'sender': 'user'}]
-    version = 'Intent'
+    messages = [{'message': 'I think i might be depressed', 'sender': 'user'}]
+    version = 'Closed'
 
     response = getResponse(messages, version)
     title = getTitle(messages)
@@ -41,18 +41,36 @@ def getResponse(messages, version):
     history = parseMessages(messages)
 
     if version == 'Closed':
-        history.insert(0, {"role": "system", "content": "You are an AI psychologist. You are not chatGPT." +
-            "Give short answers like you are having a verbal conversation. \n" +
-            "You will be used as the language engine in a chatbot that can send media. \n" +
-            "The media that is avallible is pdfs about Sleep, depression and meditation, mp3s about meditation and jpgs about meditation. \n" +
-            "If you want to send the user some form of media, use the following format: $[mediatype, content]$." + 
-            "The mediatype can be pdf, mp3 or jpg. The content can be Sleep, depression or meditation \n"})
+        """
+        history.insert(0, {"role": "system", "content": "You are a world class psychologist that gives scientific and practical answers that tries to help the user with their problems. \n" +
+                           "Give answers that are concrete and actionable tips for the user. \n" +
+                           "A good answer to the prompt 'I think i might be depressed' would be 'Working out can help with depression', since it does not fulfill these criteria. \n"})
+        """
+        history.insert(0, {"role": "system", "content":  "I will take on the persona of a compassionate and understanding psychologist to help you with your concerns. My intent is to provide answers that align with your perspective and point of view. I will focus on the details that are important to you and generate outputs that are relevant to your needs. By using this pattern, I hope to help you feel heard and understood while also providing guidance to address your concerns."})
         return addResources(getContentResponse(history))
     elif version == 'Open':
-        history.insert(0, {"role": "system", "content": "You are an AI psychologist. You are not chatGPT. You specialize in CBT."})
+        # history.insert(0, {"role": "system", "content": "You are an AI psychologist. You are not chatGPT. You specialize in CBT."})
+        """history.insert(0, {"role": "system", "content": "You are a world class psychologist who is incredibly compassionate and understanding. " +
+                           "Give answers that confirm the users feelings and acknowledge their problems. Then try to help the user with their problems. \n" + 
+                           "Try to mirror the users feelings and make them feel like you are taking them and their problems seriously. \n" +
+                           "A bad answer to the prompt 'I think i might be depressed' would be 'Working out can help with depression', since it does not fullfill these criterias. \n" + 
+                           "A better answer would be 'I'm sorry to hear that you're feeling sad. It's normal to feel sad sometimes. " +
+                           "Can you tell me a little bit more about what's been going on in your life that may have contributed to your feelings of sadness?'"})
+        """
+        history.insert(0, {"role": "system", "content": 
+                           """
+                           You are a world class psychologist who is incredibly compassionate and understanding. 
+                            Give answers that confirm the users feelings and acknowledge their problems. Then try to help the user with their problems. 
+                            Try to mirror the users feelings and make them feel like you are taking them and their problems seriously. 
+                            A good answer to the prompt 'I think i might be depressed' would be 
+                            'I'm sorry to hear that you're feeling sad. It's normal to feel sad sometimes. 
+                            Can you tell me a little bit more about what's been going on in your life that may have contributed to your feelings of sadness?', 
+                            because it shows empathy and acknowledgment, but still tries to help the user find the cause of their problem.
+                           """
+                            })
         return getFullResponse(history)
     elif version == 'Mixed':
-        history.insert(0, {"role": "system", "content": "You are an AI psychologist. You are not chatGPT. Give short answers like you are having a verbal conversation. You specialize in CBT."})
+        history.insert(0, {"role": "system", "content": "You are an AI psychologist. Give short answers like you are having a verbal conversation."})
         return getShortResponse(history)
     elif version == 'Intent':
         return getIntentResponse(history)

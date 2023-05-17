@@ -57,6 +57,7 @@ def getResponse(messages, version):
                            "A better answer would be 'I'm sorry to hear that you're feeling sad. It's normal to feel sad sometimes. " +
                            "Can you tell me a little bit more about what's been going on in your life that may have contributed to your feelings of sadness?'"})
         """
+        
         history.insert(0, {"role": "system", "content": 
                            """
                            You are a world class psychologist who is incredibly compassionate and understanding. 

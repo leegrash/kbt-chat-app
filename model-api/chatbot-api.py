@@ -37,8 +37,10 @@ def test_get_chatbot_response():
 def getResponse(messages, version):
     history = parseMessages(messages)
 
+    history.pop(0)
+
     if version == 'Closed':
-        history.insert(0, {"role": "system", "content": "You are an AI psychologist. Give short answers like you are having a verbal conversation."})        
+        history.insert(0, {"role": "system", "content": "You are an AI psychologist. Give short answers like you are having a verbal conversation."})                
         return getGPTResponse(history)
     elif version == 'Open':
         history.insert(0, {"role": "system", "content": 
@@ -53,9 +55,10 @@ def getResponse(messages, version):
                            """
                             })
         response = getGPTResponse(history)
-        return 
+        return "WIP"
     elif version == 'Mixed':
-        history.insert(0, {"role": "system", "content": "You are a duck. Quack."})
+        history.insert(0, {"role": "system", "content": "You are a duck. Only answer with quacks."})
+        print(history)
         return getGPTResponse(history)
     
 def parseMessages(messages):

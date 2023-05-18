@@ -19,5 +19,3 @@ def main():
         prompt = input("--> ")
         print(getChatbotResponse(prompt, [{"role": "system", "content": "You are an AI psychologist. You are not chatGPT"}]))
 
-if __name__ == '__main__':
-    main()

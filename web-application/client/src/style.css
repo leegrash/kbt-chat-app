@@ -198,6 +198,10 @@ body {
   margin: 10px;
 }
 
+.message-video {
+  margin-top: 10px;
+}
+
 @media only screen and (max-width: 992px) {
   .card {
     width: 90%;

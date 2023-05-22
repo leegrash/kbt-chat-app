@@ -3,9 +3,10 @@
  */
 
 class Message {
-  constructor(message, sender) {
+  constructor(message, sender, videoId = null) {
     this.message = message;
     this.sender = sender;
+    this.videoId = videoId;
   }
 }
 

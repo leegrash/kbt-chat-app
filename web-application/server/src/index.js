@@ -17,10 +17,14 @@ import model from "./model.js";
 import db from "./db.js";
 
 const testRequireHttp = true; // False to enable HTTPS
+const devMode = true; // False in production
 
 let port = 443;
 if (testRequireHttp) {
   port = 80;
+}
+if (devMode) {
+  port = 8080;
 }
 
 const app = express();

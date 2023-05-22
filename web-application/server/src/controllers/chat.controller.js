@@ -34,6 +34,7 @@ router.post("/load-conversation", requireAuth, async (req, res) => {
     {
       message: "Hi! I'm an AI Psychologist, how may I help you?",
       sender: "bot",
+      videoId: null,
     },
   ];
 
@@ -48,6 +49,8 @@ router.post("/send-message", requireAuth, async (req, res) => {
   const { conversationId } = req.cookies;
   const { message } = req.body;
   const { version } = req.body;
+
+  const userMessageTS = new Date().toJSON().slice(0, 19).replace("T", " ");
 
   try {
     const user = model.users.get(sessionId);
@@ -64,6 +67,7 @@ router.post("/send-message", requireAuth, async (req, res) => {
       formatedMessages.push({
         message: messages[index].message,
         sender: messages[index].sender,
+        videoId: messages[index].videoId,
       });
     }
 
@@ -113,6 +117,7 @@ router.post("/send-message", requireAuth, async (req, res) => {
     let modelResponse =
       "The bot is not available at the moment. Please try again later.";
     let conversationTitle = null;
+    let videoId = null;
 
     let apiRequestSuccess = false;
 
@@ -124,6 +129,7 @@ router.post("/send-message", requireAuth, async (req, res) => {
 
       modelResponse = responseData.response;
       conversationTitle = responseData.title;
+      videoId = "674Ka18uFuA"; // responseData.videoId;
 
       apiRequestSuccess = true;
     } catch (error) {
@@ -167,20 +173,30 @@ router.post("/send-message", requireAuth, async (req, res) => {
       const messageId = uuidv4();
 
       dbQuery = `
-              INSERT INTO messages (messageId, message, timestamp, response, conversationUUID)
-              VALUES (?, ?, ?, ?, ?)
+              INSERT INTO messages (messageId, sender, message, videoId, timestamp, conversationUUID)
+              VALUES (?, ?, ?, ?, ?, ?)
           `;
 
-      const date = new Date().toJSON().slice(0, 19).replace("T", " ");
+      params = [messageId, "user", message, null, userMessageTS, conversationId];
 
-      params = [messageId, message, date, modelResponse, conversationId];
+      await db.run(dbQuery, params);
+
+      dbQuery = `
+              INSERT INTO messages (messageId, sender, message, videoId, timestamp, conversationUUID)
+              VALUES (?, ?, ?, ?, ?, ?)
+          `;
+
+      const responseTS = new Date().toJSON().slice(0, 19).replace("T", " ");
+
+      const responseId = uuidv4();
+      params = [responseId, "bot", modelResponse, videoId, responseTS, conversationId];
 
       await db.run(dbQuery, params);
     }
 
-    conversation.addMessage(modelResponse, "bot");
+    conversation.addMessage(modelResponse, "bot", videoId);
 
-    formatedMessages.push({ message: modelResponse, sender: "bot" });
+    formatedMessages.push({ message: modelResponse, sender: "bot", videoId });
 
     res.json({ formatedMessages });
     res.status(200).end();
@@ -219,6 +235,7 @@ router.post("/load-prev-conversation", requireAuth, async (req, res) => {
     formatedMessages.push({
       message: messages[index].message,
       sender: messages[index].sender,
+      videoId: messages[index].videoId,
     });
   }
 
@@ -269,6 +286,7 @@ router.post("/new-conversation", requireAuth, async (req, res) => {
     {
       message: "Hi! I'm an AI Psychologist, how may I help you?",
       sender: "bot",
+      videoId: null,
     },
   ];
 

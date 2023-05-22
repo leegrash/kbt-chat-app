@@ -16,7 +16,7 @@ import timeslot from "./controllers/chat.controller.js";
 import model from "./model.js";
 import db from "./db.js";
 
-const testRequireHttp = true; // False to enable HTTPS
+const testRequireHttp = false; // False to enable HTTPS
 
 let port = 443;
 if (testRequireHttp) {
@@ -30,10 +30,10 @@ if (!testRequireHttp) {
   const relativeDirectory = dirname(fileURLToPath(import.meta.url));
   const options = {
     key: fs.readFileSync(
-      path.join(relativeDirectory, "ss-certificate", "key.pem")
+      path.join(relativeDirectory, "ca-certificate", "privkey.pem")
     ),
     cert: fs.readFileSync(
-      path.join(relativeDirectory, "ss-certificate", "cert.pem")
+      path.join(relativeDirectory, "ca-certificate", "cert.pem")
     ),
   };
 

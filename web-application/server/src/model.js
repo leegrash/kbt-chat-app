@@ -80,19 +80,20 @@ class Model {
   getPsychologistConversations() {
     const psychologistConversations = [];
 
-    for (const [sessionId, user] of this.users) {
+    this.users.forEach((user) => {
       const conversations = user.getConversations("psychologist");
-      for (const conversation of conversations) {
-        if (conversation.botVersion === "psychologist") {
+      conversations
+        .filter(conversation => conversation.botVersion === "psychologist")
+        .forEach(conversation => {
           psychologistConversations.push({
             conversationId: conversation.conversationId,
             userId: user.id,
             title: conversation.title,
             unansweredMessages: conversation.unansweredMessages,
           });
-        }
-      }
-    }
+        });
+    });
+    
 
     return psychologistConversations;
   }

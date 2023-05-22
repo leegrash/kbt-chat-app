@@ -81,19 +81,15 @@ router.post("/psychologist-signout", requireAuth, async (req, res) => {
 router.post("/load-psychologist-conversations", requireAuth, async (req, res) => {
   const { sessionId } = req.cookies;
 
-  let formatedMessages = [];
-
   const psychologistConversations = await model.getPsychologistConversations(sessionId);
 
-  for (const conversation of psychologistConversations) {
-    formatedMessages.push({
-      conversationId: conversation.conversationId,
-      messageTitle: conversation.title,
-      userName: model.getUserName(conversation.userId),
-      unanswered: conversation.unansweredMessages,
-    });
-  }
-
+  const formatedMessages = psychologistConversations.map(conversation => ({
+    conversationId: conversation.conversationId,
+    messageTitle: conversation.title,
+    userName: model.getUserName(conversation.userId),
+    unanswered: conversation.unansweredMessages,
+  }));
+  
   res.status(200).json(formatedMessages);
 });
 

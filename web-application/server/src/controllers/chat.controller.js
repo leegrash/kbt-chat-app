@@ -156,6 +156,83 @@ async function botChat(sessionId, conversationId, message, version) {
   return formatedMessages;
 }
 
+async function psychologistChat(sessionId, conversationId, newMessage, version) {
+  const userMessageTS = new Date().toJSON().slice(0, 19).replace("T", " ");
+  
+  const user = model.users.get(sessionId);
+  const conversation = user.getConversation(conversationId);
+  
+  conversation.addMessage(newMessage, "user");
+
+  // get title for conversation from chatGPT
+  
+  const conversationTitle = "Test title";
+
+  conversation.setTitle(conversationTitle);
+
+  let dbQuery = `
+        SELECT EXISTS (SELECT * FROM userConversations where conversationUUID = ?)
+    `;
+  let params = [conversationId];
+
+  const row = await db.get(dbQuery, params);
+  if (
+    row[
+      "EXISTS (SELECT * FROM userConversations where conversationUUID = ?)"
+    ] === 0
+  ) {
+    dbQuery = `
+              INSERT INTO userConversations (conversationUUID, userId, botVersion, messageTitle)
+              VALUES (?, ?, ?, ?)
+          `;
+
+    params = [conversationId, user.id, version, conversationTitle];
+
+    await db.run(dbQuery, params);
+  } else {
+    dbQuery = `
+              UPDATE userConversations
+              SET messageTitle = ?
+              WHERE conversationUUID = ?
+          `;
+    params = [conversationTitle, conversationId];
+    await db.run(dbQuery, params);
+  }
+
+  const messageId = uuidv4();
+
+  dbQuery = `
+          INSERT INTO messages (messageId, sender, message, videoId, timestamp, conversationUUID)
+          VALUES (?, ?, ?, ?, ?, ?)
+  `;
+  params = [messageId, "user", newMessage, null, userMessageTS, conversationId];
+  
+  await db.run(dbQuery, params);
+  
+  dbQuery = `
+        UPDATE userConversations
+        SET unansweredMessage = 1
+        WHERE conversationUUID = ?
+    `;
+  params = [conversationId];
+
+  await db.run(dbQuery, params);
+
+  // emit to psychologist
+
+  const messages = conversation.getMessages();
+
+  const formatedMessages = [];
+
+  for (let index = 0; index < messages.length; index += 1) {
+    const { sender, videoId } = messages[index];
+    const message = messages[index].message.replace(/(?:\r\n|\r|\n)/g, "<br>");
+    formatedMessages.push({ message, sender, videoId });
+  }
+
+  return formatedMessages;
+}
+
 router.post("/load-conversation", requireAuth, async (req, res) => {
   const { sessionId } = req.cookies;
   const { version } = req.body;
@@ -210,7 +287,14 @@ router.post("/send-message", requireAuth, async (req, res) => {
     }
   }
   else {
-    res.status(200).end();
+    try {
+      const formatedMessages = await psychologistChat(sessionId, conversationId, message, version);
+
+      res.json({ formatedMessages });
+      res.status(200).end();
+    } catch (error) {
+      res.status(500).end();
+    }
   }
 });
 

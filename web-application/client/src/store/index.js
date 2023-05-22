@@ -7,6 +7,7 @@ export default createStore({
     version: "",
     serverDown: false,
     awaitingResponse: false,
+    authenticatedPsychologist: false,
   },
   getters: {
     isAuthenticated(state) {
@@ -17,6 +18,9 @@ export default createStore({
     setAuthenticated(state, authenticated) {
       state.authenticated = authenticated;
     },
+    setAuthenticatedPsychologist(state, authenticatedPsychologist) {
+      state.authenticatedPsychologist = authenticatedPsychologist;
+    }
   },
   actions: {},
   modules: {},

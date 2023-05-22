@@ -22,7 +22,7 @@ router.post("/psychologist-signin", async (req, res) => {
   const { password } = req.body;
 
   let query = `
-    SELECT * FROM users WHERE username = ?
+    SELECT * FROM psychologists WHERE username = ?
   `;
 
   const row = await db.get(query, username);
@@ -31,11 +31,10 @@ router.post("/psychologist-signin", async (req, res) => {
     const match = await bcrypt.compare(password, row.password);
     if (match) {
       const sessionId = uuidv4();
-      model.addAuthCookie(sessionId);
       res.cookie("sessionId", sessionId);
 
       query = `
-        INSERT INTO activeSessions (sessionUUID, userId)
+        INSERT INTO psychologistSessions (sessionUUID, userId)
         VALUES (?, ?)
       `;
 
@@ -43,7 +42,7 @@ router.post("/psychologist-signin", async (req, res) => {
 
       await db.run(query, params);
 
-      model.addUser(sessionId, row.userId, row.username);
+      model.addPsychologist(sessionId, row.userId, username);
 
       res.status(202).end();
     } else {
@@ -57,10 +56,10 @@ router.post("/psychologist-signin", async (req, res) => {
 router.post("/psychologist-signout", requireAuth, async (req, res) => {
   const { sessionId } = req.cookies;
 
-  model.signOutUser(sessionId);
+  model.signOutPsychologist(sessionId);
 
   const query = `
-    DELETE FROM activeSessions WHERE sessionUUID = ?
+    DELETE FROM psychologistSessions WHERE sessionUUID = ?
   `;
   const params = [sessionId];
 

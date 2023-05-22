@@ -12,7 +12,8 @@ import { fileURLToPath } from "url";
 import path, { dirname } from "path";
 import { resolvePath } from "./util.js";
 import { router } from "./controllers/user.controller.js";
-import timeslot from "./controllers/chat.controller.js";
+import chat from "./controllers/chat.controller.js";
+import psychologist from "./controllers/psychologist.controller.js";
 import model from "./model.js";
 import db from "./db.js";
 
@@ -99,7 +100,8 @@ app.use(cookieParser());
 
 // Bind REST controllers to /api/*
 app.use("/api", router);
-app.use("/api", timeslot.router);
+app.use("/api", chat.router);
+app.use("/api", psychologist.router);
 app.use(helmet());
 
 async function loadActiveUsers() {

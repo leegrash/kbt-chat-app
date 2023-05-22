@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request
 from gpt_api import getChatbotResponse as getGPTResponse
+from resources import add_resource
 import re
 import openai
 import os
@@ -55,7 +56,8 @@ def getResponse(messages, version):
                            """
                             })
         response = getGPTResponse(history)
-        return "WIP"
+        response_with_resources = add_resource(history, response)
+        return response_with_resources
     elif version == 'Mixed':
         history.insert(0, {"role": "system", "content": "You are a duck. Only answer with quacks."})
         print(history)

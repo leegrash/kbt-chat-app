@@ -10,15 +10,15 @@ const router = Router();
 async function botChat(sessionId, conversationId, message, version) {
   const userMessageTS = new Date().toJSON().slice(0, 19).replace("T", " ");
   const user = model.users.get(sessionId);
-  
+
   const conversation = user.getConversation(conversationId);
-  
+
   const messages = conversation.getMessages();
-  
+
   conversation.addMessage(message, "user");
-  
+
   const formatedMessages = [];
-  
+
   for (let index = 0; index < messages.length; index += 1) {
     formatedMessages.push({
       message: messages[index].message,
@@ -26,12 +26,12 @@ async function botChat(sessionId, conversationId, message, version) {
       videoId: messages[index].videoId,
     });
   }
-  
+
   const data = JSON.stringify({
     messages,
     version,
   });
-  
+
   const options = {
     hostname: "127.0.0.1",
     port: 5000,
@@ -42,7 +42,7 @@ async function botChat(sessionId, conversationId, message, version) {
       "Content-Length": data.length,
     },
   };
-  
+
   const sendHttpRequest = (modelOptions, modelData) =>
     new Promise((resolve, reject) => {
       const modelReq = http.request(modelOptions, (modelRes) => {
@@ -55,54 +55,52 @@ async function botChat(sessionId, conversationId, message, version) {
           if (statusCode >= 200 && statusCode < 300) {
             resolve(responseData);
           } else {
-            reject(
-              new Error(`Request failed with status code ${statusCode}`)
-            );
+            reject(new Error(`Request failed with status code ${statusCode}`));
           }
         });
       });
-  
-    modelReq.on("error", (error) => {
-      reject(error);
+
+      modelReq.on("error", (error) => {
+        reject(error);
+      });
+
+      modelReq.write(modelData);
+      modelReq.end();
     });
-  
-    modelReq.write(modelData);
-    modelReq.end();
-  });
-  
+
   let modelResponse =
     "The bot is not available at the moment. Please try again later.";
   let conversationTitle = null;
   let videoId = null;
-  
+
   let apiRequestSuccess = false;
-  
+
   try {
     const modelReqPromise = sendHttpRequest(options, data);
     const modelRes = await modelReqPromise;
-  
+
     const responseData = JSON.parse(modelRes);
-  
+
     modelResponse = responseData.response;
     conversationTitle = responseData.title;
     videoId = "674Ka18uFuA"; // responseData.videoId;
-  
+
     apiRequestSuccess = true;
   } catch (error) {
     console.error("Model API not available");
   }
-  
+
   if (apiRequestSuccess) {
     conversation.setTitle(conversationTitle);
-  
+
     let dbQuery = `
           SELECT EXISTS (SELECT * FROM userConversations where conversationUUID = ?)
       `;
-  
+
     let params = [conversationId];
-  
+
     const row = await db.get(dbQuery, params);
-  
+
     if (
       row[
         "EXISTS (SELECT * FROM userConversations where conversationUUID = ?)"
@@ -112,9 +110,9 @@ async function botChat(sessionId, conversationId, message, version) {
                 INSERT INTO userConversations (conversationUUID, userId, botVersion, messageTitle)
                 VALUES (?, ?, ?, ?)
             `;
-  
+
       params = [conversationId, user.id, version, conversationTitle];
-  
+
       await db.run(dbQuery, params);
     } else {
       dbQuery = `
@@ -125,47 +123,59 @@ async function botChat(sessionId, conversationId, message, version) {
       params = [conversationTitle, conversationId];
       await db.run(dbQuery, params);
     }
-  
+
     const messageId = uuidv4();
-  
+
     dbQuery = `
             INSERT INTO messages (messageId, sender, message, videoId, timestamp, conversationUUID)
             VALUES (?, ?, ?, ?, ?, ?)
     `;
     params = [messageId, "user", message, null, userMessageTS, conversationId];
-    
+
     await db.run(dbQuery, params);
-    
+
     dbQuery = `
             INSERT INTO messages (messageId, sender, message, videoId, timestamp, conversationUUID)
             VALUES (?, ?, ?, ?, ?, ?)
         `;
-  
+
     const responseTS = new Date().toJSON().slice(0, 19).replace("T", " ");
-  
+
     const responseId = uuidv4();
-    params = [responseId, "bot", modelResponse, videoId, responseTS, conversationId];
-  
+    params = [
+      responseId,
+      "bot",
+      modelResponse,
+      videoId,
+      responseTS,
+      conversationId,
+    ];
+
     await db.run(dbQuery, params);
   }
-  
+
   conversation.addMessage(modelResponse, "bot", videoId);
-  
+
   formatedMessages.push({ message: modelResponse, sender: "bot", videoId });
 
   return formatedMessages;
 }
 
-async function psychologistChat(sessionId, conversationId, newMessage, version) {
+async function psychologistChat(
+  sessionId,
+  conversationId,
+  newMessage,
+  version
+) {
   const userMessageTS = new Date().toJSON().slice(0, 19).replace("T", " ");
-  
+
   const user = model.users.get(sessionId);
   const conversation = user.getConversation(conversationId);
-  
+
   conversation.addMessage(newMessage, "user");
 
   // get title for conversation from chatGPT
-  
+
   const conversationTitle = "Test title";
 
   conversation.setTitle(conversationTitle);
@@ -206,9 +216,9 @@ async function psychologistChat(sessionId, conversationId, newMessage, version) 
           VALUES (?, ?, ?, ?, ?, ?)
   `;
   params = [messageId, "user", newMessage, null, userMessageTS, conversationId];
-  
+
   await db.run(dbQuery, params);
-  
+
   dbQuery = `
         UPDATE userConversations
         SET unansweredMessage = 1
@@ -278,17 +288,26 @@ router.post("/send-message", requireAuth, async (req, res) => {
 
   if (version !== "psychologist") {
     try {
-      const formatedMessages = await botChat(sessionId, conversationId, message, version);
-  
+      const formatedMessages = await botChat(
+        sessionId,
+        conversationId,
+        message,
+        version
+      );
+
       res.json({ formatedMessages });
       res.status(200).end();
     } catch (error) {
       res.status(500).end();
     }
-  }
-  else {
+  } else {
     try {
-      const formatedMessages = await psychologistChat(sessionId, conversationId, message, version);
+      const formatedMessages = await psychologistChat(
+        sessionId,
+        conversationId,
+        message,
+        version
+      );
 
       res.json({ formatedMessages });
       res.status(200).end();

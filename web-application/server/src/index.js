@@ -149,7 +149,9 @@ io.on("connection", (socket) => {
     idleTimer = setTimeout(async () => {
       console.debug("Psychologist is idle");
       const successDeletion = await new Promise((resolve) => {
-        db.run("DELETE from psychologistSessions where sessionUUID = ?", [sessionId]);
+        db.run("DELETE from psychologistSessions where sessionUUID = ?", [
+          sessionId,
+        ]);
         resolve(true);
       });
 

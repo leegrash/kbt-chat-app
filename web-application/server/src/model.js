@@ -55,7 +55,10 @@ class Model {
   addPsychologist(psychologistCookie, userId, username) {
     this.psychologistCookies.push(psychologistCookie);
 
-    this.psychologists.set(psychologistCookie, new Psychologist(userId, username));
+    this.psychologists.set(
+      psychologistCookie,
+      new Psychologist(userId, username)
+    );
 
     this.psychologistOnline = true;
   }
@@ -83,8 +86,8 @@ class Model {
     this.users.forEach((user) => {
       const conversations = user.getConversations("psychologist");
       conversations
-        .filter(conversation => conversation.botVersion === "psychologist")
-        .forEach(conversation => {
+        .filter((conversation) => conversation.botVersion === "psychologist")
+        .forEach((conversation) => {
           psychologistConversations.push({
             conversationId: conversation.conversationId,
             userId: user.id,
@@ -93,7 +96,6 @@ class Model {
           });
         });
     });
-    
 
     return psychologistConversations;
   }

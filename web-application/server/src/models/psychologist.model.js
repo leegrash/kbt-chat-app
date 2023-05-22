@@ -3,11 +3,10 @@
  */
 
 class Psychologist {
-    constructor(userId, username) {
-        this.userId = userId;
-        this.username = username;
-    }
+  constructor(userId, username) {
+    this.userId = userId;
+    this.username = username;
+  }
 }
-  
-  export default Psychologist;
-  
+
+export default Psychologist;

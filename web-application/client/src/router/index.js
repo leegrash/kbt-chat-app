@@ -34,7 +34,7 @@ const routes = [
   {
     path: "/psychologist-overview",
     component: PsychologistChatOverview,
-  }
+  },
 ];
 
 const router = createRouter({

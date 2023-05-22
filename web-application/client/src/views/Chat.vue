@@ -61,8 +61,16 @@
                     "
                   >
                     {{ currMessage.message }}
-                    <div v-if="currMessage.videoId !== null" class="embed-responsive embed-responsive-16by9 message-video">
-                      <iframe title="message-video" class="embed-responsive-item" src="https://www.youtube.com/embed/674Ka18uFuA" allowfullscreen></iframe>
+                    <div
+                      v-if="currMessage.videoId !== null"
+                      class="embed-responsive embed-responsive-16by9 message-video"
+                    >
+                      <iframe
+                        title="message-video"
+                        class="embed-responsive-item"
+                        src="https://www.youtube.com/embed/674Ka18uFuA"
+                        allowfullscreen
+                      ></iframe>
                     </div>
                   </div>
                 </li>
@@ -180,12 +188,10 @@ export default {
 
         this.conversationInProgress = false;
         if (this.$store.state.version === "gpt_default") {
-          this.botName = "Chatbot A";      
-        }
-        else if (this.$store.state.version === "gpt_extended") {
+          this.botName = "Chatbot A";
+        } else if (this.$store.state.version === "gpt_extended") {
           this.botName = "Chatbot B";
-        }
-        else if (this.$store.state.version === "psychologist") {
+        } else if (this.$store.state.version === "psychologist") {
           this.botName = "Chatbot C";
         }
       },
@@ -224,12 +230,10 @@ export default {
   created() {
     this.laodPage();
     if (this.$store.state.version === "gpt_default") {
-      this.botName = "Chatbot A";      
-    }
-    else if (this.$store.state.version === "gpt_extended") {
+      this.botName = "Chatbot A";
+    } else if (this.$store.state.version === "gpt_extended") {
       this.botName = "Chatbot B";
-    }
-    else if (this.$store.state.version === "psychologist") {
+    } else if (this.$store.state.version === "psychologist") {
       this.botName = "Chatbot C";
     }
   },
@@ -290,7 +294,7 @@ export default {
       this.messages.push({
         message,
         sender: "user",
-        videoId: null
+        videoId: null,
       });
 
       this.$nextTick(() => {

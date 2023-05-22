@@ -20,7 +20,7 @@ export default createStore({
     },
     setAuthenticatedPsychologist(state, authenticatedPsychologist) {
       state.authenticatedPsychologist = authenticatedPsychologist;
-    }
+    },
   },
   actions: {},
   modules: {},

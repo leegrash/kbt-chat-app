@@ -13,35 +13,50 @@
       <div id="navbarCollapse" class="collapse navbar-collapse">
         <div class="navbar-nav">
           <a
-            v-if="$store.state.authenticated && !$store.state.authenticatedPsychologist"
+            v-if="
+              $store.state.authenticated &&
+              !$store.state.authenticatedPsychologist
+            "
             href="#"
             class="nav-item nav-link active"
             @click="redirect('/survey-info')"
             >Survey Info</a
           >
           <a
-            v-if="$store.state.authenticated && !$store.state.authenticatedPsychologist"
+            v-if="
+              $store.state.authenticated &&
+              !$store.state.authenticatedPsychologist
+            "
             href="#"
             class="nav-item nav-link active"
             @click="redirect('/chat', 'gpt_default')"
             >Chatbot A</a
           >
           <a
-            v-if="$store.state.authenticated && !$store.state.authenticatedPsychologist"
+            v-if="
+              $store.state.authenticated &&
+              !$store.state.authenticatedPsychologist
+            "
             href="#"
             class="nav-item nav-link active"
             @click="redirect('/chat', 'gpt_extended')"
             >Chatbot B</a
           >
           <a
-            v-if="$store.state.authenticated && !$store.state.authenticatedPsychologist"
+            v-if="
+              $store.state.authenticated &&
+              !$store.state.authenticatedPsychologist
+            "
             href="#"
             class="nav-item nav-link active"
             @click="redirect('/chat', 'psychologist')"
             >Chatbot C</a
           >
           <a
-            v-if="$store.state.authenticated && !$store.state.authenticatedPsychologist"
+            v-if="
+              $store.state.authenticated &&
+              !$store.state.authenticatedPsychologist
+            "
             href="#"
             class="nav-item nav-link active"
             >Survey form <i class="bi bi-box-arrow-up-right"></i
@@ -77,7 +92,13 @@
             Psychologist <i class="bi bi-box-arrow-in-right"></i>
           </button>
         </div>
-        <div v-if="$store.state.authenticated && !$store.state.authenticatedPsychologist" class="navbar-nav ms-auto">
+        <div
+          v-if="
+            $store.state.authenticated &&
+            !$store.state.authenticatedPsychologist
+          "
+          class="navbar-nav ms-auto"
+        >
           <a
             href="mailto:email@example.com?subject=Kbt bot contact"
             class="btn btn-info"
@@ -87,13 +108,22 @@
             <i class="bi bi-box-arrow-left"></i> Sign out
           </button>
         </div>
-        <div v-if="$store.state.authenticated && $store.state.authenticatedPsychologist" class="navbar-nav ms-auto">
+        <div
+          v-if="
+            $store.state.authenticated && $store.state.authenticatedPsychologist
+          "
+          class="navbar-nav ms-auto"
+        >
           <a
             href="mailto:email@example.com?subject=Kbt bot contact"
             class="btn btn-info"
             >Contact <i class="bi bi-envelope"></i
           ></a>
-          <button type="button" class="btn btn-danger" @click="signOutPsychologist()">
+          <button
+            type="button"
+            class="btn btn-danger"
+            @click="signOutPsychologist()"
+          >
             <i class="bi bi-box-arrow-left"></i> Sign out
           </button>
         </div>

@@ -78,19 +78,25 @@ router.post("/psychologist-signout", requireAuth, async (req, res) => {
   res.status(200).end();
 });
 
-router.post("/load-psychologist-conversations", requireAuth, async (req, res) => {
-  const { sessionId } = req.cookies;
+router.post(
+  "/load-psychologist-conversations",
+  requireAuth,
+  async (req, res) => {
+    const { sessionId } = req.cookies;
 
-  const psychologistConversations = await model.getPsychologistConversations(sessionId);
+    const psychologistConversations = await model.getPsychologistConversations(
+      sessionId
+    );
 
-  const formatedMessages = psychologistConversations.map(conversation => ({
-    conversationId: conversation.conversationId,
-    messageTitle: conversation.title,
-    userName: model.getUserName(conversation.userId),
-    unanswered: conversation.unansweredMessages,
-  }));
-  
-  res.status(200).json(formatedMessages);
-});
+    const formatedMessages = psychologistConversations.map((conversation) => ({
+      conversationId: conversation.conversationId,
+      messageTitle: conversation.title,
+      userName: model.getUserName(conversation.userId),
+      unanswered: conversation.unansweredMessages,
+    }));
+
+    res.status(200).json(formatedMessages);
+  }
+);
 
 export default { router };

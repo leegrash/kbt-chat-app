@@ -3,6 +3,7 @@ import Signin from "../views/Signin.vue";
 import Chat from "../views/Chat.vue";
 import Signup from "../views/Signup.vue";
 import SurveyInfo from "../views/SurveyInfo.vue";
+import PsychologistSignIn from "../views/PsychologistSignin.vue";
 
 const routes = [
   {
@@ -24,6 +25,10 @@ const routes = [
   {
     path: "/survey-info",
     component: SurveyInfo,
+  },
+  {
+    path: "/psychologist-signin",
+    component: PsychologistSignIn,
   },
 ];
 

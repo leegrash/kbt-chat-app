@@ -69,6 +69,13 @@
           >
             Sign in <i class="bi bi-box-arrow-in-right"></i>
           </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            @click="redirect('/psychologist-signin')"
+          >
+            Psychologist <i class="bi bi-box-arrow-in-right"></i>
+          </button>
         </div>
         <div v-if="$store.state.authenticated" class="navbar-nav ms-auto">
           <a

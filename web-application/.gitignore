@@ -128,3 +128,6 @@ dist-ssr
 
 # ssl files
 *.pem
+
+# python stuff
+*.pyc

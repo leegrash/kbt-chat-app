@@ -44,11 +44,18 @@ class User {
       if (err) {
         throw new Error(err);
       } else {
+        let unanswered = false;
+        if(row.unansweredMessage===1) {
+          unanswered = true;
+        }
+
         this.conversations.push(
           new Conversation(
             row.conversationUUID,
             row.botVersion,
-            row.messageTitle
+            row.messageTitle,
+            undefined,
+            unanswered
           )
         );
       }

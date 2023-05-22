@@ -10,7 +10,8 @@ class Conversation {
     conversationId,
     botVersion,
     title = null,
-    newConversation = false
+    newConversation = false,
+    unanswered = false
   ) {
     this.conversationId = conversationId;
 
@@ -28,6 +29,7 @@ class Conversation {
     }
     this.botVersion = botVersion;
     this.title = title;
+    this.unansweredMessages = unanswered;
   }
 
   async loadConversation() {

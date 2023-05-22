@@ -33,6 +33,13 @@ class Model {
     this.users.set(sessionId, new User(userId, username));
   }
 
+  getUserName(userId) {
+    const corrUser = Array.from(this.users.values()).find(
+      (user) => user.id === userId
+    );
+    return corrUser.name;
+  }
+
   authCookieExists(authCookie) {
     return this.authCookies.includes(authCookie);
   }
@@ -64,6 +71,30 @@ class Model {
 
       this.io.emit("psychologistOffline");
     }
+  }
+
+  isPsychologistAuthenticated(sessionId) {
+    return this.psychologistCookies.includes(sessionId);
+  }
+
+  getPsychologistConversations() {
+    const psychologistConversations = [];
+
+    for (const [sessionId, user] of this.users) {
+      const conversations = user.getConversations("psychologist");
+      for (const conversation of conversations) {
+        if (conversation.botVersion === "psychologist") {
+          psychologistConversations.push({
+            conversationId: conversation.conversationId,
+            userId: user.id,
+            title: conversation.title,
+            unansweredMessages: conversation.unansweredMessages,
+          });
+        }
+      }
+    }
+
+    return psychologistConversations;
   }
 
   getConversations(sessionId, version) {

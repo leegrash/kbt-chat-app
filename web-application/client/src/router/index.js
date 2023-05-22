@@ -4,6 +4,7 @@ import Chat from "../views/Chat.vue";
 import Signup from "../views/Signup.vue";
 import SurveyInfo from "../views/SurveyInfo.vue";
 import PsychologistSignIn from "../views/PsychologistSignin.vue";
+import PsychologistChatOverview from "../views/PsychologistChatOverview.vue";
 
 const routes = [
   {
@@ -30,6 +31,10 @@ const routes = [
     path: "/psychologist-signin",
     component: PsychologistSignIn,
   },
+  {
+    path: "/psychologist-overview",
+    component: PsychologistChatOverview,
+  }
 ];
 
 const router = createRouter({

@@ -144,6 +144,23 @@ io.on("connection", (socket) => {
       socket.emit("userIdle");
     }, 10 * 60 * 1000);
   });
+  socket.on("psychologistNotIdle", (sessionId) => {
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(async () => {
+      console.debug("Psychologist is idle");
+      const successDeletion = await new Promise((resolve) => {
+        db.run("DELETE from psychologistSessions where sessionUUID = ?", [sessionId]);
+        resolve(true);
+      });
+
+      if (!successDeletion) {
+        throw new Error("Failed to delete session info");
+      }
+      model.signOutPsychologist(sessionId);
+
+      socket.emit("psychologistIdle");
+    }, 10 * 60 * 1000);
+  });
 });
 
 if (testRequireHttp) {

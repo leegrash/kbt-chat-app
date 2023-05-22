@@ -59,7 +59,7 @@
             class="btn btn-primary"
             @click="redirect('/signup')"
           >
-            Sign up <i class="bi bi-box-arrow-in-right"></i>
+            Sign up <i class="bi bi-person-add"></i>
           </button>
           <button
             v-if="!isSigninRoute()"
@@ -71,7 +71,7 @@
           </button>
           <button
             type="button"
-            class="btn btn-primary"
+            class="btn btn-info"
             @click="redirect('/psychologist-signin')"
           >
             Psychologist <i class="bi bi-box-arrow-in-right"></i>

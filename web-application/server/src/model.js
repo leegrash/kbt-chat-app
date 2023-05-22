@@ -61,6 +61,8 @@ class Model {
 
     if (this.psychologistCookies.length === 0) {
       this.psychologistOnline = false;
+
+      this.io.emit("psychologistOffline");
     }
   }
 

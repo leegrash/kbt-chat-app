@@ -30,7 +30,7 @@
                   </a>
                   <div class="chat-about">
                     <h6 class="m-b-0">
-                      {{ $store.state.version }} domain chatbot
+                      {{ botName }}
                     </h6>
                     <small
                       ><button
@@ -142,6 +142,7 @@ export default {
     conversationInProgress: false,
     messages: [],
     prevConversations: [],
+    botName: "",
   }),
   // when version changes this acts reactively
   watch: {
@@ -178,6 +179,15 @@ export default {
           });
 
         this.conversationInProgress = false;
+        if (this.$store.state.version === "gpt_default") {
+          this.botName = "Chatbot A";      
+        }
+        else if (this.$store.state.version === "gpt_extended") {
+          this.botName = "Chatbot B";
+        }
+        else if (this.$store.state.version === "psychologist") {
+          this.botName = "Chatbot C";
+        }
       },
       deep: false,
       immediate: true,
@@ -213,6 +223,15 @@ export default {
   // when a component is created. Like a constructor
   created() {
     this.laodPage();
+    if (this.$store.state.version === "gpt_default") {
+      this.botName = "Chatbot A";      
+    }
+    else if (this.$store.state.version === "gpt_extended") {
+      this.botName = "Chatbot B";
+    }
+    else if (this.$store.state.version === "psychologist") {
+      this.botName = "Chatbot C";
+    }
   },
   methods: {
     laodPage() {

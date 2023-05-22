@@ -23,22 +23,22 @@
             v-if="$store.state.authenticated"
             href="#"
             class="nav-item nav-link active"
-            @click="redirect('/chat', 'Closed')"
-            >Chatbot 1</a
+            @click="redirect('/chat', 'gpt_default')"
+            >Chatbot A</a
           >
           <a
             v-if="$store.state.authenticated"
             href="#"
             class="nav-item nav-link active"
-            @click="redirect('/chat', 'Open')"
-            >Chatbot 2</a
+            @click="redirect('/chat', 'gpt_extended')"
+            >Chatbot B</a
           >
           <a
             v-if="$store.state.authenticated"
             href="#"
             class="nav-item nav-link active"
-            @click="redirect('/chat', 'Mixed')"
-            >Chatbot 3</a
+            @click="redirect('/chat', 'psychologist')"
+            >Chatbot C</a
           >
           <a
             v-if="$store.state.authenticated"

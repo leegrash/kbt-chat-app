@@ -17,7 +17,11 @@ def getChatbotResponse(history):
 def main():
     while True:
         prompt = input("--> ")
-        print(getChatbotResponse(prompt, [{"role": "system", "content": "You are an AI psychologist. You are not chatGPT"}]))
+        print(getChatbotResponse(prompt, [{"role": "system", "content": 
+                                           "You are a Psychologist"}]))
+        print()
+        print(getChatbotResponse(prompt, [{"role": "system", "content": 
+                                           "You are a world class Psychologist"}]))
 
 if __name__ == '__main__':
     main()

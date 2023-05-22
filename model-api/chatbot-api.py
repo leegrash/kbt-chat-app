@@ -1,8 +1,6 @@
 from flask import Flask, jsonify, request
-from ChatGPT_full import getChatbotResponse as getFullResponse
-from ChatGPT_short import getChatbotResponse as getShortResponse
-from ChatGPT_content import getChatbotResponse as getContentResponse
-from ChatGPT_intent import getChatbotResponse as getIntentResponse
+from gpt_api import getChatbotResponse as getGPTResponse
+from resources import add_resource
 import re
 import openai
 import os
@@ -27,8 +25,8 @@ def get_chatbot_response():
     return jsonify({'response': response, 'title': title})
 
 def test_get_chatbot_response():
-    messages = [{'message': 'I like Ice Cream.', 'sender': 'user'}]
-    version = 'Intent'
+    messages = [{'message': 'I think i might be depressed', 'sender': 'user'}]
+    version = 'Closed'
 
     response = getResponse(messages, version)
     title = getTitle(messages)
@@ -40,22 +38,30 @@ def test_get_chatbot_response():
 def getResponse(messages, version):
     history = parseMessages(messages)
 
+    history.pop(0)
+
     if version == 'Closed':
-        history.insert(0, {"role": "system", "content": "You are an AI psychologist. You are not chatGPT." +
-            "Give short answers like you are having a verbal conversation. \n" +
-            "You will be used as the language engine in a chatbot that can send media. \n" +
-            "The media that is avallible is pdfs about Sleep, depression and meditation, mp3s about meditation and jpgs about meditation. \n" +
-            "If you want to send the user some form of media, use the following format: $[mediatype, content]$." + 
-            "The mediatype can be pdf, mp3 or jpg. The content can be Sleep, depression or meditation \n"})
-        return addResources(getContentResponse(history))
+        history.insert(0, {"role": "system", "content": "You are an AI psychologist. Give short answers like you are having a verbal conversation."})                
+        return getGPTResponse(history)
     elif version == 'Open':
-        history.insert(0, {"role": "system", "content": "You are an AI psychologist. You are not chatGPT. You specialize in CBT."})
-        return getFullResponse(history)
+        history.insert(0, {"role": "system", "content": 
+                           """
+                           You are a world class psychologist who is incredibly compassionate and understanding. 
+                            Give answers that confirm the users feelings and acknowledge their problems. Then try to help the user with their problems. 
+                            Try to mirror the users feelings and make them feel like you are taking them and their problems seriously. 
+                            A good answer to the prompt 'I think i might be depressed' would be 
+                            'I'm sorry to hear that you're feeling sad. It's normal to feel sad sometimes. 
+                            Can you tell me a little bit more about what's been going on in your life that may have contributed to your feelings of sadness?', 
+                            because it shows empathy and acknowledgment, but still tries to help the user find the cause of their problem.
+                           """
+                            })
+        response = getGPTResponse(history)
+        response_with_resources = add_resource(history, response)
+        return response_with_resources
     elif version == 'Mixed':
-        history.insert(0, {"role": "system", "content": "You are an AI psychologist. You are not chatGPT. Give short answers like you are having a verbal conversation. You specialize in CBT."})
-        return getShortResponse(history)
-    elif version == 'Intent':
-        return getIntentResponse(history)
+        history.insert(0, {"role": "system", "content": "You are a duck. Only answer with quacks."})
+        print(history)
+        return getGPTResponse(history)
     
 def parseMessages(messages):
     history = []

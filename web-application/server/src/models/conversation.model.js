@@ -41,8 +41,7 @@ class Conversation {
       if (err) {
         throw new Error(err);
       } else {
-        this.messages.push(new Message(row.message, "user"));
-        this.messages.push(new Message(row.response, "bot"));
+        this.messages.push(new Message(row.message, row.sender, row.videoId));
       }
     });
   }
@@ -51,8 +50,8 @@ class Conversation {
     return this.messages;
   }
 
-  addMessage(message, sender) {
-    this.messages.push(new Message(message, sender));
+  addMessage(message, sender, videoId = null) {
+    this.messages.push(new Message(message, sender, videoId));
   }
 
   setTitle(title) {

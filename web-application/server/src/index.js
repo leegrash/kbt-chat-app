@@ -16,11 +16,15 @@ import timeslot from "./controllers/chat.controller.js";
 import model from "./model.js";
 import db from "./db.js";
 
-const testRequireHttp = false; // False to enable HTTPS
+const testRequireHttp = true; // False to enable HTTPS
+const devMode = true; // False in production
 
 let port = 443;
 if (testRequireHttp) {
   port = 80;
+}
+if (devMode) {
+  port = 8080;
 }
 
 const app = express();

@@ -20,7 +20,7 @@
                 v-for="conversation in conversations"
                 :key="conversation.conversationId"
                 type="button"
-                :class="conversation.unaswered === false ? 'btn btn-success' : 'btn btn-warning'"
+                :class="conversation.unanswered === false ? 'btn btn-success' : 'btn btn-warning'"
                 @click="redirect('/psychologist-chat')">
                   {{ conversation.messageTitle }}
                 </button>

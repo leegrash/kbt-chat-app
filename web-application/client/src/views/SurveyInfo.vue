@@ -18,9 +18,7 @@
             <div class="row page-content">
               <h2>Chatbot A</h2>
               <p>
-                Please try all the chatbots before filling out the survey form.
-                You can try the chatbots in any order. Click these buttons to go
-                to each of the chatbot.
+                This is teh first Chatbot that you will be able to try. To start speaking to it, click the button below or click on the Chatbot A tab in the navigation bar.
               </p>
               <button
                 type="button"
@@ -33,13 +31,7 @@
             <div class="row page-content">
               <h2>Chatbot B</h2>
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                sunt in culpa qui officia deserunt mollit anim id est laborum.
+                This is the second Chatbot that you will be able to try. To start speaking to it, click the button below or click on the Chatbot B tab in the navigation bar.
               </p>
               <button
                 type="button"
@@ -55,13 +47,7 @@
             >
               <h2>Chatbot C</h2>
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                sunt in culpa qui officia deserunt mollit anim id est laborum.
+                This is the third Chatbot that you will be able to try. To start speaking to it, click the button below or click on the Chatbot C tab in the navigation bar.
               </p>
               <button
                 type="button"
@@ -74,13 +60,7 @@
             <div class="row page-content">
               <h2>Survey form</h2>
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                sunt in culpa qui officia deserunt mollit anim id est laborum.
+                Once you have tried all the Chatbots, please fill out the survey form. This will help us to evaluate the Chatbots for our Bachelor's thesis.
               </p>
               <a href="#" target="_blank" class="btn btn-primary"
                 >Fill out the survey form

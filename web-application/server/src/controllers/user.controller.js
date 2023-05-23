@@ -114,11 +114,13 @@ router.post("/signin", async (req, res) => {
 
       await db.run(query, params);
 
+      const psychologistOnline = model.isPsychologistOnline();
+
       model.addUser(sessionId, row.userId, row.username);
 
       model.modelEmit("psychologistConversationsUpdate");
 
-      res.status(202).end();
+      res.status(202).json(psychologistOnline).end();
     } else {
       res.status(401).end();
     }

@@ -76,6 +76,10 @@ class Model {
     }
   }
 
+  isPsychologistOnline() {
+    return this.psychologistOnline;
+  }
+
   isPsychologistAuthenticated(sessionId) {
     return this.psychologistCookies.includes(sessionId);
   }

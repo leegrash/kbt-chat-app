@@ -148,12 +148,13 @@ export default {
         }),
       })
         .then((res) => {
-          if (res.status === 202) return;
+          if (res.status === 202) return res.json();
 
           this.$store.state.msg = "Wrong credentials";
           throw new Error("Wrong credentials");
         })
-        .then(() => {
+        .then((data) => {
+          this.$store.state.psychologistOnline = data;
           commit("setAuthenticated", true);
           push("/survey-info");
         })

@@ -25,7 +25,7 @@
                     ? 'btn btn-success'
                     : 'btn btn-warning'
                 "
-                @click="redirect('/psychologist-chat')"
+                @click="redirect(conversation.conversationId, conversation.userName)"
               >
                 {{ conversation.messageTitle }}
               </button>
@@ -102,7 +102,6 @@ export default {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         this.conversations = data;
       })
       .catch((error) => {
@@ -110,13 +109,14 @@ export default {
       });
   },
   methods: {
-    redirect(target, version = null) {
-      if (version == null) {
-        this.$router.push(target);
-      } else {
-        this.$store.state.version = version;
-        this.$router.push(target);
-      }
+    redirect(conversationId, userName) {
+      this.$router.push({
+        path: `/psychologist-chat/${conversationId}/${userName}`,
+        params: { 
+          conversation: conversationId, 
+          user: userName 
+        },
+      });
     },
   },
 };

@@ -51,7 +51,7 @@ router.post("/psychologist-signin", async (req, res) => {
 
       model.addPsychologist(sessionId, row.userId, username);
 
-      // emit psychologist online
+      model.modelEmit("psychologistOnline");
 
       res.status(202).end();
     } else {
@@ -66,8 +66,6 @@ router.post("/psychologist-signout", requirePsychologistAuth, async (req, res) =
   const { sessionId } = req.cookies;
 
   model.signOutPsychologist(sessionId);
-
-  // emit psychologist offline
 
   const query = `
     DELETE FROM psychologistSessions WHERE sessionUUID = ?

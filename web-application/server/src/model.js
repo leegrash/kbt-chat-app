@@ -121,6 +121,10 @@ class Model {
 
     return conversation;
   }
+
+  modelEmit(event) {
+    this.io.emit(event);
+  }
 }
 
 export default new Model();

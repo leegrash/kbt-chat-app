@@ -4,7 +4,7 @@
       <div class="col-lg-12">
         <div class="card chat-app">
           <div class="chat">
-            <h1 class="page-title">Psychologist Sign in</h1>
+            <h1 class="page-title">Psychologist sign in</h1>
             <form
               class="sign-in-form align-items-center"
               @submit.prevent="authenticate()"

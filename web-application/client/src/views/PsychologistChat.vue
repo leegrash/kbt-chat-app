@@ -141,6 +141,10 @@
           this.$store.state.msg = "idleSignout";
           this.$router.push("/signin");
         });
+
+        this.socket.on("newMessageFromUser", () => {
+          this.laodPage();
+        });
       }
   
       // gets chat history and scrolls to bottom

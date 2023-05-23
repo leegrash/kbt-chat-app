@@ -231,7 +231,8 @@ async function psychologistChat(
   conversation.unansweredMessages = true;
 
   model.modelEmit("psychologistConversationsUpdate")
-  // emit to chat room
+  
+  model.modelEmit("newMessageFromUser");
 
   const messages = conversation.getMessages();
 
@@ -408,6 +409,27 @@ router.post("/new-conversation", requireAuth, async (req, res) => {
   res.cookie("conversationId", newConversationId);
   res.json({ messages, prevTitles });
 
+  res.status(200).end();
+});
+
+router.post("/reload-conversation", requireAuth, async (req, res) => {
+  const { conversationId } = req.cookies;
+
+  const conversation = model.getConversationById(conversationId);
+
+  const messages = conversation.getMessages();
+
+  const formatedMessages = [];
+
+  for (let index = 0; index < messages.length; index += 1) {
+    formatedMessages.push({
+      message: messages[index].message,
+      sender: messages[index].sender,
+      videoId: messages[index].videoId,
+    });
+  }
+
+  res.json({ formatedMessages });
   res.status(200).end();
 });
 

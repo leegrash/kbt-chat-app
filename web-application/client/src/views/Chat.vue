@@ -220,6 +220,13 @@ export default {
         this.$store.state.msg = "idleSignout";
         this.$router.push("/signin");
       });
+
+      if (this.$store.state.version === "psychologist") {
+        this.socket.on("newMessageFromBot", () => {
+          console.log("new message from bot");
+          this.reloadConversation();
+        });
+      }
     }
 
     // gets chat history and scrolls to bottom
@@ -400,6 +407,32 @@ export default {
           console.error("Error:", error);
         });
     },
+
+    reloadConversation() {
+      fetch("/api/reload-conversation", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          version: this.$store.state.version,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          this.messages = data.formatedMessages;
+          this.conversationInProgress = true;
+
+          this.$nextTick(() => {
+            const chatHistory = document.getElementById("chat-history");
+            chatHistory.scrollTop = chatHistory.scrollHeight;
+          });
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    }
   },
 };
 </script>

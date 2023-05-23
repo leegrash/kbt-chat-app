@@ -157,7 +157,7 @@ router.post("/send-psychologist-message", requirePsychologistAuth, async (req, r
 
   await db.run(dbQuery, dbParams);
 
-  // emit new message
+  model.modelEmit("newMessageFromBot");
 
   res.status(200).end();
 });

@@ -46,8 +46,8 @@
                     <div
                       :class="
                         currMessage.sender !== 'bot'
-                          ? 'message my-message'
-                          : 'message other-message'
+                          ? 'message other-message'                            
+                          : 'message my-message'
                       "
                     >
                       {{ currMessage.message }}
@@ -157,7 +157,24 @@
         this.conversationInProgress = false;
   
         if (this.$store.state.serverDown === false) {
-          // load conversation
+            fetch("/api/load-prev-conversation", {
+                method: "POST",
+                headers: {
+                "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                conversationId: this.conversation,
+                version: this.$store.state.version,
+                }),
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                this.messages = data.formatedMessages;
+                this.conversationInProgress = true;
+                })
+                .catch((error) => {
+                console.error("Error:", error);
+                });
   
           // user idle check
           document.onmousemove = () => {

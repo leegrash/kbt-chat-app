@@ -141,7 +141,7 @@ router.post("/send-psychologist-message", requirePsychologistAuth, async (req, r
         `;
 
   const messageId = uuidv4();
-  const timestamp = new Date().toISOString();
+  const timestamp = new Date().toJSON().slice(0, 19).replace("T", " ");
 
   let dbParams = [messageId, "bot", message, null, timestamp, conversationId];
         

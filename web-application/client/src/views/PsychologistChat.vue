@@ -157,14 +157,13 @@
         this.conversationInProgress = false;
   
         if (this.$store.state.serverDown === false) {
-            fetch("/api/load-prev-conversation", {
+            fetch("/api/load-psycholigist-conversation", {
                 method: "POST",
                 headers: {
                 "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
                 conversationId: this.conversation,
-                version: this.$store.state.version,
                 }),
             })
                 .then((response) => response.json())

@@ -13,7 +13,7 @@ const router = Router();
  * @param {Function} next
  * @returns {void}
  */
-const requireAuth = (req, res, next) => {
+const requirePsychologistAuth = (req, res, next) => {
   const { sessionId } = req.cookies;
 
   if (!model.isPsychologistAuthenticated(sessionId)) {
@@ -60,7 +60,7 @@ router.post("/psychologist-signin", async (req, res) => {
   }
 });
 
-router.post("/psychologist-signout", requireAuth, async (req, res) => {
+router.post("/psychologist-signout", requirePsychologistAuth, async (req, res) => {
   const { sessionId } = req.cookies;
 
   model.signOutPsychologist(sessionId);
@@ -80,7 +80,7 @@ router.post("/psychologist-signout", requireAuth, async (req, res) => {
 
 router.post(
   "/load-psychologist-conversations",
-  requireAuth,
+  requirePsychologistAuth,
   async (req, res) => {
     const { sessionId } = req.cookies;
 
@@ -98,5 +98,25 @@ router.post(
     res.status(200).json(formatedMessages);
   }
 );
+
+router.post("/load-psycholigist-conversation", requirePsychologistAuth, async (req, res) => {
+  const { conversationId } = req.body;
+
+  const conversation = model.getConversationById(conversationId);
+
+  const messages = conversation.getMessages();
+
+  const formatedMessages = [];
+
+  for (let index = 0; index < messages.length; index += 1) {
+    formatedMessages.push({
+      message: messages[index].message,
+      sender: messages[index].sender,
+      videoId: messages[index].videoId,
+    });
+  }
+
+  res.status(200).json({ formatedMessages });
+});
 
 export default { router };

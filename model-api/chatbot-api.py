@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request
 from gpt_api import getChatbotResponse as getGPTResponse
 from resources import add_resource
+from youtube import search_youtube
 import re
 import openai
 import os
@@ -17,12 +18,13 @@ def get_chatbot_response():
     messages = data['messages'] # format: [{'message': "Hi! I'm an AI Psychologist, how may I help you?", 'sender': 'bot'}, {'message': 'hi', 'sender': 'user'}]
     version = data['version'] #string with text 'Closed' or 'Open' or 'Mixed'
 
-    response = getResponse(messages, version)
+    [response, youtubeId] = getResponse(messages, version)
     title = getTitle(messages)
 
-    # print("response: " + response)
+    print("response: " + response)
+    print("youtube: " + str(youtubeId))
 
-    return jsonify({'response': response, 'title': title, 'videoId': 'dQw4w9WgXcQ'})
+    return jsonify({'response': response, 'title': title, 'videoId': youtubeId})
 
 def test_get_chatbot_response():
     messages = [{'message': 'I think i might be depressed', 'sender': 'user'}]
@@ -52,10 +54,20 @@ Give answers that confirm the users feelings and acknowledge their problems. The
 Try to mirror the users feelings and make them feel like you are taking them and their problems seriously. 
 """})
         response = getGPTResponse(history)
-        response_with_resources = add_resource(history, response)
-        return response
-    else:
-        return "error"
+        rawResource = add_resource(history, response)
+
+        youtubeId = None
+        if rawResource.startswith("Youtube"):
+            query = rawResource.split(":")[1]
+            youtubeId = search_youtube(query)
+        elif rawResource.startswith("Website"):
+            resource = "website"
+        elif rawResource.startswith("App"):
+            resource = "app"
+        elif rawResource.startswith("Exercise"):
+            exercise = rawResource.split(":")[1]
+
+        return [response, youtubeId]
     
 def parseMessages(messages):
     history = []

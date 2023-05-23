@@ -1,6 +1,7 @@
 import openai
 import os
 import dotenv
+from youtube import search_youtube
 
 def add_resource(history, lastMessage):
     conv = parse_conv(history, lastMessage)
@@ -29,6 +30,8 @@ This is the conversation:
     print(response.choices[0].message.content)
 
     return response.choices[0].message.content
+
+    
 
 def parse_conv(history, lastMessage):
     conv = "AI Psychologist: " + "Hi! I'm an AI Psychologist, how may I help you?\n"

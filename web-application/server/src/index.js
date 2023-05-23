@@ -17,13 +17,9 @@ import psychologist from "./controllers/psychologist.controller.js";
 import model from "./model.js";
 import db from "./db.js";
 
-const testRequireHttp = true; // False to enable HTTPS
 const devMode = true; // False in production
 
 let port = 443;
-if (testRequireHttp) {
-  port = 80;
-}
 if (devMode) {
   port = 8080;
 }
@@ -31,7 +27,7 @@ if (devMode) {
 const app = express();
 
 let server;
-if (!testRequireHttp) {
+if (!devMode) {
   const relativeDirectory = dirname(fileURLToPath(import.meta.url));
   const options = {
     key: fs.readFileSync(
@@ -165,7 +161,7 @@ io.on("connection", (socket) => {
   });
 });
 
-if (testRequireHttp) {
+if (devMode) {
   server.listen(port, () => {
     console.log("Server started, not using HTTPS");
     console.log(`Listening on http://localhost:${port}/`);

@@ -62,23 +62,27 @@ router.post("/psychologist-signin", async (req, res) => {
   }
 });
 
-router.post("/psychologist-signout", requirePsychologistAuth, async (req, res) => {
-  const { sessionId } = req.cookies;
+router.post(
+  "/psychologist-signout",
+  requirePsychologistAuth,
+  async (req, res) => {
+    const { sessionId } = req.cookies;
 
-  model.signOutPsychologist(sessionId);
+    model.signOutPsychologist(sessionId);
 
-  const query = `
+    const query = `
     DELETE FROM psychologistSessions WHERE sessionUUID = ?
   `;
-  const params = [sessionId];
+    const params = [sessionId];
 
-  await db.run(query, params);
+    await db.run(query, params);
 
-  res.clearCookie("sessionId");
-  res.clearCookie("conversationId");
+    res.clearCookie("sessionId");
+    res.clearCookie("conversationId");
 
-  res.status(200).end();
-});
+    res.status(200).end();
+  }
+);
 
 router.post(
   "/load-psychologist-conversations",
@@ -91,75 +95,83 @@ router.post(
     );
 
     const formatedMessages = psychologistConversations
-    .filter((conversation) => conversation.title !== null)
-    .map((conversation) => ({
-      conversationId: conversation.conversationId,
-      messageTitle: conversation.title,
-      userName: model.getUserName(conversation.userId),
-      unanswered: conversation.unansweredMessages,
-    }));
+      .filter((conversation) => conversation.title !== null)
+      .map((conversation) => ({
+        conversationId: conversation.conversationId,
+        messageTitle: conversation.title,
+        userName: model.getUserName(conversation.userId),
+        unanswered: conversation.unansweredMessages,
+      }));
 
     res.status(200).json(formatedMessages);
   }
 );
 
-router.post("/load-psycholigist-conversation", requirePsychologistAuth, async (req, res) => {
-  const { conversationId } = req.body;
+router.post(
+  "/load-psycholigist-conversation",
+  requirePsychologistAuth,
+  async (req, res) => {
+    const { conversationId } = req.body;
 
-  const conversation = model.getConversationById(conversationId);
+    const conversation = model.getConversationById(conversationId);
 
-  if (conversation === null) {
-    res.status(404).end();
-    return;
+    if (conversation === null) {
+      res.status(404).end();
+      return;
+    }
+    const messages = conversation.getMessages();
+
+    const formatedMessages = [];
+
+    for (let index = 0; index < messages.length; index += 1) {
+      formatedMessages.push({
+        message: messages[index].message,
+        sender: messages[index].sender,
+        videoId: messages[index].videoId,
+      });
+    }
+
+    res.status(200).json({ formatedMessages });
   }
-  const messages = conversation.getMessages();
+);
 
-  const formatedMessages = [];
+router.post(
+  "/send-psychologist-message",
+  requirePsychologistAuth,
+  async (req, res) => {
+    const { message } = req.body;
+    const { conversationId } = req.body;
 
-  for (let index = 0; index < messages.length; index += 1) {
-    formatedMessages.push({
-      message: messages[index].message,
-      sender: messages[index].sender,
-      videoId: messages[index].videoId,
-    });
-  }
+    const conversation = model.getConversationById(conversationId);
 
-  res.status(200).json({ formatedMessages });
-});
+    conversation.addMessage(message, "bot", null);
 
-router.post("/send-psychologist-message", requirePsychologistAuth, async (req, res) => {
-  const { message } = req.body;
-  const { conversationId } = req.body;
-
-  const conversation = model.getConversationById(conversationId);
-
-  conversation.addMessage(message, "bot", null);
-
-  let dbQuery = `
+    let dbQuery = `
             INSERT INTO messages (messageId, sender, message, videoId, timestamp, conversationUUID)
             VALUES (?, ?, ?, ?, ?, ?)
         `;
 
-  const messageId = uuidv4();
-  const timestamp = new Date().toISOString();
+    const messageId = uuidv4();
+    const timestamp = new Date().toJSON().slice(0, 19).replace("T", " ");
 
-  let dbParams = [messageId, "bot", message, null, timestamp, conversationId];
-        
-  await db.run(dbQuery, dbParams);
+    let dbParams = [messageId, "bot", message, null, timestamp, conversationId];
 
-  conversation.unansweredMessages = false;
+    await db.run(dbQuery, dbParams);
 
-  dbQuery = `
+    conversation.unansweredMessages = false;
+
+    dbQuery = `
     UPDATE userConversations SET unansweredMessage = 0 WHERE conversationUUID = ?
   `;
 
-  dbParams = [conversationId];
+    dbParams = [conversationId];
 
-  await db.run(dbQuery, dbParams);
+    await db.run(dbQuery, dbParams);
 
-  // emit new message
+    model.modelEmit("newMessageFromBot");
 
-  res.status(200).end();
-});
+    res.status(200).end();
+  }
+);
 
 export default { router };

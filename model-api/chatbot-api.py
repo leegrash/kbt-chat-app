@@ -44,7 +44,7 @@ def getResponse(messages, version):
 
     print(version)
 
-    if version == 'gpt_deafult':
+    if version == 'gpt_default':
         history.insert(0, {"role": "system", "content": "You are an AI psychologist. Give short answers like you are having a verbal conversation."})                
         return getGPTResponse(history)
     elif version == 'gpt_extended' or version == 'Open':

@@ -76,6 +76,10 @@ class Model {
     }
   }
 
+  isPsychologistOnline() {
+    return this.psychologistOnline;
+  }
+
   isPsychologistAuthenticated(sessionId) {
     return this.psychologistCookies.includes(sessionId);
   }
@@ -87,6 +91,7 @@ class Model {
       const conversations = user.getConversations("psychologist");
       conversations
         .filter((conversation) => conversation.botVersion === "psychologist")
+        .filter((conversation) => conversation.messages.length > 1)
         .forEach((conversation) => {
           psychologistConversations.push({
             conversationId: conversation.conversationId,
@@ -117,7 +122,6 @@ class Model {
         conversation = corrConversation;
       }
     });
-
 
     return conversation;
   }

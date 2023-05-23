@@ -73,6 +73,22 @@ export default {
         this.$store.state.msg = "idleSignout";
         this.$router.push("/psychologist-signin");
       });
+
+      this.socket.on("psychologistConversationsUpdate", () => {
+        fetch("/api/load-psychologist-conversations", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            this.conversations = data;
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      });
     }
   },
   created() {

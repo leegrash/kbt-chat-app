@@ -83,7 +83,7 @@ async function botChat(sessionId, conversationId, message, version) {
 
     modelResponse = responseData.response;
     conversationTitle = responseData.title;
-    videoId = "674Ka18uFuA"; // responseData.videoId;
+    videoId = responseData.videoId;
 
     apiRequestSuccess = true;
   } catch (error) {

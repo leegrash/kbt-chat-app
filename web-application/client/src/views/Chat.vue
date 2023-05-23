@@ -68,7 +68,7 @@
                       <iframe
                         title="message-video"
                         class="embed-responsive-item"
-                        src="https://www.youtube.com/embed/674Ka18uFuA"
+                        :src="getVideoUrl(currMessage.videoId)"
                         allowfullscreen
                       ></iframe>
                     </div>
@@ -432,6 +432,10 @@ export default {
         .catch((error) => {
           console.error("Error:", error);
         });
+    },
+
+    getVideoUrl(videoId) {
+      return `https://www.youtube.com/embed/${videoId}`;
     },
   },
 };

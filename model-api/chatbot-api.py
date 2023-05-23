@@ -50,21 +50,12 @@ def getResponse(messages, version):
 """You are a world class psychologist who is incredibly compassionate and understanding. 
 Give answers that confirm the users feelings and acknowledge their problems. Then try to help the user with their problems. 
 Try to mirror the users feelings and make them feel like you are taking them and their problems seriously. 
-"""
-"""
-A good answer to the prompt 'I think i might be depressed' would be 
-'I'm sorry to hear that you're feeling sad. It's normal to feel sad sometimes. 
-Can you tell me a little bit more about what's been going on in your life that may have contributed to your feelings of sadness?', 
-because it shows empathy and acknowledgment, but still tries to help the user find the cause of their problem.
-"""
-                            })
+"""})
         response = getGPTResponse(history)
         response_with_resources = add_resource(history, response)
         return response
-    elif version == 'Mixed':
-        history.insert(0, {"role": "system", "content": "You are a duck. Only answer with quacks."})
-        print(history)
-        return getGPTResponse(history)
+    else:
+        return "error"
     
 def parseMessages(messages):
     history = []
@@ -87,7 +78,9 @@ def getTitle(history):
     title = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=messages
-    ).choices[0].message.content
+    )
+
+    title = title.choices[0].message.content
 
     if title == "\".*\"":
         title = title[1:-1]

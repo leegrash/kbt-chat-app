@@ -49,7 +49,10 @@
                 Try Chatbot B
               </button>
             </div>
-            <div v-if="$store.state.psychologistOnline" class="row page-content">
+            <div
+              v-if="$store.state.psychologistOnline"
+              class="row page-content"
+            >
               <h2>Chatbot C</h2>
               <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do

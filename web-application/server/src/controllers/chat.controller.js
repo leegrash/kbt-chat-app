@@ -230,8 +230,8 @@ async function psychologistChat(
 
   conversation.unansweredMessages = true;
 
-  model.modelEmit("psychologistConversationsUpdate")
-  
+  model.modelEmit("psychologistConversationsUpdate");
+
   model.modelEmit("newMessageFromUser");
 
   const messages = conversation.getMessages();

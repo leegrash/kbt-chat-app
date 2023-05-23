@@ -25,7 +25,9 @@
                     ? 'btn btn-success'
                     : 'btn btn-warning'
                 "
-                @click="redirect(conversation.conversationId, conversation.userName)"
+                @click="
+                  redirect(conversation.conversationId, conversation.userName)
+                "
               >
                 {{ conversation.messageTitle }}
               </button>
@@ -128,9 +130,9 @@ export default {
     redirect(conversationId, userName) {
       this.$router.push({
         path: `/psychologist-chat/${conversationId}/${userName}`,
-        params: { 
-          conversation: conversationId, 
-          user: userName 
+        params: {
+          conversation: conversationId,
+          user: userName,
         },
       });
     },

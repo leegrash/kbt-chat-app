@@ -119,7 +119,6 @@ class Model {
       }
     });
 
-
     return conversation;
   }
 

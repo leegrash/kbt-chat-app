@@ -20,7 +20,7 @@ def get_chatbot_response():
     response = getResponse(messages, version)
     title = getTitle(messages)
 
-    print("response: " + response)
+    # print("response: " + response)
 
     return jsonify({'response': response, 'title': title})
 
@@ -57,7 +57,7 @@ def getResponse(messages, version):
                             })
         response = getGPTResponse(history)
         response_with_resources = add_resource(history, response)
-        return response_with_resources
+        return response
     elif version == 'Mixed':
         history.insert(0, {"role": "system", "content": "You are a duck. Only answer with quacks."})
         print(history)

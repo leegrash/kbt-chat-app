@@ -9,19 +9,24 @@ def getChatbotResponse(history):
     openai.api_key = os.getenv("OPENAI_API_KEY")
 
     response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
+        model="gpt-4",
         messages=history
     )
     return response.choices[0].message.content
 
 def main():
-    while True:
-        prompt = input("--> ")
-        print(getChatbotResponse(prompt, [{"role": "system", "content": 
-                                           "You are a Psychologist"}]))
-        print()
-        print(getChatbotResponse(prompt, [{"role": "system", "content": 
-                                           "You are a world class Psychologist"}]))
+    print(getChatbotResponse([{"role": "user", "content": 
+                                """I will send you a conversation between a user and an AI Psychologist. Your task is to determine if it would be appropriate to append a youtube link to the last message by the AI Psychologist. 
+                                If you think it is appropriate: send a query to search on youtube that is fitting to the last message.
+                                If not: send "0".
+                                This is the conversation:
+                                ###
+                                User: Hello hello
+                                AI Psychologist: Hello there! How can I assist you today?
+                                User: I need help sleeping better. Do you have any tips?
+                                AI Psychologist: Yes! Have you tried establishing a bedtime routine which helps you relax? You could for example try reading a book or meditating before bed.
+                                ###
+                                """}]))
 
 if __name__ == '__main__':
     main()

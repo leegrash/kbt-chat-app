@@ -22,7 +22,7 @@ def get_chatbot_response():
 
     # print("response: " + response)
 
-    return jsonify({'response': response, 'title': title})
+    return jsonify({'response': response, 'title': title, 'videoId': 'dQw4w9WgXcQ'})
 
 def test_get_chatbot_response():
     messages = [{'message': 'I think i might be depressed', 'sender': 'user'}]
@@ -40,20 +40,23 @@ def getResponse(messages, version):
 
     history.pop(0)
 
-    if version == 'Closed':
+    print(version)
+
+    if version == 'gpt_deafult':
         history.insert(0, {"role": "system", "content": "You are an AI psychologist. Give short answers like you are having a verbal conversation."})                
         return getGPTResponse(history)
-    elif version == 'Open':
+    elif version == 'gpt_extended' or version == 'Open':
         history.insert(0, {"role": "system", "content": 
-                           """
-                           You are a world class psychologist who is incredibly compassionate and understanding. 
-                            Give answers that confirm the users feelings and acknowledge their problems. Then try to help the user with their problems. 
-                            Try to mirror the users feelings and make them feel like you are taking them and their problems seriously. 
-                            A good answer to the prompt 'I think i might be depressed' would be 
-                            'I'm sorry to hear that you're feeling sad. It's normal to feel sad sometimes. 
-                            Can you tell me a little bit more about what's been going on in your life that may have contributed to your feelings of sadness?', 
-                            because it shows empathy and acknowledgment, but still tries to help the user find the cause of their problem.
-                           """
+"""You are a world class psychologist who is incredibly compassionate and understanding. 
+Give answers that confirm the users feelings and acknowledge their problems. Then try to help the user with their problems. 
+Try to mirror the users feelings and make them feel like you are taking them and their problems seriously. 
+"""
+"""
+A good answer to the prompt 'I think i might be depressed' would be 
+'I'm sorry to hear that you're feeling sad. It's normal to feel sad sometimes. 
+Can you tell me a little bit more about what's been going on in your life that may have contributed to your feelings of sadness?', 
+because it shows empathy and acknowledgment, but still tries to help the user find the cause of their problem.
+"""
                             })
         response = getGPTResponse(history)
         response_with_resources = add_resource(history, response)
@@ -65,6 +68,7 @@ def getResponse(messages, version):
     
 def parseMessages(messages):
     history = []
+
     for message in messages:
         tmp  = {}
         if message['sender'] == 'bot':
@@ -78,7 +82,7 @@ def parseMessages(messages):
 def getTitle(history):
     openai.api_key = os.getenv("OPENAI_API_KEY")
 
-    messages = [{"role": "system", "content": "Give a short (max 4 words) title that summarizes the following conversation: "
+    messages = [{"role": "user", "content": "Give a short (max 4 words) title that summarizes the following conversation: "
         + str(parseMessages(history))}]
     title = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",

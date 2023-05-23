@@ -231,6 +231,7 @@ async function psychologistChat(
   conversation.unansweredMessages = true;
 
   model.modelEmit("psychologistConversationsUpdate")
+  // emit to chat room
 
   const messages = conversation.getMessages();
 

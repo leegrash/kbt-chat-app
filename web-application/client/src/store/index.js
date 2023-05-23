@@ -8,6 +8,7 @@ export default createStore({
     serverDown: false,
     awaitingResponse: false,
     authenticatedPsychologist: false,
+    psychologistOnline: false,
   },
   getters: {
     isAuthenticated(state) {

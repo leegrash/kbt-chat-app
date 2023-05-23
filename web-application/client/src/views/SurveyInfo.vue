@@ -16,7 +16,7 @@
             </div>
             <h1 class="page-title">Information about survey</h1>
             <div class="row page-content">
-              <h2>Chatbot#1</h2>
+              <h2>Chatbot A</h2>
               <p>
                 Please try all the chatbots before filling out the survey form.
                 You can try the chatbots in any order. Click these buttons to go
@@ -27,11 +27,11 @@
                 class="btn btn-primary"
                 @click="redirect('/chat', 'Closed')"
               >
-                Try Chatbot#1
+                Try Chatbot A
               </button>
             </div>
             <div class="row page-content">
-              <h2>Chatbot#2</h2>
+              <h2>Chatbot B</h2>
               <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
                 eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
@@ -46,11 +46,11 @@
                 class="btn btn-primary"
                 @click="redirect('/chat', 'Open')"
               >
-                Try Chatbot#2
+                Try Chatbot B
               </button>
             </div>
-            <div class="row page-content">
-              <h2>Chatbot#3</h2>
+            <div v-if="$store.state.psychologistOnline" class="row page-content">
+              <h2>Chatbot C</h2>
               <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
                 eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
@@ -65,7 +65,7 @@
                 class="btn btn-primary"
                 @click="redirect('/chat', 'Mixed')"
               >
-                Try Chatbot#3
+                Try Chatbot C
               </button>
             </div>
             <div class="row page-content">

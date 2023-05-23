@@ -45,7 +45,8 @@
           <a
             v-if="
               $store.state.authenticated &&
-              !$store.state.authenticatedPsychologist
+              !$store.state.authenticatedPsychologist &&
+              $store.state.psychologistOnline
             "
             href="#"
             class="nav-item nav-link active"
@@ -144,14 +145,26 @@
 <script>
 // @ is an alias to /src
 import "bootstrap";
+import io from "socket.io-client";
 
 export default {
   name: "App",
   components: {},
-  data: () => ({}),
+  data: () => ({
+    socket: io.connect(),
+    psychologistOnline: false,
+  }),
   mounted() {
     const { commit, getters } = this.$store;
     const { push } = this.$router;
+
+    this.socket.on("psychologistOnline", () => {
+      this.$store.state.psychologistOnline = true;
+    });
+
+    this.socket.on("psychologistOffline", () => {
+      this.$store.state.psychologistOnline = false;
+    });
 
     commit("setAuthenticated", false);
     push(getters.isAuthenticated === true ? "/survey-info" : "/signin");

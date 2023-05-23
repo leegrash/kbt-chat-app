@@ -5,6 +5,7 @@ import Signup from "../views/Signup.vue";
 import SurveyInfo from "../views/SurveyInfo.vue";
 import PsychologistSignIn from "../views/PsychologistSignin.vue";
 import PsychologistChatOverview from "../views/PsychologistChatOverview.vue";
+import PsychologistChat from "../views/PsychologistChat.vue";
 
 const routes = [
   {
@@ -34,6 +35,11 @@ const routes = [
   {
     path: "/psychologist-overview",
     component: PsychologistChatOverview,
+  },
+  {
+    path: "/psychologist-chat/:conversation/:user",
+    component: PsychologistChat,
+    props: true,
   },
 ];
 

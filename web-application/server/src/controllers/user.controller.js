@@ -116,6 +116,8 @@ router.post("/signin", async (req, res) => {
 
       model.addUser(sessionId, row.userId, row.username);
 
+      // emit userUpdate
+
       res.status(202).end();
     } else {
       res.status(401).end();
@@ -129,6 +131,8 @@ router.post("/signout", requireAuth, async (req, res) => {
   const { sessionId } = req.cookies;
 
   model.signOutUser(sessionId);
+
+  // emit userUpdate
 
   const query = `
     DELETE FROM activeSessions WHERE sessionUUID = ?

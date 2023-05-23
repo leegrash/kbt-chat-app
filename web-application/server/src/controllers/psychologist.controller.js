@@ -13,7 +13,7 @@ const router = Router();
  * @param {Function} next
  * @returns {void}
  */
-const requireAuth = (req, res, next) => {
+const requirePsychologistAuth = (req, res, next) => {
   const { sessionId } = req.cookies;
 
   if (!model.isPsychologistAuthenticated(sessionId)) {
@@ -51,6 +51,8 @@ router.post("/psychologist-signin", async (req, res) => {
 
       model.addPsychologist(sessionId, row.userId, username);
 
+      model.modelEmit("psychologistOnline");
+
       res.status(202).end();
     } else {
       res.status(401).end();
@@ -60,7 +62,7 @@ router.post("/psychologist-signin", async (req, res) => {
   }
 });
 
-router.post("/psychologist-signout", requireAuth, async (req, res) => {
+router.post("/psychologist-signout", requirePsychologistAuth, async (req, res) => {
   const { sessionId } = req.cookies;
 
   model.signOutPsychologist(sessionId);
@@ -80,7 +82,7 @@ router.post("/psychologist-signout", requireAuth, async (req, res) => {
 
 router.post(
   "/load-psychologist-conversations",
-  requireAuth,
+  requirePsychologistAuth,
   async (req, res) => {
     const { sessionId } = req.cookies;
 
@@ -88,7 +90,9 @@ router.post(
       sessionId
     );
 
-    const formatedMessages = psychologistConversations.map((conversation) => ({
+    const formatedMessages = psychologistConversations
+    .filter((conversation) => conversation.title !== null)
+    .map((conversation) => ({
       conversationId: conversation.conversationId,
       messageTitle: conversation.title,
       userName: model.getUserName(conversation.userId),
@@ -98,5 +102,64 @@ router.post(
     res.status(200).json(formatedMessages);
   }
 );
+
+router.post("/load-psycholigist-conversation", requirePsychologistAuth, async (req, res) => {
+  const { conversationId } = req.body;
+
+  const conversation = model.getConversationById(conversationId);
+
+  if (conversation === null) {
+    res.status(404).end();
+    return;
+  }
+  const messages = conversation.getMessages();
+
+  const formatedMessages = [];
+
+  for (let index = 0; index < messages.length; index += 1) {
+    formatedMessages.push({
+      message: messages[index].message,
+      sender: messages[index].sender,
+      videoId: messages[index].videoId,
+    });
+  }
+
+  res.status(200).json({ formatedMessages });
+});
+
+router.post("/send-psychologist-message", requirePsychologistAuth, async (req, res) => {
+  const { message } = req.body;
+  const { conversationId } = req.body;
+
+  const conversation = model.getConversationById(conversationId);
+
+  conversation.addMessage(message, "bot", null);
+
+  let dbQuery = `
+            INSERT INTO messages (messageId, sender, message, videoId, timestamp, conversationUUID)
+            VALUES (?, ?, ?, ?, ?, ?)
+        `;
+
+  const messageId = uuidv4();
+  const timestamp = new Date().toISOString();
+
+  let dbParams = [messageId, "bot", message, null, timestamp, conversationId];
+        
+  await db.run(dbQuery, dbParams);
+
+  conversation.unansweredMessages = false;
+
+  dbQuery = `
+    UPDATE userConversations SET unansweredMessage = 0 WHERE conversationUUID = ?
+  `;
+
+  dbParams = [conversationId];
+
+  await db.run(dbQuery, dbParams);
+
+  // emit new message
+
+  res.status(200).end();
+});
 
 export default { router };

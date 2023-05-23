@@ -105,6 +105,26 @@ class Model {
 
     return user.getConversations(version);
   }
+
+  getConversationById(conversationId) {
+    let conversation = null;
+
+    const allUsers = Array.from(this.users.values());
+
+    allUsers.forEach((user) => {
+      const corrConversation = user.getConversation(conversationId);
+      if (corrConversation) {
+        conversation = corrConversation;
+      }
+    });
+
+
+    return conversation;
+  }
+
+  modelEmit(event) {
+    this.io.emit(event);
+  }
 }
 
 export default new Model();

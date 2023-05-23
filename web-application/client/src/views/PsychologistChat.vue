@@ -168,11 +168,17 @@
             })
                 .then((response) => response.json())
                 .then((data) => {
-                this.messages = data.formatedMessages;
-                this.conversationInProgress = true;
+                    this.messages = data.formatedMessages;
+                    this.conversationInProgress = true;
+
+                    // Scroll to the bottom of the chat history
+                    this.$nextTick(() => {
+                        const chatHistory = document.getElementById("chat-history");
+                        chatHistory.scrollTop = chatHistory.scrollHeight;
+                    });
                 })
                 .catch((error) => {
-                console.error("Error:", error);
+                    console.error("Error:", error);
                 });
   
           // user idle check
@@ -192,14 +198,18 @@
             }
           };
         }
+        
+        // Scroll to the bottom of the chat history
+        this.$nextTick(() => {
+            const chatHistory = document.getElementById("chat-history");
+            chatHistory.scrollTop = chatHistory.scrollHeight;
+        });
       },
   
       sendMessage() {
         if (this.$store.state.serverDown === true) {
           return;
         }
-  
-        this.$store.state.awaitongResponse = true;
   
         const message = document.getElementById("message").value;
   
@@ -209,7 +219,7 @@
   
         this.messages.push({
           message,
-          sender: "user",
+          sender: "bot",
           videoId: null,
         });
   
@@ -220,32 +230,16 @@
           this.conversationInProgress = true;
         });
   
-        fetch("/api/send-message", {
+        fetch("/api/send-psychologist-message", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
             message,
-            version: this.$store.state.version,
+            conversationId: this.conversation,
           }),
         })
-          .then((response) => response.json())
-          .then((data) => {
-            this.messages = data.formatedMessages;
-            this.$store.state.awaitongResponse = false;
-  
-            this.$nextTick(() => {
-              // scrolls to bottom
-              const chatHistory = document.getElementById("chat-history");
-              chatHistory.scrollTop = chatHistory.scrollHeight;
-              this.conversationInProgress = true;
-            });
-          })
-          .catch((error) => {
-            console.error("Error:", error);
-            this.$store.state.awaitongResponse = false;
-          });
       },
     },
   };

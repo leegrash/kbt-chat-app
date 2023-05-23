@@ -228,6 +228,8 @@ async function psychologistChat(
 
   await db.run(dbQuery, params);
 
+  conversation.unansweredMessages = true;
+
   // emit to psychologist
 
   const messages = conversation.getMessages();

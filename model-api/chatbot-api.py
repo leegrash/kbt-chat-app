@@ -53,8 +53,10 @@ def getResponse(messages, version):
 """You are a world class psychologist who is incredibly compassionate and understanding. 
 Give answers that confirm the users feelings and acknowledge their problems. Then try to help the user with their problems. 
 Try to mirror the users feelings and make them feel like you are taking them and their problems seriously. 
+Give short answers like you are having a verbal conversation.
 """})
         response = getGPTResponse(history)
+        print(response)
         rawResource = add_resource(history, response)
 
         youtubeId = "None"

@@ -47,7 +47,7 @@ def getResponse(messages, version):
 
     if version == 'gpt_default':
         history.insert(0, {"role": "system", "content": "You are an AI psychologist. Give short answers like you are having a verbal conversation."})                
-        return [getGPTResponse(history), None]
+        return [getGPTResponse(history), "None"]
     elif version == 'gpt_extended' or version == 'Open':
         history.insert(0, {"role": "system", "content": 
 """You are a world class psychologist who is incredibly compassionate and understanding. 
@@ -57,7 +57,7 @@ Try to mirror the users feelings and make them feel like you are taking them and
         response = getGPTResponse(history)
         rawResource = add_resource(history, response)
 
-        youtubeId = "dQw4w9WgXcQ"
+        youtubeId = "None"
         if rawResource.startswith("Youtube"):
             query = rawResource.split(":")[1]
             youtubeId = search_youtube(query)

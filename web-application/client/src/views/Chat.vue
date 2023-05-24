@@ -73,6 +73,8 @@
                       ></iframe>
                     </div>
                   </div>
+                </li>
+                <li class="clearfix message-list">
                   <div v-if="typing" class="message other-message">
                     <div class="typing">
                     <div class="dot"></div>

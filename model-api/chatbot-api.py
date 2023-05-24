@@ -45,7 +45,7 @@ def getResponse(messages, version):
 
     print(version)
 
-    if version == 'gpt_default':
+    if version == 'gpt_default' or version == 'Closed':
         history.insert(0, {"role": "system", "content": "You are an AI psychologist. Give short answers like you are having a verbal conversation."})                
         return [getGPTResponse(history), "None"]
     elif version == 'gpt_extended' or version == 'Open':
@@ -76,6 +76,8 @@ Try to mirror the users feelings and make them feel like you are taking them and
             response += "\n\nHere is an exercise that might help you: \n"
             response += exercise
         return [response, youtubeId]
+    
+    return ["Something went wrong. Please try again", "None"]
     
 def parseMessages(messages):
     history = []

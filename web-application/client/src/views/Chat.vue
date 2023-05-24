@@ -60,7 +60,7 @@
                         : 'message other-message'
                     "
                   >
-                    {{ currMessage.message }}
+                    <div v-html="formatMessageLinks(currMessage.message)"></div>
                     <div
                       v-if="currMessage.videoId !== null"
                       class="embed-responsive embed-responsive-16by9 message-video"
@@ -436,6 +436,14 @@ export default {
 
     getVideoUrl(videoId) {
       return `https://www.youtube.com/embed/${videoId}`;
+    },
+
+    formatMessageLinks(message) {
+      const urlRegex = /(https?:\/\/[^\s]+)/g;
+      return message.replace(
+        urlRegex,
+        (url) => `<a href="${url}" target="_blank">${url}</a>`
+      );
     },
   },
 };

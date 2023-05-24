@@ -30,7 +30,7 @@ if (devMode==="true") {
 const app = express();
 
 let server;
-if (!devMode) {
+if (devMode==="false") {
   const relativeDirectory = dirname(fileURLToPath(import.meta.url));
   const options = {
     key: fs.readFileSync(

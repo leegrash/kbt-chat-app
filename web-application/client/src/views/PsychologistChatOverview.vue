@@ -22,8 +22,8 @@
                 type="button"
                 :class="
                   conversation.unanswered === false
-                    ? 'btn btn-success'
-                    : 'btn btn-warning'
+                    ? 'btn btn-success chat-overview-btn'
+                    : 'btn btn-warning chat-overview-btn'
                 "
                 @click="
                   redirect(conversation.conversationId, conversation.userName)

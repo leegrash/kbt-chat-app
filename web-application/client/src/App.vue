@@ -55,6 +55,15 @@
           >
           <a
             v-if="
+              $store.state.authenticatedPsychologist
+            "
+            href="#"
+            class="nav-item nav-link active"
+            @click="redirect('/psychologist-overview')"
+            >Chat overview</a
+          >
+          <a
+            v-if="
               $store.state.authenticated &&
               !$store.state.authenticatedPsychologist
             "

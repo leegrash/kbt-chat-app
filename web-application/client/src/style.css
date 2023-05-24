@@ -246,6 +246,11 @@ body {
   margin-top: 10px;
 }
 
+.chat-overview-btn {
+  margin-top: 10px;
+  margin-right: 10px;
+}
+
 @media only screen and (max-width: 992px) {
   .card {
     width: 90%;

@@ -23,7 +23,7 @@ dotenv.config({ path: resolvePath("server", ".env") });
 const { devMode } = process.env;
 
 let port = 443;
-if (devMode) {
+if (devMode==="true") {
   port = 8080;
 }
 
@@ -164,7 +164,7 @@ io.on("connection", (socket) => {
   });
 });
 
-if (devMode) {
+if (devMode==="true") {
   server.listen(port, () => {
     console.log("Server started, not using HTTPS");
     console.log(`Listening on http://localhost:${port}/`);

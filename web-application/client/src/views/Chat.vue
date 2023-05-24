@@ -73,6 +73,13 @@
                       ></iframe>
                     </div>
                   </div>
+                  <div v-if="typing" class="message other-message">
+                    <div class="typing">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                  </div>
+                  </div>
                 </li>
               </ul>
             </div>
@@ -151,6 +158,7 @@ export default {
     messages: [],
     prevConversations: [],
     botName: "",
+    typing: false,
   }),
   // when version changes this acts reactively
   watch: {
@@ -304,6 +312,10 @@ export default {
         videoId: null,
       });
 
+      if (this.$store.state.version !== "psychologist") {
+        this.typing = true;
+      }
+
       this.$nextTick(() => {
         // scrolls to bottom
         const chatHistory = document.getElementById("chat-history");
@@ -325,6 +337,10 @@ export default {
         .then((data) => {
           this.messages = data.formatedMessages;
           this.$store.state.awaitongResponse = false;
+
+          if (this.$store.state.version !== "psychologist") {
+            this.typing = false;
+          }
 
           this.$nextTick(() => {
             // scrolls to bottom

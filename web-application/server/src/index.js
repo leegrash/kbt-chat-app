@@ -8,6 +8,7 @@ import { Server } from "socket.io";
 import cookieParser from "cookie-parser";
 import fs from "fs";
 import helmet from "helmet";
+import dotenv from "dotenv";
 import { fileURLToPath } from "url";
 import path, { dirname } from "path";
 import { resolvePath } from "./util.js";
@@ -17,7 +18,9 @@ import psychologist from "./controllers/psychologist.controller.js";
 import model from "./model.js";
 import db from "./db.js";
 
-const devMode = true; // False in production
+dotenv.config({ path: resolvePath("server", ".env") });
+
+const { devMode } = process.env;
 
 let port = 443;
 if (devMode) {

@@ -23,14 +23,14 @@ dotenv.config({ path: resolvePath("server", ".env") });
 const { devMode } = process.env;
 
 let port = 443;
-if (devMode==="true") {
+if (devMode === "true") {
   port = 8080;
 }
 
 const app = express();
 
 let server;
-if (devMode==="false") {
+if (devMode === "false") {
   const relativeDirectory = dirname(fileURLToPath(import.meta.url));
   const options = {
     key: fs.readFileSync(
@@ -164,7 +164,7 @@ io.on("connection", (socket) => {
   });
 });
 
-if (devMode==="true") {
+if (devMode === "true") {
   server.listen(port, () => {
     console.log("Server started, not using HTTPS");
     console.log(`Listening on http://localhost:${port}/`);

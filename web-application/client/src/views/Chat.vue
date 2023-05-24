@@ -77,10 +77,10 @@
                 <li class="clearfix message-list">
                   <div v-if="typing" class="message other-message">
                     <div class="typing">
-                    <div class="dot"></div>
-                    <div class="dot"></div>
-                    <div class="dot"></div>
-                  </div>
+                      <div class="dot"></div>
+                      <div class="dot"></div>
+                      <div class="dot"></div>
+                    </div>
                   </div>
                 </li>
               </ul>
@@ -130,7 +130,7 @@
 <script>
 import io from "socket.io-client";
 import Cookies from "js-cookie";
-import DOMPurify from 'dompurify';
+import DOMPurify from "dompurify";
 
 export default {
   name: "ChatView",

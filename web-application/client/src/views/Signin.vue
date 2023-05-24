@@ -154,7 +154,8 @@ export default {
           throw new Error("Wrong credentials");
         })
         .then((data) => {
-          this.$store.state.psychologistOnline = data;
+          this.$store.state.psychologistOnline = data.psychologistOnline;
+          this.$store.state.botOrder = data.botOrder.split(",");
           commit("setAuthenticated", true);
           push("/survey-info");
         })

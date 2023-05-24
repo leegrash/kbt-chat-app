@@ -12,65 +12,49 @@
       </button>
       <div id="navbarCollapse" class="collapse navbar-collapse">
         <div class="navbar-nav">
-          <a
-            v-if="
-              $store.state.authenticated &&
-              !$store.state.authenticatedPsychologist
-            "
-            href="#"
-            class="nav-item nav-link active"
-            @click="redirect('/survey-info')"
-            >Survey Info</a
-          >
-          <a
-            v-if="
-              $store.state.authenticated &&
-              !$store.state.authenticatedPsychologist
-            "
-            href="#"
-            class="nav-item nav-link active"
-            @click="redirect('/chat', 'gpt_default')"
-            >Chatbot A</a
-          >
-          <a
-            v-if="
-              $store.state.authenticated &&
-              !$store.state.authenticatedPsychologist
-            "
-            href="#"
-            class="nav-item nav-link active"
-            @click="redirect('/chat', 'gpt_extended')"
-            >Chatbot B</a
-          >
-          <a
-            v-if="
-              $store.state.authenticated &&
-              !$store.state.authenticatedPsychologist &&
-              $store.state.psychologistOnline
-            "
-            href="#"
-            class="nav-item nav-link active"
-            @click="redirect('/chat', 'psychologist')"
-            >Chatbot C</a
-          >
-          <a
-            v-if="
-              $store.state.authenticatedPsychologist
-            "
-            href="#"
-            class="nav-item nav-link active"
-            @click="redirect('/psychologist-overview')"
-            >Chat overview</a
-          >
-          <a
-            v-if="
-              $store.state.authenticated &&
-              !$store.state.authenticatedPsychologist
-            "
-            href="#"
-            class="nav-item nav-link active"
-            >Survey form <i class="bi bi-box-arrow-up-right"></i
-          ></a>
+          <template v-if="$store.state.authenticated && !$store.state.authenticatedPsychologist">
+            <a
+              href="#"
+              class="nav-item nav-link active"
+              @click="redirect('/survey-info')"
+              >Survey Info</a
+            >
+            <template v-if="$store.state.psychologistOnline ">
+              <template v-if=" $store.state.authenticated && !$store.state.authenticatedPsychologist">
+                <a
+                  v-for="bot in $store.state.botOrder"
+                  :key="bot"
+                  href="#"
+                  class="nav-item nav-link active"
+                  @click="redirect('/chat', bot)"
+                  > Chatbot: {{ bot }} 
+                </a>
+              </template>
+            </template>
+            <template v-else>
+              <a
+                v-for="bot in $store.state.botOrder.filter(bot => bot !== 'Liza')"
+                :key="bot"
+                href="#"
+                class="nav-item nav-link active"
+                @click="redirect('/chat', bot)"
+                > Chatbot: {{ bot }}
+              </a>
+            </template>
+            <a
+              href="#"
+              class="nav-item nav-link active"
+              >Survey form <i class="bi bi-box-arrow-up-right"></i
+            ></a>
+          </template>
+          <template v-if="$store.state.authenticatedPsychologist">
+            <a
+              href="#"
+              class="nav-item nav-link active"
+              @click="redirect('/psychologist-overview')"
+              >Chat overview</a
+            > 
+          </template>
         </div>
         <div v-if="!$store.state.authenticated" class="navbar-nav ms-auto">
           <a
@@ -191,7 +175,19 @@ export default {
       if (version == null) {
         this.$router.push(target);
       } else {
-        this.$store.state.version = version;
+        if (version === "Mark") {
+          this.$store.state.version = "gpt_default"; 
+        }
+        else if (version === "Laura") {
+          this.$store.state.version = "gpt_extended"; 
+        }
+        else if (version === "Liza") {
+          this.$store.state.version = "psychologist";
+        }
+        else {
+          return;
+        }
+
         this.$router.push(target);
       }
     },

@@ -6,10 +6,11 @@ import db from "../db.js";
  */
 
 class User {
-  constructor(id, name = null) {
+  constructor(id, name = null, botOrder = null) {
     this.id = id;
     this.conversations = [];
     this.activeConversation = null;
+    this.botOrder = botOrder;
 
     if (name !== null) {
       this.name = name;
@@ -29,6 +30,7 @@ class User {
         throw new Error(err);
       } else {
         this.name = row.username;
+        this.botOrder = row.botOrder;
       }
     });
   }

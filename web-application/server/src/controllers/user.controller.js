@@ -67,10 +67,16 @@ router.post("/signup", async (req, res) => {
 
   const saltRounds = 10;
 
+  const bots = ["Mike", "Laura", "Liza"];
+
+  const shuffledBots = bots.sort(() => 0.5 - Math.random());
+
+  const botOrder = shuffledBots.join(",");
+
   let hashedPassword = "";
   const query = `
-    INSERT INTO users (userId, username, password)
-    SELECT ?, ?, ?
+    INSERT INTO users (userId, username, password, botOrder)
+    SELECT ?, ?, ?, ?
     WHERE NOT EXISTS (SELECT 1 FROM users WHERE username = ?)
   `;
 
@@ -78,7 +84,7 @@ router.post("/signup", async (req, res) => {
     try {
       hashedPassword = await bcrypt.hash(password, saltRounds);
       const userId = uuidv4();
-      const params = [userId, username, hashedPassword, username];
+      const params = [userId, username, hashedPassword, botOrder, username];
       await db.run(query, params);
       res.status(201).end();
     } catch (error) {
@@ -116,11 +122,13 @@ router.post("/signin", async (req, res) => {
 
       const psychologistOnline = model.isPsychologistOnline();
 
-      model.addUser(sessionId, row.userId, row.username);
+      model.addUser(sessionId, row.userId, row.username, row.botOrder);
 
       model.modelEmit("psychologistConversationsUpdate");
 
-      res.status(202).json(psychologistOnline).end();
+      const {botOrder} = row;
+
+      res.status(202).json({ psychologistOnline, botOrder }).end();
     } else {
       res.status(401).end();
     }

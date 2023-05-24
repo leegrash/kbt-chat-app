@@ -248,11 +248,11 @@ export default {
   created() {
     this.laodPage();
     if (this.$store.state.version === "gpt_default") {
-      this.botName = "Chatbot A";
+      this.botName = "Mike";
     } else if (this.$store.state.version === "gpt_extended") {
-      this.botName = "Chatbot B";
+      this.botName = "Laura";
     } else if (this.$store.state.version === "psychologist") {
-      this.botName = "Chatbot C";
+      this.botName = "Liza";
     }
   },
   methods: {

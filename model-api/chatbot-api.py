@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 from gpt_api import getChatbotResponse as getGPTResponse
 from resources import add_resource
 from youtube import search_youtube
+from search_google import google_search
 import re
 import openai
 import os
@@ -61,12 +62,19 @@ Try to mirror the users feelings and make them feel like you are taking them and
             query = rawResource.split(":")[1]
             youtubeId = search_youtube(query)
         elif rawResource.startswith("Website"):
-            resource = "website"
+            resource = rawResource.split(":")[1]
+            response += "\n\nHere is a website that might help you: \n"
+            response += google_search(f"{resource} website")[0]["link"]
         elif rawResource.startswith("App"):
-            resource = "app"
+            resource = rawResource.split(":")[1]
+            response += "\n\nHere is an app that might help you: \n"
+            response += google_search(f"{resource} app download appstore")[0]["link"] + "\n"
+            response += google_search(f"{resource} app download google play store")[0]["link"]
+
         elif rawResource.startswith("Exercise"):
             exercise = rawResource.split(":")[1]
-
+            response += "\n\nHere is an exercise that might help you: \n"
+            response += exercise
         return [response, youtubeId]
     
 def parseMessages(messages):

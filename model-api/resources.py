@@ -30,7 +30,6 @@ This is the conversation:
     print(response.choices[0].message.content)
 
     return response.choices[0].message.content
-
     
 
 def parse_conv(history, lastMessage):

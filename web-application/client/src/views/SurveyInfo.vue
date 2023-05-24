@@ -15,54 +15,44 @@
               again.
             </div>
             <h1 class="page-title">Information about survey</h1>
-            <div class="row page-content">
-              <h2>Chatbot A</h2>
-              <p>
-                This is teh first Chatbot that you will be able to try. To start
-                speaking to it, click the button below or click on the Chatbot A
-                tab in the navigation bar.
-              </p>
-              <button
-                type="button"
-                class="btn btn-primary"
-                @click="redirect('/chat', 'gpt_default')"
-              >
-                Try Chatbot A
-              </button>
-            </div>
-            <div class="row page-content">
-              <h2>Chatbot B</h2>
-              <p>
-                This is the second Chatbot that you will be able to try. To
-                start speaking to it, click the button below or click on the
-                Chatbot B tab in the navigation bar.
-              </p>
-              <button
-                type="button"
-                class="btn btn-primary"
-                @click="redirect('/chat', 'gpt_extended')"
-              >
-                Try Chatbot B
-              </button>
-            </div>
-            <div
-              v-if="$store.state.psychologistOnline"
-              class="row page-content"
-            >
-              <h2>Chatbot C</h2>
-              <p>
-                This is the third Chatbot that you will be able to try. To start
-                speaking to it, click the button below or click on the Chatbot C
-                tab in the navigation bar.
-              </p>
-              <button
-                type="button"
-                class="btn btn-primary"
-                @click="redirect('/chat', 'psychologist')"
-              >
-                Try Chatbot C
-              </button>
-            </div>
+            <template v-if="$store.state.psychologistOnline">
+              <template v-for="bot in $store.state.botOrder" :key="bot">
+                  <div class="row page-content">
+                    <h2>Chatbot: {{ bot }}</h2>
+                    <p>
+                      This is the {{ formatedIndex($store.state.botOrder.indexOf(bot)) }} Chatbot that you will be able to try. To
+                      start speaking to it, click the button below or click on the
+                      Chatbot: {{ bot }} tab in the navigation bar.
+                    </p>
+                    <button
+                      type="button"
+                      class="btn btn-primary"
+                      @click="redirect('/chat', bot)"
+                    >
+                      Try Chatbot: {{ bot }}
+                    </button>
+                  </div>
+              </template>
+            </template>
+            <template v-if="!$store.state.psychologistOnline">
+              <template v-for="bot in $store.state.botOrder.filter(bot => bot !== 'Liza')" :key="bot">
+                  <div class="row page-content">
+                    <h2>Chatbot: {{ bot }}</h2>
+                    <p>
+                      This is the {{ formatedIndex($store.state.botOrder.indexOf(bot)) }} Chatbot that you will be able to try. To
+                      start speaking to it, click the button below or click on the
+                      Chatbot: {{ bot }} tab in the navigation bar.
+                    </p>
+                    <button
+                      type="button"
+                      class="btn btn-primary"
+                      @click="redirect('/chat', bot)"
+                    >
+                      Try Chatbot: {{ bot }}
+                    </button>
+                  </div>
+              </template>
+            </template>
             <div class="row page-content">
               <h2>Survey form</h2>
               <p>
@@ -138,13 +128,34 @@ export default {
     };
   },
   methods: {
-    redirect(target, version = null) {
-      if (version == null) {
-        this.$router.push(target);
-      } else {
-        this.$store.state.version = version;
-        this.$router.push(target);
+    redirect(target, version) {
+      if (version === "Mike") {
+        this.$store.state.version = "gpt_default"; 
       }
+      else if (version === "Laura") {
+        this.$store.state.version = "gpt_extended"; 
+      }
+      else if (version === "Liza") {
+        this.$store.state.version = "psychologist";
+      }
+
+      this.$router.push(target);
+    },
+
+    formatedIndex(index) {
+      const botIndex = index + 1;
+
+      let formatedIndex = "";
+
+      if (botIndex === 1) {
+        formatedIndex = "first";
+      } else if (botIndex === 2) {
+        formatedIndex =  "second";
+      } else if (botIndex === 3) {
+        formatedIndex =  "third";
+      }
+
+      return formatedIndex;
     },
   },
 };

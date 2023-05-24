@@ -96,7 +96,7 @@ def getTitle(history):
     messages = [{"role": "user", "content": "Give a short (max 4 words) title that summarizes the following conversation: "
         + str(parseMessages(history))}]
     title = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
+        model="gpt-4",
         messages=messages
     )
 

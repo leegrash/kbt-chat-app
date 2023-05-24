@@ -25,7 +25,7 @@
               <button
                 type="button"
                 class="btn btn-primary"
-                @click="redirect('/chat', 'Closed')"
+                @click="redirect('/chat', 'gpt_default')"
               >
                 Try Chatbot A
               </button>
@@ -40,7 +40,7 @@
               <button
                 type="button"
                 class="btn btn-primary"
-                @click="redirect('/chat', 'Open')"
+                @click="redirect('/chat', 'gpt_extended')"
               >
                 Try Chatbot B
               </button>
@@ -58,7 +58,7 @@
               <button
                 type="button"
                 class="btn btn-primary"
-                @click="redirect('/chat', 'Mixed')"
+                @click="redirect('/chat', 'psychologist')"
               >
                 Try Chatbot C
               </button>

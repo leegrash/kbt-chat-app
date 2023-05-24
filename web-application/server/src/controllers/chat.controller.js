@@ -83,8 +83,9 @@ async function botChat(sessionId, conversationId, message, version) {
 
     modelResponse = responseData.response;
     conversationTitle = responseData.title;
-    videoId = responseData.videoId;
-
+    if(responseData.videoId !== "None"){
+      videoId = responseData.videoId;
+    }
     apiRequestSuccess = true;
   } catch (error) {
     console.error("Model API not available");

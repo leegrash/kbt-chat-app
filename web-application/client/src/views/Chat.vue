@@ -130,6 +130,7 @@
 <script>
 import io from "socket.io-client";
 import Cookies from "js-cookie";
+import DOMPurify from 'dompurify';
 
 export default {
   name: "ChatView",
@@ -458,10 +459,11 @@ export default {
 
     formatMessageLinks(message) {
       const urlRegex = /(https?:\/\/[^\s]+)/g;
-      return message.replace(
-        urlRegex,
-        (url) => `<a href="${url}" target="_blank">${url}</a>`
-      );
+      const sanitizedMessage = message.replace(urlRegex, (url) => {
+        const sanitizedURL = DOMPurify.sanitize(url);
+        return `<a href="${sanitizedURL}" target="_blank">${sanitizedURL}</a>`;
+      });
+      return sanitizedMessage;
     },
   },
 };

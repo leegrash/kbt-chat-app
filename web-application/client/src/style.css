@@ -118,7 +118,7 @@ body {
 
 .chat .chat-history .other-message:after {
   border-bottom-color: #e8f1f3;
-  left: 7%;
+  left: 20px;
 }
 
 .chat .chat-message {

@@ -309,6 +309,11 @@ export default {
 
       document.getElementById("message").value = ""; // clears input
 
+      if (this.$store.state.version !== "psychologist") {
+        document.getElementById("message").disabled = true;
+        document.getElementById("message").placeholder = "Awaiting response...";
+      }
+
       this.messages.push({
         message,
         sender: "user",
@@ -340,6 +345,11 @@ export default {
         .then((data) => {
           this.messages = data.formatedMessages;
           this.$store.state.awaitongResponse = false;
+
+          if (this.$store.state.version !== "psychologist") {
+            document.getElementById("message").disabled = false;
+            document.getElementById("message").placeholder = "Type a message...";
+          }
 
           if (this.$store.state.version !== "psychologist") {
             this.typing = false;

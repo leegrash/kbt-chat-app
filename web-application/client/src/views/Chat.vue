@@ -365,6 +365,10 @@ export default {
         .catch((error) => {
           console.error("Error:", error);
           this.$store.state.awaitongResponse = false;
+          if (this.$store.state.version !== "psychologist") {
+            document.getElementById("message").disabled = false;
+            document.getElementById("message").placeholder = "Type a message...";
+          }
         });
     },
 

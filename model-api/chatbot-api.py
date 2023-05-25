@@ -95,7 +95,7 @@ def parseMessages(messages):
     return history
 
 def getTitle(history):
-    openai.api_key = os.getenv("OPENAI_API_KEY_ISAK")
+    openai.api_key = os.getenv("OPENAI_API_KEY_2")
 
     messages = [{"role": "user", "content": "Give a short (max 4 words) title that summarizes the following conversation: "
         + str(parseMessages(history))}]

@@ -7,7 +7,7 @@ def add_resource(history, lastMessage):
     conv = parse_conv(history, lastMessage)
 
     dotenv.load_dotenv()
-    openai.api_key = os.getenv("OPENAI_API_KEY_ISAK")    
+    openai.api_key = os.getenv("OPENAI_API_KEY_2")    
 
     prompt = """I will send you a conversation between a user and an AI Psychologist. Your task is to determine if it would be appropriate to append a youtube link, a link to a website, a link to an app, or an AI Generated exercise to the last message by the AI Psychologist. 
 If you think it is appropriate to send a youtube video: send a query to search on youtube that is fitting to the last message. Send it on this format: "Youtube: {query}".

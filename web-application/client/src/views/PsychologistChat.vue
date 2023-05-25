@@ -50,7 +50,7 @@
                         : 'message my-message'
                     "
                   >
-                    {{ currMessage.message }}
+                    <div v-html="formatMessageLinks(currMessage.message)"></div>
                     <div
                       v-if="currMessage.videoId !== null"
                       class="embed-responsive embed-responsive-16by9 message-video"
@@ -244,6 +244,15 @@ export default {
           conversationId: this.conversation,
         }),
       });
+    },
+
+    formatMessageLinks(message) {
+      const urlRegex = /(https?:\/\/[^\s]+)/g;
+      const sanitizedMessage = message.replace(urlRegex, (url) => {
+        const sanitizedURL = DOMPurify.sanitize(url);
+        return `<a href="${sanitizedURL}" target="_blank">${sanitizedURL}</a>`;
+      });
+      return sanitizedMessage;
     },
   },
 };

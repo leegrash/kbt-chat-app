@@ -94,7 +94,7 @@
           class="navbar-nav ms-auto"
         >
           <a
-            href="mailto:email@example.com?subject=Kbt bot contact"
+            href="mailto:cbt.chat.contact@gmail.com?subject=CBT Bot Contact"
             class="btn btn-info"
             >Contact <i class="bi bi-envelope"></i
           ></a>

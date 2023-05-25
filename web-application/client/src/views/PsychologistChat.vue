@@ -97,6 +97,7 @@
 <script>
 import io from "socket.io-client";
 import Cookies from "js-cookie";
+import DOMPurify from "dompurify";
 
 export default {
   name: "PsychologistChatView",

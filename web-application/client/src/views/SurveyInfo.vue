@@ -17,40 +17,53 @@
             <h1 class="page-title">Information about survey</h1>
             <template v-if="$store.state.psychologistOnline">
               <template v-for="bot in $store.state.botOrder" :key="bot">
-                  <div class="row page-content">
-                    <h2>Chatbot: {{ bot }}</h2>
-                    <p>
-                      This is the {{ formatedIndex($store.state.botOrder.indexOf(bot)) }} Chatbot that you will be able to try. To
-                      start speaking to it, click the button below or click on the
-                      Chatbot: {{ bot }} tab in the navigation bar.
-                    </p>
-                    <button
-                      type="button"
-                      class="btn btn-primary"
-                      @click="redirect('/chat', bot)"
-                    >
-                      Try Chatbot: {{ bot }}
-                    </button>
-                  </div>
+                <div class="row page-content">
+                  <h2>Chatbot: {{ bot }}</h2>
+                  <p>
+                    This is the
+                    {{
+                      formatedIndex($store.state.botOrder.indexOf(bot))
+                    }}
+                    Chatbot that you will be able to try. To start speaking to
+                    it, click the button below or click on the Chatbot:
+                    {{ bot }} tab in the navigation bar.
+                  </p>
+                  <button
+                    type="button"
+                    class="btn btn-primary"
+                    @click="redirect('/chat', bot)"
+                  >
+                    Try Chatbot: {{ bot }}
+                  </button>
+                </div>
               </template>
             </template>
             <template v-if="!$store.state.psychologistOnline">
-              <template v-for="bot in $store.state.botOrder.filter(bot => bot !== 'Liza')" :key="bot">
-                  <div class="row page-content">
-                    <h2>Chatbot: {{ bot }}</h2>
-                    <p>
-                      This is the {{ formatedIndex($store.state.botOrder.indexOf(bot)) }} Chatbot that you will be able to try. To
-                      start speaking to it, click the button below or click on the
-                      Chatbot: {{ bot }} tab in the navigation bar.
-                    </p>
-                    <button
-                      type="button"
-                      class="btn btn-primary"
-                      @click="redirect('/chat', bot)"
-                    >
-                      Try Chatbot: {{ bot }}
-                    </button>
-                  </div>
+              <template
+                v-for="bot in $store.state.botOrder.filter(
+                  (bot) => bot !== 'Liza'
+                )"
+                :key="bot"
+              >
+                <div class="row page-content">
+                  <h2>Chatbot: {{ bot }}</h2>
+                  <p>
+                    This is the
+                    {{
+                      formatedIndex($store.state.botOrder.indexOf(bot))
+                    }}
+                    Chatbot that you will be able to try. To start speaking to
+                    it, click the button below or click on the Chatbot:
+                    {{ bot }} tab in the navigation bar.
+                  </p>
+                  <button
+                    type="button"
+                    class="btn btn-primary"
+                    @click="redirect('/chat', bot)"
+                  >
+                    Try Chatbot: {{ bot }}
+                  </button>
+                </div>
               </template>
             </template>
             <div class="row page-content">
@@ -60,7 +73,11 @@
                 form. This will help us to evaluate the Chatbots for our
                 Bachelor's thesis.
               </p>
-              <a href="https://forms.gle/Uf45xPHNx74qx25X8" target="_blank" rel="noopener noreferrer" class="btn btn-primary"
+              <a
+                href="https://forms.gle/Uf45xPHNx74qx25X8"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn btn-primary"
                 >Fill out the survey form
                 <i class="bi bi-box-arrow-up-right"></i
               ></a>
@@ -130,12 +147,10 @@ export default {
   methods: {
     redirect(target, version) {
       if (version === "Mike") {
-        this.$store.state.version = "gpt_default"; 
-      }
-      else if (version === "Laura") {
-        this.$store.state.version = "gpt_extended"; 
-      }
-      else if (version === "Liza") {
+        this.$store.state.version = "gpt_default";
+      } else if (version === "Laura") {
+        this.$store.state.version = "gpt_extended";
+      } else if (version === "Liza") {
         this.$store.state.version = "psychologist";
       }
 
@@ -150,9 +165,9 @@ export default {
       if (botIndex === 1) {
         formatedIndex = "first";
       } else if (botIndex === 2) {
-        formatedIndex =  "second";
+        formatedIndex = "second";
       } else if (botIndex === 3) {
-        formatedIndex =  "third";
+        formatedIndex = "third";
       }
 
       return formatedIndex;

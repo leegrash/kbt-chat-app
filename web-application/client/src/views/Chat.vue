@@ -348,7 +348,8 @@ export default {
 
           if (this.$store.state.version !== "psychologist") {
             document.getElementById("message").disabled = false;
-            document.getElementById("message").placeholder = "Type a message...";
+            document.getElementById("message").placeholder =
+              "Type a message...";
           }
 
           if (this.$store.state.version !== "psychologist") {
@@ -367,7 +368,8 @@ export default {
           this.$store.state.awaitongResponse = false;
           if (this.$store.state.version !== "psychologist") {
             document.getElementById("message").disabled = false;
-            document.getElementById("message").placeholder = "Type a message...";
+            document.getElementById("message").placeholder =
+              "Type a message...";
           }
         });
     },

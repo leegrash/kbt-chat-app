@@ -126,7 +126,7 @@ router.post("/signin", async (req, res) => {
 
       model.modelEmit("psychologistConversationsUpdate");
 
-      const {botOrder} = row;
+      const { botOrder } = row;
 
       res.status(202).json({ psychologistOnline, botOrder }).end();
     } else {

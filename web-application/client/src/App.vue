@@ -12,33 +12,47 @@
       </button>
       <div id="navbarCollapse" class="collapse navbar-collapse">
         <div class="navbar-nav">
-          <template v-if="$store.state.authenticated && !$store.state.authenticatedPsychologist">
+          <template
+            v-if="
+              $store.state.authenticated &&
+              !$store.state.authenticatedPsychologist
+            "
+          >
             <a
               href="#"
               class="nav-item nav-link active"
               @click="redirect('/survey-info')"
               >Survey Info</a
             >
-            <template v-if="$store.state.psychologistOnline ">
-              <template v-if=" $store.state.authenticated && !$store.state.authenticatedPsychologist">
+            <template v-if="$store.state.psychologistOnline">
+              <template
+                v-if="
+                  $store.state.authenticated &&
+                  !$store.state.authenticatedPsychologist
+                "
+              >
                 <a
                   v-for="bot in $store.state.botOrder"
                   :key="bot"
                   href="#"
                   class="nav-item nav-link active"
                   @click="redirect('/chat', bot)"
-                  > Chatbot: {{ bot }} 
+                >
+                  Chatbot: {{ bot }}
                 </a>
               </template>
             </template>
             <template v-else>
               <a
-                v-for="bot in $store.state.botOrder.filter(bot => bot !== 'Liza')"
+                v-for="bot in $store.state.botOrder.filter(
+                  (bot) => bot !== 'Liza'
+                )"
                 :key="bot"
                 href="#"
                 class="nav-item nav-link active"
                 @click="redirect('/chat', bot)"
-                > Chatbot: {{ bot }}
+              >
+                Chatbot: {{ bot }}
               </a>
             </template>
             <a
@@ -55,7 +69,7 @@
               class="nav-item nav-link active"
               @click="redirect('/psychologist-overview')"
               >Chat overview</a
-            > 
+            >
           </template>
         </div>
         <div v-if="!$store.state.authenticated" class="navbar-nav ms-auto">
@@ -179,15 +193,12 @@ export default {
         this.$router.push(target);
       } else {
         if (version === "Mike") {
-          this.$store.state.version = "gpt_default"; 
-        }
-        else if (version === "Laura") {
-          this.$store.state.version = "gpt_extended"; 
-        }
-        else if (version === "Liza") {
+          this.$store.state.version = "gpt_default";
+        } else if (version === "Laura") {
+          this.$store.state.version = "gpt_extended";
+        } else if (version === "Liza") {
           this.$store.state.version = "psychologist";
-        }
-        else {
+        } else {
           return;
         }
         console.log("redirect ", this.$store.state.version);

@@ -60,7 +60,7 @@
                 form. This will help us to evaluate the Chatbots for our
                 Bachelor's thesis.
               </p>
-              <a href="#" target="_blank" class="btn btn-primary"
+              <a href="https://forms.gle/Uf45xPHNx74qx25X8" target="_blank" rel="noopener noreferrer" class="btn btn-primary"
                 >Fill out the survey form
                 <i class="bi bi-box-arrow-up-right"></i
               ></a>

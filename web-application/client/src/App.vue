@@ -42,7 +42,9 @@
               </a>
             </template>
             <a
-              href="#"
+              href="https://forms.gle/Uf45xPHNx74qx25X8"
+              target="_blank"
+              rel="noopener noreferrer"
               class="nav-item nav-link active"
               >Survey form <i class="bi bi-box-arrow-up-right"></i
             ></a>

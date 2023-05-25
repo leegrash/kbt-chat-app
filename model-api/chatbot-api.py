@@ -12,6 +12,16 @@ dotenv.load_dotenv()
 
 app = Flask(__name__)
 
+@app.route('/get-title', methods=['POST'])
+def get_title():
+    data = request.get_json()
+
+    messages = data['messages']
+
+    title = getTitle(messages)
+
+    return jsonify({'title': title})
+
 @app.route('/chatbot', methods=['POST'])
 def get_chatbot_response():
     data = request.get_json()

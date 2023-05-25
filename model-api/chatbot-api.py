@@ -74,7 +74,7 @@ Give short answers like you are having a verbal conversation.
             response += google_search(f"{resource} app download google play store")[0]["link"]
 
         elif rawResource.startswith("Exercise"):
-            exercise = rawResource.split(":")[1]
+            exercise = rawResource.split(":")[1].strip()
             response += "\n\nHere is an exercise that might help you: \n"
             response += exercise
         return [response, youtubeId]
@@ -95,12 +95,12 @@ def parseMessages(messages):
     return history
 
 def getTitle(history):
-    openai.api_key = os.getenv("OPENAI_API_KEY")
+    openai.api_key = os.getenv("OPENAI_API_KEY_ISAK")
 
     messages = [{"role": "user", "content": "Give a short (max 4 words) title that summarizes the following conversation: "
         + str(parseMessages(history))}]
     title = openai.ChatCompletion.create(
-        model="gpt-4",
+        model="gpt-3.5-turbo",
         messages=messages
     )
 

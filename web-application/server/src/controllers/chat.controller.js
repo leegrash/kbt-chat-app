@@ -175,11 +175,68 @@ async function psychologistChat(
 
   conversation.addMessage(newMessage, "user");
 
-  // get title for conversation from chatGPT
+  const msgHistory = conversation.getMessages();
 
-  const conversationTitle = "Test title";
+  const data = JSON.stringify({
+    messages: msgHistory,
+  });
 
-  conversation.setTitle(conversationTitle);
+  const options = {
+    hostname: "127.0.0.1",
+    port: 5000,
+    path: "/get-title",
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Content-Length": data.length,
+    },
+  };
+
+  const sendHttpRequest = (modelOptions, modelData) =>
+    new Promise((resolve, reject) => {
+      const modelReq = http.request(modelOptions, (modelRes) => {
+        let responseData = "";
+        modelRes.on("data", (chunk) => {
+          responseData += chunk;
+        });
+        modelRes.on("end", () => {
+          const { statusCode } = modelRes;
+          if (statusCode >= 200 && statusCode < 300) {
+            resolve(responseData);
+          } else {
+            reject(new Error(`Request failed with status code ${statusCode}`));
+          }
+        });
+      });
+
+      modelReq.on("error", (error) => {
+        reject(error);
+      });
+
+      modelReq.write(modelData);
+      modelReq.end();
+    });
+
+  let apiRequestSuccess = false;
+
+  let conversationTitle = null;
+
+  try {
+    const modelReqPromise = sendHttpRequest(options, data);
+    const modelRes = await modelReqPromise;
+
+    const responseData = JSON.parse(modelRes);
+
+    conversationTitle = responseData.title;
+
+    apiRequestSuccess = true;
+  } catch (error) {
+    console.error("Model API not available");
+  }
+
+  if (apiRequestSuccess) {
+    conversation.setTitle(conversationTitle);
+  }
 
   let dbQuery = `
         SELECT EXISTS (SELECT * FROM userConversations where conversationUUID = ?)

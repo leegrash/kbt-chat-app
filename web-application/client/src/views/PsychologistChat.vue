@@ -97,6 +97,7 @@
 <script>
 import io from "socket.io-client";
 import Cookies from "js-cookie";
+import DOMPurify from "dompurify";
 
 export default {
   name: "PsychologistChatView",
@@ -129,7 +130,7 @@ export default {
     });
     this.socket.on("connect", () => {
       this.$store.state.serverDown = false;
-      this.loadPrevConversation(this.Cookies.get("conversationId"));
+      this.loadPrevConversation(Cookies.get("conversationId"));
     });
 
     // checks if user is idle

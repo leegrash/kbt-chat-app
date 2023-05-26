@@ -12,37 +12,53 @@
       </button>
       <div id="navbarCollapse" class="collapse navbar-collapse">
         <div class="navbar-nav">
-          <template v-if="$store.state.authenticated && !$store.state.authenticatedPsychologist">
+          <template
+            v-if="
+              $store.state.authenticated &&
+              !$store.state.authenticatedPsychologist
+            "
+          >
             <a
               href="#"
               class="nav-item nav-link active"
               @click="redirect('/survey-info')"
               >Survey Info</a
             >
-            <template v-if="$store.state.psychologistOnline ">
-              <template v-if=" $store.state.authenticated && !$store.state.authenticatedPsychologist">
+            <template v-if="$store.state.psychologistOnline">
+              <template
+                v-if="
+                  $store.state.authenticated &&
+                  !$store.state.authenticatedPsychologist
+                "
+              >
                 <a
                   v-for="bot in $store.state.botOrder"
                   :key="bot"
                   href="#"
                   class="nav-item nav-link active"
                   @click="redirect('/chat', bot)"
-                  > Chatbot: {{ bot }} 
+                >
+                  Chatbot: {{ bot }}
                 </a>
               </template>
             </template>
             <template v-else>
               <a
-                v-for="bot in $store.state.botOrder.filter(bot => bot !== 'Liza')"
+                v-for="bot in $store.state.botOrder.filter(
+                  (bot) => bot !== 'Liza'
+                )"
                 :key="bot"
                 href="#"
                 class="nav-item nav-link active"
                 @click="redirect('/chat', bot)"
-                > Chatbot: {{ bot }}
+              >
+                Chatbot: {{ bot }}
               </a>
             </template>
             <a
-              href="#"
+              href="https://forms.gle/Uf45xPHNx74qx25X8"
+              target="_blank"
+              rel="noopener noreferrer"
               class="nav-item nav-link active"
               >Survey form <i class="bi bi-box-arrow-up-right"></i
             ></a>
@@ -53,7 +69,7 @@
               class="nav-item nav-link active"
               @click="redirect('/psychologist-overview')"
               >Chat overview</a
-            > 
+            >
           </template>
         </div>
         <div v-if="!$store.state.authenticated" class="navbar-nav ms-auto">
@@ -94,7 +110,7 @@
           class="navbar-nav ms-auto"
         >
           <a
-            href="mailto:email@example.com?subject=Kbt bot contact"
+            href="mailto:cbt.chat.contact@gmail.com?subject=CBT Bot Contact"
             class="btn btn-info"
             >Contact <i class="bi bi-envelope"></i
           ></a>
@@ -164,31 +180,24 @@ export default {
   },
   methods: {
     redirect(target, version = null) {
-      console.log("redirect ", version);
       if (this.$store.state.serverDown === true) {
         return;
       }
-      console.log("redirect ", version);
       if (this.$store.state.awaitongResponse === true) {
         return;
       }
-      console.log("redirect ", version);
       if (version == null) {
         this.$router.push(target);
       } else {
         if (version === "Mike") {
-          this.$store.state.version = "gpt_default"; 
-        }
-        else if (version === "Laura") {
-          this.$store.state.version = "gpt_extended"; 
-        }
-        else if (version === "Liza") {
+          this.$store.state.version = "gpt_default";
+        } else if (version === "Laura") {
+          this.$store.state.version = "gpt_extended";
+        } else if (version === "Liza") {
           this.$store.state.version = "psychologist";
-        }
-        else {
+        } else {
           return;
         }
-        console.log("redirect ", this.$store.state.version);
         this.$router.push(target);
       }
     },
@@ -203,8 +212,9 @@ export default {
       });
 
       this.$store.commit("setAuthenticated", false);
-      this.$store.state.version = null;
       this.$store.state.msg = "Successfully signed out!";
+      this.$store.state.signOutInProgress = true;
+      this.$store.state.version = null;
       this.$router.push("/signin");
     },
     isSigninRoute() {

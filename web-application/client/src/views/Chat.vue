@@ -137,19 +137,21 @@ export default {
   components: {},
   // sometimes the user will leave the page without starting the conversation
   beforeRouteLeave(to, from, next) {
-    fetch("/api/clear-empty-conversations", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => {
-        if (res.status !== 200)
-          throw new Error("Failed to clear empty conversations");
+    if (!this.$store.state.signOutInProgress) {
+      fetch("/api/clear-empty-conversations", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
       })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+        .then((res) => {
+          if (res.status !== 200)
+            throw new Error("Failed to clear empty conversations");
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        }); 
+    }
 
     this.socket.disconnect();
     next();
@@ -167,6 +169,8 @@ export default {
   watch: {
     "$store.state.version": {
       handler() {
+        if (this.$store.state.signOutInProgress) return;
+
         fetch("/api/clear-empty-conversations", {
           method: "PUT",
           headers: {
@@ -219,7 +223,7 @@ export default {
     });
     this.socket.on("connect", () => {
       this.$store.state.serverDown = false;
-      this.loadPrevConversation(this.Cookies.get("conversationId"));
+      this.loadPrevConversation(Cookies.get("conversationId"));
     });
 
     // checks if user is idle
@@ -234,7 +238,6 @@ export default {
 
       if (this.$store.state.version === "psychologist") {
         this.socket.on("newMessageFromBot", () => {
-          console.log("new message from bot");
           this.reloadConversation();
         });
       }
@@ -309,6 +312,11 @@ export default {
 
       document.getElementById("message").value = ""; // clears input
 
+      if (this.$store.state.version !== "psychologist") {
+        document.getElementById("message").disabled = true;
+        document.getElementById("message").placeholder = "Awaiting response...";
+      }
+
       this.messages.push({
         message,
         sender: "user",
@@ -342,6 +350,12 @@ export default {
           this.$store.state.awaitongResponse = false;
 
           if (this.$store.state.version !== "psychologist") {
+            document.getElementById("message").disabled = false;
+            document.getElementById("message").placeholder =
+              "Type a message...";
+          }
+
+          if (this.$store.state.version !== "psychologist") {
             this.typing = false;
           }
 
@@ -355,6 +369,11 @@ export default {
         .catch((error) => {
           console.error("Error:", error);
           this.$store.state.awaitongResponse = false;
+          if (this.$store.state.version !== "psychologist") {
+            document.getElementById("message").disabled = false;
+            document.getElementById("message").placeholder =
+              "Type a message...";
+          }
         });
     },
 
@@ -381,7 +400,9 @@ export default {
         .then((data) => {
           this.messages = data.formatedMessages;
           this.prevConversations = data.prevTitles;
-          this.conversationInProgress = true;
+          if (this.messages.length > 1) {
+            this.conversationInProgress = true; 
+          }
 
           this.$nextTick(() => {
             const chatHistory = document.getElementById("chat-history");
@@ -415,7 +436,9 @@ export default {
         .then((data) => {
           this.messages = data.messages;
           this.prevConversations = data.prevTitles;
-          this.conversationInProgress = false;
+          if (this.messages.length > 1) {
+            this.conversationInProgress = true; 
+          }
 
           this.$nextTick(() => {
             const chatHistory = document.getElementById("chat-history");
@@ -439,9 +462,10 @@ export default {
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log(data);
           this.messages = data.formatedMessages;
-          this.conversationInProgress = true;
+          if (this.messages.length > 1) {
+            this.conversationInProgress = true; 
+          }
 
           this.$nextTick(() => {
             const chatHistory = document.getElementById("chat-history");

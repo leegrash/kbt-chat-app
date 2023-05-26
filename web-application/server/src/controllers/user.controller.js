@@ -122,8 +122,10 @@ router.post("/signin", async (req, res) => {
 
       const psychologistOnline = model.isPsychologistOnline();
 
+      // Save locally so we don't have to query the database
       model.addUser(sessionId, row.userId, row.username, row.botOrder);
 
+      // Emits to the psychology view that a user is online
       model.modelEmit("psychologistConversationsUpdate");
 
       const { botOrder } = row;

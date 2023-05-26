@@ -150,7 +150,7 @@ export default {
         })
         .catch((error) => {
           console.error("Error:", error);
-        }); 
+        });
     }
 
     this.socket.disconnect();
@@ -401,7 +401,7 @@ export default {
           this.messages = data.formatedMessages;
           this.prevConversations = data.prevTitles;
           if (this.messages.length > 1) {
-            this.conversationInProgress = true; 
+            this.conversationInProgress = true;
           }
 
           this.$nextTick(() => {
@@ -437,7 +437,7 @@ export default {
           this.messages = data.messages;
           this.prevConversations = data.prevTitles;
           if (this.messages.length > 1) {
-            this.conversationInProgress = true; 
+            this.conversationInProgress = true;
           }
 
           this.$nextTick(() => {
@@ -464,7 +464,7 @@ export default {
         .then((data) => {
           this.messages = data.formatedMessages;
           if (this.messages.length > 1) {
-            this.conversationInProgress = true; 
+            this.conversationInProgress = true;
           }
 
           this.$nextTick(() => {
@@ -484,7 +484,7 @@ export default {
     formatMessageLinks(message) {
       const urlRegex = /(https?:\/\/[^\s]+)/g;
       const sanitizedMessage = message.replace(urlRegex, (url) => {
-        const sanitizedURL = DOMPurify.sanitize(url);
+        const sanitizedURL = DOMPurify.sanitize(url); // Cleans the link to prevents XSS
         return `<a href="${sanitizedURL}" target="_blank">${sanitizedURL}</a>`;
       });
       return sanitizedMessage;

@@ -24,9 +24,7 @@
                   <h2>Chatbot: {{ bot }}</h2>
                   <p>
                     This is the
-                    {{
-                      formatedIndex($store.state.botOrder.indexOf(bot))
-                    }}
+                    {{ formatedIndex($store.state.botOrder.indexOf(bot)) }}
                     Chatbot that you will be able to try. To start speaking to
                     it, click the button below or click on the Chatbot:
                     {{ bot }} tab in the navigation bar.
@@ -52,8 +50,12 @@
                   <h2>Chatbot: {{ bot }}</h2>
                   <p>
                     This is the
-                    {{ 
-                      formatedIndex($store.state.botOrder.filter(item => item !== 'Liza').indexOf(bot))
+                    {{
+                      formatedIndex(
+                        $store.state.botOrder
+                          .filter((item) => item !== "Liza")
+                          .indexOf(bot)
+                      )
                     }}
                     Chatbot that you will be able to try. To start speaking to
                     it, click the button below or click on the Chatbot:

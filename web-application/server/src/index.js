@@ -101,7 +101,7 @@ app.use(cookieParser());
 app.use("/api", router);
 app.use("/api", chat.router);
 app.use("/api", psychologist.router);
-app.use(helmet());
+app.use(helmet());  // Helmet helps you secure your Express apps. Cleans the http headers
 
 async function loadActiveUsers() {
   const dbQuery = "SELECT * FROM activeSessions";
@@ -127,7 +127,9 @@ io.on("connection", (socket) => {
 
   let idleTimer = null;
   socket.on("userNotIdle", (sessionId) => {
-    clearTimeout(idleTimer);
+    clearTimeout(idleTimer);  // reset the timer
+
+    // setTimeout is a built in function that calls a function after a certain amount of time
     idleTimer = setTimeout(async () => {
       console.debug("User is idle");
       const successDeletion = await new Promise((resolve) => {

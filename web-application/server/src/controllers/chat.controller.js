@@ -89,7 +89,8 @@ async function botChat(sessionId, conversationId, message, version) {
     apiRequestSuccess = true;
   } catch (error) {
     if (error.response && error.response.statusCode === 500) {
-      modelResponse = "We're currently experiencing high demand. Please try again later.";
+      modelResponse =
+        "We're currently experiencing high demand. Please try again later.";
     }
     console.error("Model API not available");
   }
@@ -406,9 +407,8 @@ router.post("/load-prev-conversation", requireAuth, async (req, res) => {
 
   let messages = [];
   if (conversation !== undefined) {
-    messages = conversation.getMessages();  
-  }
-  else {
+    messages = conversation.getMessages();
+  } else {
     user.createConversation(conversationId, version);
     messages = user.getConversation(conversationId).getMessages();
   }

@@ -24,7 +24,17 @@
                     data-target="#view_info"
                   >
                     <img
+                      v-if="$store.state.version === 'gpt_default'"
                       src="https://bootdey.com/img/Content/avatar/avatar2.png"
+                      alt="avatar"/>
+                    <img
+                      v-if="$store.state.version === 'gpt_extended'"
+                      src="https://bootdey.com/img/Content/avatar/avatar8.png"
+                      alt="avatar"
+                    />
+                    <img
+                      v-if="$store.state.version === 'psychologist'"
+                      src="https://bootdey.com/img/Content/avatar/avatar3.png"
                       alt="avatar"
                     />
                   </a>

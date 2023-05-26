@@ -15,7 +15,9 @@
               again.
             </div>
             <h1 class="page-title">Information about survey</h1>
-            <p>Hello and welcome to our study!</p>
+            <div class="row page-content">
+              <p>Hello and welcome to our study!</p>
+            </div>
             <template v-if="$store.state.psychologistOnline">
               <template v-for="bot in $store.state.botOrder" :key="bot">
                 <div class="row page-content">

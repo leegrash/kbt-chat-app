@@ -88,6 +88,9 @@ async function botChat(sessionId, conversationId, message, version) {
     }
     apiRequestSuccess = true;
   } catch (error) {
+    if (error.response && error.response.statusCode === 500) {
+      modelResponse = "We're currently experiencing high demand. Please try again later.";
+    }
     console.error("Model API not available");
   }
 

@@ -216,8 +216,9 @@ export default {
       });
 
       this.$store.commit("setAuthenticated", false);
-      this.$store.state.version = null;
       this.$store.state.msg = "Successfully signed out!";
+      this.$store.state.signOutInProgress = true;
+      this.$store.state.version = null;
       this.$router.push("/signin");
     },
     isSigninRoute() {

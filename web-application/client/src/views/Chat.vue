@@ -137,19 +137,21 @@ export default {
   components: {},
   // sometimes the user will leave the page without starting the conversation
   beforeRouteLeave(to, from, next) {
-    fetch("/api/clear-empty-conversations", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => {
-        if (res.status !== 200)
-          throw new Error("Failed to clear empty conversations");
+    if (!this.$store.state.signOutInProgress) {
+      fetch("/api/clear-empty-conversations", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
       })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+        .then((res) => {
+          if (res.status !== 200)
+            throw new Error("Failed to clear empty conversations");
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        }); 
+    }
 
     this.socket.disconnect();
     next();
@@ -167,6 +169,8 @@ export default {
   watch: {
     "$store.state.version": {
       handler() {
+        if (this.$store.state.signOutInProgress) return;
+
         fetch("/api/clear-empty-conversations", {
           method: "PUT",
           headers: {
@@ -234,7 +238,6 @@ export default {
 
       if (this.$store.state.version === "psychologist") {
         this.socket.on("newMessageFromBot", () => {
-          console.log("new message from bot");
           this.reloadConversation();
         });
       }
@@ -455,7 +458,6 @@ export default {
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log(data);
           this.messages = data.formatedMessages;
           this.conversationInProgress = true;
 

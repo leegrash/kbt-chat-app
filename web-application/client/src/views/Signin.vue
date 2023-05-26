@@ -157,6 +157,7 @@ export default {
           this.$store.state.psychologistOnline = data.psychologistOnline;
           this.$store.state.botOrder = data.botOrder.split(",");
           commit("setAuthenticated", true);
+          this.$store.state.signInInProgress = false;
           push("/survey-info");
         })
         .catch(console.error);

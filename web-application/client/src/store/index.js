@@ -10,6 +10,7 @@ export default createStore({
     authenticatedPsychologist: false,
     psychologistOnline: false,
     botOrder: ["Mark", "Laura", "Liza"],
+    signOutInProgress: false,
   },
   getters: {
     isAuthenticated(state) {

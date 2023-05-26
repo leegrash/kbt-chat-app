@@ -1,1 +1,0 @@
-Här kan vi lägga allt som har med modellen att göra

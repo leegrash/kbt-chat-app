@@ -15,6 +15,7 @@
               again.
             </div>
             <h1 class="page-title">Information about survey</h1>
+            <p>Hello and welcome to our study!</p>
             <template v-if="$store.state.psychologistOnline">
               <template v-for="bot in $store.state.botOrder" :key="bot">
                 <div class="row page-content">
@@ -49,8 +50,8 @@
                   <h2>Chatbot: {{ bot }}</h2>
                   <p>
                     This is the
-                    {{
-                      formatedIndex($store.state.botOrder.indexOf(bot))
+                    {{ 
+                      formatedIndex($store.state.botOrder.filter(item => item !== 'Liza').indexOf(bot))
                     }}
                     Chatbot that you will be able to try. To start speaking to
                     it, click the button below or click on the Chatbot:

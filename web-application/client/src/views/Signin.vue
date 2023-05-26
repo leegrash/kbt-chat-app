@@ -16,7 +16,7 @@
                 aria-atomic="true"
                 class="alert text-center alert-danger"
               >
-                Cant't connect to the server. Please wait a few minutes and try
+                Can't connect to the server. Please wait a few minutes and try
                 again.
               </div>
               <div
@@ -132,7 +132,7 @@ export default {
       }
 
       const { commit } = this.$store; // for the states
-      const { push } = this.$router;  // to route to another page
+      const { push } = this.$router; // to route to another page
 
       if (this.password === "" || this.username === "") {
         this.$store.state.msg = "Fill out all fields";
@@ -148,7 +148,7 @@ export default {
         }),
       })
         .then((res) => {
-          if (res.status === 202) return res.json();  // If correct credentials
+          if (res.status === 202) return res.json(); // If correct credentials
 
           this.$store.state.msg = "Wrong credentials";
           throw new Error("Wrong credentials");

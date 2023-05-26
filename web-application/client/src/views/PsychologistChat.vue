@@ -13,7 +13,7 @@
                 aria-atomic="true"
                 class="alert text-center alert-danger"
               >
-                Cant't connect to the server. Please wait a few minutes and try
+                Can't connect to the server. Please wait a few minutes and try
                 again.
               </div>
               <div class="row">

@@ -130,7 +130,7 @@ export default {
     });
     this.socket.on("connect", () => {
       this.$store.state.serverDown = false;
-      this.loadPrevConversation(this.Cookies.get("conversationId"));
+      this.loadPrevConversation(Cookies.get("conversationId"));
     });
 
     // checks if user is idle

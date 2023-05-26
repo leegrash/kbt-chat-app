@@ -180,15 +180,12 @@ export default {
   },
   methods: {
     redirect(target, version = null) {
-      console.log("redirect ", version);
       if (this.$store.state.serverDown === true) {
         return;
       }
-      console.log("redirect ", version);
       if (this.$store.state.awaitongResponse === true) {
         return;
       }
-      console.log("redirect ", version);
       if (version == null) {
         this.$router.push(target);
       } else {
@@ -201,7 +198,6 @@ export default {
         } else {
           return;
         }
-        console.log("redirect ", this.$store.state.version);
         this.$router.push(target);
       }
     },

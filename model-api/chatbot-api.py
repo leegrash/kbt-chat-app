@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request
 from gpt_api import getChatbotResponse as getGPTResponse
-from resources import add_resource
+from resources import add_resource, parse_conv
 from youtube import search_youtube
 from search_google import google_search
 import re
@@ -30,7 +30,7 @@ def get_chatbot_response():
     version = data['version'] #string with text 'Closed' or 'Open' or 'Mixed'
 
     [response, youtubeId] = getResponse(messages, version)
-    title = getTitle(messages)
+    title = getTitle(messages, response)
 
     print("response: " + response)
     print("youtube: " + str(youtubeId))
@@ -56,14 +56,15 @@ def getResponse(messages, version):
     print(version)
 
     if version == 'gpt_default' or version == 'Closed':
-        history.insert(0, {"role": "system", "content": "You are an AI psychologist. Give short answers like you are having a verbal conversation."})                
+        history.insert(0, {"role": "system", "content": "I am an AI psychologist. I give short answers like I am having a verbal conversation."})
         return [getGPTResponse(history), "None"]
     elif version == 'gpt_extended' or version == 'Open':
         history.insert(0, {"role": "system", "content": 
-"""You are a world class psychologist who is incredibly compassionate and understanding. 
-Give answers that confirm the users feelings and acknowledge their problems. Then try to help the user with their problems. 
-Try to mirror the users feelings and make them feel like you are taking them and their problems seriously. 
-Give short answers like you are having a verbal conversation.
+"""
+I am a world class psychologist who is incredibly compassionate and understanding. 
+I give answers that confirm the users feelings and acknowledge their problems. Then I try to help the user with their problems. 
+I try to mirror the users feelings and make them feel like I am taking them and their problems seriously. 
+I give short answers like I am having a verbal conversation.
 """})
         response = getGPTResponse(history)
         print(response)
@@ -104,13 +105,15 @@ def parseMessages(messages):
         history.append(tmp)
     return history
 
-def getTitle(history):
-    openai.api_key = os.getenv("OPENAI_API_KEY_2")
+def getTitle(history, lastPrompt):
+    openai.api_key = os.getenv("OPENAI_API_KEY_1")
 
-    messages = [{"role": "user", "content": "Give a short (max 4 words) title that summarizes the following conversation: "
-        + str(parseMessages(history))}]
+    messages = [{"role": "user", "content": "Give a short (max 4 words) title that summarizes the following conversation." + \
+                 "The focus should be on what the conversation is about, not that it is a conversation with an AI Psychologist."
+        + str(parse_conv_from_history(history, lastPrompt))}]
+
     title = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
+        model="gpt-4",
         messages=messages
     )
 
@@ -125,6 +128,16 @@ def addResources(prompt):
     if re.search("\$\[.*\,.*\]\$", prompt):
         prompt = re.sub("\$\[.*\,.*\]\$", "THIS IS A FILE", prompt)
     return prompt
+
+def parse_conv_from_history(history, lastPrompt):
+    conv = "Chatbot: Hi! I'm an AI Psychologist, how may I help you? \n"
+    for message in history:
+        if message["sender"] == "user":
+            conv += "User: " + message["message"] + "\n"
+        elif message["sender"] == "system":
+            conv += "Chatbot: " + message["message"] + "\n"
+    conv += "Chatbot: " + lastPrompt
+    return conv
 
 if __name__ == '__main__':
     app.run()

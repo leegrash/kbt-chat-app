@@ -400,7 +400,9 @@ export default {
         .then((data) => {
           this.messages = data.formatedMessages;
           this.prevConversations = data.prevTitles;
-          this.conversationInProgress = true;
+          if (this.messages.length > 1) {
+            this.conversationInProgress = true; 
+          }
 
           this.$nextTick(() => {
             const chatHistory = document.getElementById("chat-history");
@@ -434,7 +436,9 @@ export default {
         .then((data) => {
           this.messages = data.messages;
           this.prevConversations = data.prevTitles;
-          this.conversationInProgress = false;
+          if (this.messages.length > 1) {
+            this.conversationInProgress = true; 
+          }
 
           this.$nextTick(() => {
             const chatHistory = document.getElementById("chat-history");
@@ -459,7 +463,9 @@ export default {
         .then((response) => response.json())
         .then((data) => {
           this.messages = data.formatedMessages;
-          this.conversationInProgress = true;
+          if (this.messages.length > 1) {
+            this.conversationInProgress = true; 
+          }
 
           this.$nextTick(() => {
             const chatHistory = document.getElementById("chat-history");

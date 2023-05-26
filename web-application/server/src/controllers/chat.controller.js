@@ -404,7 +404,14 @@ router.post("/load-prev-conversation", requireAuth, async (req, res) => {
 
   const conversation = user.getConversation(conversationId);
 
-  const messages = conversation.getMessages();
+  let messages = [];
+  if (conversation !== undefined) {
+    messages = conversation.getMessages();  
+  }
+  else {
+    user.createConversation(conversationId, version);
+    messages = user.getConversation(conversationId).getMessages();
+  }
 
   const formatedMessages = [];
 

@@ -9,8 +9,7 @@ import cookieParser from "cookie-parser";
 import fs from "fs";
 import helmet from "helmet";
 import dotenv from "dotenv";
-import { fileURLToPath } from "url";
-import path, { dirname } from "path";
+import path from "path";
 import { resolvePath } from "./util.js";
 import { router } from "./controllers/user.controller.js";
 import chat from "./controllers/chat.controller.js";
@@ -33,12 +32,8 @@ let server;
 if (devMode === "false") {
   const { caPath } = process.env;
   const options = {
-    key: fs.readFileSync(
-      path.join(caPath, "privkey.pem")
-    ),
-    cert: fs.readFileSync(
-      path.join(caPath, "cert.pem")
-    ),
+    key: fs.readFileSync(path.join(caPath, "privkey.pem")),
+    cert: fs.readFileSync(path.join(caPath, "cert.pem")),
   };
 
   server = https.createServer(options, app);
@@ -101,7 +96,7 @@ app.use(cookieParser());
 app.use("/api", router);
 app.use("/api", chat.router);
 app.use("/api", psychologist.router);
-app.use(helmet());  // Helmet helps you secure your Express apps. Cleans the http headers
+app.use(helmet()); // Helmet helps you secure your Express apps. Cleans the http headers
 
 async function loadActiveUsers() {
   const dbQuery = "SELECT * FROM activeSessions";
@@ -127,7 +122,7 @@ io.on("connection", (socket) => {
 
   let idleTimer = null;
   socket.on("userNotIdle", (sessionId) => {
-    clearTimeout(idleTimer);  // reset the timer
+    clearTimeout(idleTimer); // reset the timer
 
     // setTimeout is a built in function that calls a function after a certain amount of time
     idleTimer = setTimeout(async () => {

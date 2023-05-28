@@ -50,6 +50,7 @@
                         : 'message my-message'
                     "
                   >
+                    <!-- eslint-disable-next-line vue/no-v-html -->
                     <div v-html="formatMessageLinks(currMessage.message)"></div>
                     <div
                       v-if="currMessage.videoId !== null"

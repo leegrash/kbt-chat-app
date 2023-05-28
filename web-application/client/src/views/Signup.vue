@@ -85,11 +85,13 @@
                   class="form-control"
                   placeholder="Password"
                 />
-                <small class="form-text text-muted"> 
-                  Password must be longer than 5 characters and include at least 1 number
+                <small class="form-text text-muted">
+                  Password must be longer than 5 characters and include at least
+                  1 number
                 </small>
-                <small class="form-text text-muted"> 
-                  All passwords are stored encrypted and cannot be seen or recognized by anyone.
+                <small class="form-text text-muted">
+                  All passwords are stored encrypted and cannot be seen or
+                  recognized by anyone.
                 </small>
               </div>
               <div class="form-group input-group">

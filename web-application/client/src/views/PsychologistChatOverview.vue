@@ -15,7 +15,11 @@
               again.
             </div>
             <h1 class="page-title">Psychologist chats</h1>
-            <div v-for="user in Object.keys(conversations)" class="row page-content">
+            <div
+              v-for="user in Object.keys(conversations)"
+              :key="user"
+              class="row page-content"
+            >
               <h3>{{ user }}</h3>
               <button
                 v-for="conversation in conversations[user]"
@@ -26,7 +30,9 @@
                     ? 'btn btn-success chat-overview-btn'
                     : 'btn btn-warning chat-overview-btn'
                 "
-                @click="redirect(conversation.conversationId, conversation.userName)"
+                @click="
+                  redirect(conversation.conversationId, conversation.userName)
+                "
               >
                 {{ conversation.messageTitle }}
               </button>

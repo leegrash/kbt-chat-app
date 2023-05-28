@@ -4,7 +4,7 @@
       <div class="col-lg-12">
         <div class="card chat-app">
           <div class="chat">
-            <h1 class="page-title">Sign up</h1>
+            <h1 class="page-title">Create an account</h1>
             <form class="sign-in-form" @submit.prevent="createUser()">
               <div
                 v-if="$store.state.serverDown === true"
@@ -85,10 +85,12 @@
                   class="form-control"
                   placeholder="Password"
                 />
-                <small class="form-text text-muted"
-                  >Password must be longer than 5 characters and include at
-                  least 1 number</small
-                >
+                <small class="form-text text-muted"> 
+                  Password must be longer than 5 characters and include at least 1 number
+                </small>
+                <small class="form-text text-muted"> 
+                  All passwords are stored encrypted and cannot be seen or recognized by anyone.
+                </small>
               </div>
               <div class="form-group input-group">
                 <div class="input-group-prepend">

@@ -88,11 +88,7 @@ router.post(
   "/load-psychologist-conversations",
   requirePsychologistAuth,
   async (req, res) => {
-    const { sessionId } = req.cookies;
-
-    const psychologistConversations = await model.getPsychologistConversations(
-      sessionId
-    );
+    const psychologistConversations = await model.getPsychologistConversations();
 
     const formatedMessages = psychologistConversations
       .filter((conversation) => conversation.title !== null)

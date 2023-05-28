@@ -86,20 +86,24 @@ class Model {
 
   getPsychologistConversations() {
     const psychologistConversations = [];
+    const loadedUsrs = [];
 
     this.users.forEach((user) => {
-      const conversations = user.getConversations("psychologist");
-      conversations
-        .filter((conversation) => conversation.botVersion === "psychologist")
-        .filter((conversation) => conversation.messages.length > 1)
-        .forEach((conversation) => {
-          psychologistConversations.push({
-            conversationId: conversation.conversationId,
-            userId: user.id,
-            title: conversation.title,
-            unansweredMessages: conversation.unansweredMessages,
+      if (!loadedUsrs.includes(user.id)) {
+        const conversations = user.getConversations("psychologist");
+        conversations
+          .filter((conversation) => conversation.botVersion === "psychologist")
+          .filter((conversation) => conversation.messages.length > 1)
+          .forEach((conversation) => {
+            psychologistConversations.push({
+              conversationId: conversation.conversationId,
+              userId: user.id,
+              title: conversation.title,
+              unansweredMessages: conversation.unansweredMessages,
+            });
           });
-        });
+        loadedUsrs.push(user.id);
+      }
     });
 
     return psychologistConversations;

@@ -26,7 +26,8 @@
                     <img
                       v-if="$store.state.version === 'gpt_default'"
                       src="https://bootdey.com/img/Content/avatar/avatar2.png"
-                      alt="avatar"/>
+                      alt="avatar"
+                    />
                     <img
                       v-if="$store.state.version === 'gpt_extended'"
                       src="https://bootdey.com/img/Content/avatar/avatar8.png"

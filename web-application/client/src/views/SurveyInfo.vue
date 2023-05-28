@@ -18,11 +18,23 @@
             <div class="row page-content">
               <h3>Hello!</h3>
               <p>
-                Welcome to our study about how well different chatbots perform wihtin the field of psychology!<br>
-                You will be able to try out different chatbots and then fill out a survey about your experience.<br>            
-                The study will take about 30 minutes to complete. We thank you very much for your participation!<br>
-                <br>
-                To begin the study, please try the first chatbot below and answer the questions about it in the surcey form. The form can be found <a href="https://forms.gle/5SAidKPkJH3cWsd17" target="_blank" rel="noopener noreferrer">here</a> or in the link in the navbar.<br> 
+                Welcome to our study about how well different chatbots perform
+                wihtin the field of psychology!<br />
+                You will be able to try out different chatbots and then fill out
+                a survey about your experience.<br />
+                The study will take about 30 minutes to complete. We thank you
+                very much for your participation!<br />
+                <br />
+                To begin the study, please try the first chatbot below and
+                answer the questions about it in the surcey form. The form can
+                be found
+                <a
+                  href="https://forms.gle/5SAidKPkJH3cWsd17"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >here</a
+                >
+                or in the link in the navbar.<br />
               </p>
             </div>
             <template v-if="$store.state.psychologistOnline">

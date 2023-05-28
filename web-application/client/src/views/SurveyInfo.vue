@@ -27,15 +27,7 @@
               </p>
               <p>
                 <b>To begin the study</b>, please try the first chatbot below and
-                answer the questions about it in the surcey form. The form can
-                be found
-                <a
-                  href="https://forms.gle/5SAidKPkJH3cWsd17"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  >here</a
-                >
-                , by clicking the button below, or in the link in the navbar.
+                answer the questions about it in the survey form, then continue and do the same thing with the second bot. The form can be found by clicking the button below, or in the link in the navbar.
               </p>
               <p>
                 <a

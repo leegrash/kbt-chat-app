@@ -18,7 +18,7 @@ def get_title():
 
     messages = data['messages']
 
-    title = getTitle(messages)
+    title = getTitle(messages[:-1], messages[-1]["message"])
 
     return jsonify({'title': title})
 

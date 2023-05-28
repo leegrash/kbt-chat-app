@@ -99,7 +99,19 @@ router.post(
         unanswered: conversation.unansweredMessages,
       }));
 
-    res.status(200).json(formatedMessages);
+    const conversationsGroupedByUser = {};
+
+    for (let index = 0; index < formatedMessages.length; index += 1) {
+      const conversation = formatedMessages[index];
+
+      if (conversationsGroupedByUser[conversation.userName] === undefined) {
+        conversationsGroupedByUser[conversation.userName] = [];
+      }
+
+      conversationsGroupedByUser[conversation.userName].push(conversation);
+    }
+
+    res.status(200).json(conversationsGroupedByUser);
   }
 );
 

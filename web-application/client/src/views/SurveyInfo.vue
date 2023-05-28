@@ -23,9 +23,10 @@
                 You will be able to try out different chatbots and then fill out
                 a survey about your experience.<br />
                 The study will take about 30 minutes to complete. We thank you
-                very much for your participation!<br />
-                <br />
-                To begin the study, please try the first chatbot below and
+                very much for your participation!
+              </p>
+              <p>
+                <b>To begin the study</b>, please try the first chatbot below and
                 answer the questions about it in the surcey form. The form can
                 be found
                 <a
@@ -34,7 +35,17 @@
                   rel="noopener noreferrer"
                   >here</a
                 >
-                or in the link in the navbar.<br />
+                , by clicking the button below, or in the link in the navbar.
+              </p>
+              <p>
+                <a
+                  href="https://forms.gle/Uf45xPHNx74qx25X8"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn btn-primary"
+                  >Survey form
+                  <i class="bi bi-box-arrow-up-right"></i>
+                </a>
               </p>
             </div>
             <template v-if="$store.state.psychologistOnline">
@@ -48,13 +59,15 @@
                     it, click the button below or click on the Chatbot:
                     {{ bot }} tab in the navigation bar.
                   </p>
-                  <button
-                    type="button"
-                    class="btn btn-primary"
-                    @click="redirect('/chat', bot)"
-                  >
-                    Try Chatbot: {{ bot }}
-                  </button>
+                  <p>
+                    <button
+                      type="button"
+                      class="btn btn-primary"
+                      @click="redirect('/chat', bot)"
+                    >
+                      Try Chatbot: {{ bot }}
+                    </button>
+                  </p>
                 </div>
               </template>
             </template>
@@ -80,13 +93,15 @@
                     it, click the button below or click on the Chatbot:
                     {{ bot }} tab in the navigation bar.
                   </p>
-                  <button
-                    type="button"
-                    class="btn btn-primary"
-                    @click="redirect('/chat', bot)"
-                  >
-                    Try Chatbot: {{ bot }}
-                  </button>
+                  <p>
+                    <button
+                      type="button"
+                      class="btn btn-primary"
+                      @click="redirect('/chat', bot)"
+                    >
+                      Try Chatbot: {{ bot }}
+                    </button>
+                  </p>
                 </div>
               </template>
             </template>

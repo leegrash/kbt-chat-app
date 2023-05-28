@@ -107,6 +107,12 @@
                   placeholder="Confirm password"
                 />
               </div>
+              <div class="form-group">
+                <p>
+                  Already have an account?
+                  <router-link to="/signin">Sign in!</router-link>
+                </p>
+              </div>
               <button type="submit" class="btn btn-primary">Sign up</button>
             </form>
           </div>

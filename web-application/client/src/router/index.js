@@ -10,7 +10,7 @@ import PsychologistChat from "../views/PsychologistChat.vue";
 const routes = [
   {
     path: "/",
-    redirect: "/survey-info",
+    redirect: "/signup",
   },
   {
     path: "/signin",

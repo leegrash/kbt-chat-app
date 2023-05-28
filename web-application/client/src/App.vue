@@ -176,7 +176,7 @@ export default {
     });
 
     commit("setAuthenticated", false);
-    push(getters.isAuthenticated === true ? "/survey-info" : "/signin");
+    push(getters.isAuthenticated === true ? "/survey-info" : "/signup");
   },
   methods: {
     redirect(target, version = null) {

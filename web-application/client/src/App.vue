@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-      <a href="#" class="navbar-brand">AI Psychologist</a>
+      <a href="#" class="navbar-brand">Therapy bot</a>
       <button
         type="button"
         class="navbar-toggler"

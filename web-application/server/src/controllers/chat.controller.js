@@ -38,8 +38,8 @@ async function botChat(sessionId, conversationId, message, version) {
     path: "/chatbot",
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
-      "Content-Length": data.length,
+      "Content-Type": "application/json; charset=utf-8",
+      "Content-Length": Buffer.byteLength(data, "utf8"),
     },
   };
 
@@ -191,8 +191,8 @@ async function psychologistChat(
     path: "/get-title",
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
-      "Content-Length": data.length,
+      "Content-Type": "application/json; charset=utf-8",
+      "Content-Length": Buffer.byteLength(data, "utf8"),
     },
   };
 

@@ -31,13 +31,13 @@ const app = express();
 
 let server;
 if (devMode === "false") {
-  const relativeDirectory = dirname(fileURLToPath(import.meta.url));
+  const { caPath } = process.env;
   const options = {
     key: fs.readFileSync(
-      path.join(relativeDirectory, "ca-certificate", "privkey.pem")
+      path.join(caPath, "privkey.pem")
     ),
     cert: fs.readFileSync(
-      path.join(relativeDirectory, "ca-certificate", "cert.pem")
+      path.join(caPath, "cert.pem")
     ),
   };
 

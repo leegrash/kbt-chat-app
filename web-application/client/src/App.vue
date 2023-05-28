@@ -110,7 +110,7 @@
           class="navbar-nav ms-auto"
         >
           <a
-            href="mailto:cbt.chat.contact@gmail.com?subject=CBT Bot Contact"
+            href="mailto:therapy.bot@outlook.com?subject=Therapy Bot Contact"
             class="btn btn-info"
             >Contact <i class="bi bi-envelope"></i
           ></a>

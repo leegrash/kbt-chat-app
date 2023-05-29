@@ -26,38 +26,29 @@
                 very much for your participation!
               </p>
               <p>
-                <b>To participate in the study</b>, please follow these steps:
+                <b>To participate in the study</b>, please follow the steps given below. These are the same steps that are described in the Google Form, but we have also included them here for your convenience.
               </p>
               <ol class="info-list">
                 <li>
-                  Fill out the basic information in the form provided on this <a href="https://forms.gle/DyP1wasczdU42kh28" target="_blank" rel="noopener noreferrer" >link to the survey form.</a> 
-                  The link can also be found in the navbar.
+                  Fill out the basic information in the form from which you came.
                 </li>
                 <li>
                   Talk to <u>Chatbot: {{ $store.state.botOrder.filter((item) => item !== "Liza")[0] }}</u> for about 5-10 minutes. 
                   You can click on the blue button below, or in the navbar to do so.
-                  Please try to have one full conversation with the bot before continuing
+                  Try to ask questions that you would ask to a real human pschologist or therapist in a real scenario.
+                  The chatbot can answer questions about other topics as well, but we are only interested in how you think the chatbot preformed as a psychologist.
                 </li>
                 <li>Fill out the next step of the form, containing questions about Chatbot: {{ $store.state.botOrder.filter((item) => item !== "Liza")[0] }}.</li>
                 <li>
                   Talk to <u>Chatbot: {{ $store.state.botOrder.filter((item) => item !== "Liza")[1] }}</u> for about 5-10 minutes. 
                   You can click on the other blue button below, or in the navbar to do so.
-                  Please try to have one full conversation with this bot as well, before continuing
+                  Try to ask questions that you would ask to a real human pschologist or therapist in a real scenario.
+                  The chatbot can answer questions about other topics as well, but we are only interested in how you think the chatbot preformed as a psychologist.
                 </li>
                 <li>Fill out the next section of the form, containing questions about Chatbot: {{ $store.state.botOrder.filter((item) => item !== "Liza")[1] }}.</li>
                 <li>Answer the questions in the final section of the form.</li>
                 <li>Done! Thank you!</li>
               </ol>
-              <p>
-                <a
-                  href="https://forms.gle/Uf45xPHNx74qx25X8"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="btn btn-primary"
-                  >Survey form
-                  <i class="bi bi-box-arrow-up-right"></i>
-                </a>
-              </p>
             </div>
             <template v-if="$store.state.psychologistOnline">
               <template v-for="bot in $store.state.botOrder" :key="bot">

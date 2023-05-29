@@ -74,19 +74,19 @@ I give short answers like I am having a verbal conversation.
         if rawResource.startswith("Youtube"):
             query = rawResource.split(":")[1]
             youtubeId = search_youtube(query)
+            response += "\n\nHere is a video that might help you: \n"
         elif rawResource.startswith("Website"):
             resource = rawResource.split(":")[1]
             response += "\n\nHere is a website that might help you: \n"
             response += google_search(f"{resource} website")[0]["link"]
         elif rawResource.startswith("App"):
             resource = rawResource.split(":")[1]
-            response += "\n\nHere is an app that might help you: \n"
+            response += "\n\nHere is an app that you can try: \n"
             response += google_search(f"{resource} app download appstore")[0]["link"] + "\n"
             response += google_search(f"{resource} app download google play store")[0]["link"]
-
         elif rawResource.startswith("Exercise"):
             exercise = rawResource.split(":")[1].strip()
-            response += "\n\nHere is an exercise that might help you: \n"
+            response += "\n\nHere is an exercise that I created for you: \n"
             response += exercise
         return [response, youtubeId]
     

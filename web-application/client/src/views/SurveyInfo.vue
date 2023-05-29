@@ -22,7 +22,7 @@
                 wihtin the field of psychology!<br/>
                 You will be able to try out different chatbots and then fill out
                 a survey about your experience.<br/>
-                The study will take about 20 minutes to complete. We thank you
+                The study will take about 20-30 minutes to complete. We thank you
                 very much for your participation!
               </p>
               <p>

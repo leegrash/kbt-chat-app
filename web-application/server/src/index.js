@@ -138,7 +138,7 @@ io.on("connection", (socket) => {
       model.signOutUser(sessionId);
 
       socket.emit("userIdle");
-    }, 10 * 60 * 1000);
+    }, 30 * 60 * 1000);
   });
   socket.on("psychologistNotIdle", (sessionId) => {
     clearTimeout(idleTimer);
@@ -157,7 +157,7 @@ io.on("connection", (socket) => {
       model.signOutPsychologist(sessionId);
 
       socket.emit("psychologistIdle");
-    }, 10 * 60 * 1000);
+    }, 30 * 60 * 1000);
   });
 });
 

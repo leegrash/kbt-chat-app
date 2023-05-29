@@ -142,6 +142,10 @@ export default {
   }),
   methods: {
     createUser() {
+      if (this.$store.state.cookieConsent === false) {
+        return;
+      }
+
       if (this.$store.state.serverDown === true) {
         return;
       }

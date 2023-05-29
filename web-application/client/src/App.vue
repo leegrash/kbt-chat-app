@@ -149,6 +149,13 @@
   <section class="container-fluid py-4">
     <router-view />
   </section>
+
+  <div v-if="!$store.state.cookieConsent" class="d-flex justify-content-center mt-5 h-100">
+    <div class="d-flex align-items-center align-self-center cookie-card p-3 text-center cookies">
+      <img src="https://i.imgur.com/Tl8ZBUe.png" alt="cookie-img" width="50"><span class="mt-2">This page requires cookies to function.</span>
+      <button class="btn btn-dark mt-3 px-4" type="button" @click="giveCookieConsent()">Okay</button>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -179,7 +186,14 @@ export default {
     push(getters.isAuthenticated === true ? "/survey-info" : "/signup");
   },
   methods: {
+    giveCookieConsent() {
+      this.$store.state.cookieConsent = true;
+    },
+
     redirect(target, version = null) {
+      if (this.$store.state.cookieConsent === false) {
+        return;
+      }
       if (this.$store.state.serverDown === true) {
         return;
       }

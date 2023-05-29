@@ -19,29 +19,35 @@
               <h3>Hello!</h3>
               <p>
                 Welcome to our study about how well different chatbots perform
-                wihtin the field of psychology!<br />
+                wihtin the field of psychology!<br/>
                 You will be able to try out different chatbots and then fill out
-                a survey about your experience.<br />
+                a survey about your experience.<br/>
                 The study will take about 20 minutes to complete. We thank you
                 very much for your participation!
               </p>
               <p>
                 <b>To participate in the study</b>, please follow these steps:
-                <ol>
-                  <li>Fill out the basic information in the form provided on this <a href="https://forms.gle/DyP1wasczdU42kh28" target="_blank" rel="noopener noreferrer" >link to the survey form.</a> 
-                    The link can also be found in the navbar.</li>
-                  <li>Talk to the <u>first</u> chatbot below for about 5-10 minutes. 
-                    You can click on the blue button below, or in the navbar to do so.
-                    Please try to have one full conversation with the bot before continuing</li>
-                  <li>Fill out the next step of the form, containing questions about the chatbot you just tried.</li>
-                  <li>Talk to the <u>second</u> chatbot below for about 5-10 minutes. 
-                    You can click on the other blue button below, or in the navbar to do so.
-                    Please try to have one full conversation with this bot as well, before continuing</li>
-                  <li>Fill out the next section of the form, containing questions about the second chatbot you just tried.</li>
-                  <li>Answer the questions in the final section of the form.</li>
-                  <li>Done! Thank you!</li>
-                </ol>
               </p>
+              <ol class="info-list">
+                <li>
+                  Fill out the basic information in the form provided on this <a href="https://forms.gle/DyP1wasczdU42kh28" target="_blank" rel="noopener noreferrer" >link to the survey form.</a> 
+                  The link can also be found in the navbar.
+                </li>
+                <li>
+                  Talk to <u>Chatbot: {{ $store.state.botOrder.filter((item) => item !== "Liza")[0] }}</u> for about 5-10 minutes. 
+                  You can click on the blue button below, or in the navbar to do so.
+                  Please try to have one full conversation with the bot before continuing
+                </li>
+                <li>Fill out the next step of the form, containing questions about Chatbot: {{ $store.state.botOrder.filter((item) => item !== "Liza")[0] }}.</li>
+                <li>
+                  Talk to <u>Chatbot: {{ $store.state.botOrder.filter((item) => item !== "Liza")[1] }}</u> for about 5-10 minutes. 
+                  You can click on the other blue button below, or in the navbar to do so.
+                  Please try to have one full conversation with this bot as well, before continuing
+                </li>
+                <li>Fill out the next section of the form, containing questions about Chatbot: {{ $store.state.botOrder.filter((item) => item !== "Liza")[1] }}.</li>
+                <li>Answer the questions in the final section of the form.</li>
+                <li>Done! Thank you!</li>
+              </ol>
               <p>
                 <a
                   href="https://forms.gle/Uf45xPHNx74qx25X8"

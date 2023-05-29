@@ -14,7 +14,7 @@
               Can't connect to the server. Please wait a few minutes and try
               again.
             </div>
-            <h1 class="page-title">Information about survey</h1>
+            <h1 class="page-title">Information about the study</h1>
             <div class="row page-content">
               <h3>Hello!</h3>
               <p>
@@ -22,15 +22,25 @@
                 wihtin the field of psychology!<br />
                 You will be able to try out different chatbots and then fill out
                 a survey about your experience.<br />
-                The study will take about 30 minutes to complete. We thank you
+                The study will take about 20 minutes to complete. We thank you
                 very much for your participation!
               </p>
               <p>
-                <b>To begin the study</b>, please try the first chatbot below
-                and answer the questions about it in the survey form, then
-                continue and do the same thing with the second bot. The form can
-                be found by clicking the button below, or in the link in the
-                navbar.
+                <b>To participate in the study</b>, please follow these steps:
+                <ol>
+                  <li>Fill out the basic information in the form provided on this <a href="https://forms.gle/DyP1wasczdU42kh28" target="_blank" rel="noopener noreferrer" >link to the survey form.</a> 
+                    The link can also be found in the navbar.</li>
+                  <li>Talk to the <u>first</u> chatbot below for about 5-10 minutes. 
+                    You can click on the blue button below, or in the navbar to do so.
+                    Please try to have one full conversation with the bot before continuing</li>
+                  <li>Fill out the next step of the form, containing questions about the chatbot you just tried.</li>
+                  <li>Talk to the <u>second</u> chatbot below for about 5-10 minutes. 
+                    You can click on the other blue button below, or in the navbar to do so.
+                    Please try to have one full conversation with this bot as well, before continuing</li>
+                  <li>Fill out the next section of the form, containing questions about the second chatbot you just tried.</li>
+                  <li>Answer the questions in the final section of the form.</li>
+                  <li>Done! Thank you!</li>
+                </ol>
               </p>
               <p>
                 <a

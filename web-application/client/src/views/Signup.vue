@@ -130,6 +130,10 @@
 export default {
   name: "SignupView",
   beforeRouteLeave(to, from, next) {
+    if (this.$store.state.cookieConsent === false) {
+      return;
+    }
+
     if (this.$store.state.msg !== "User created") {
       this.$store.state.msg = "";
     }

@@ -301,6 +301,10 @@ body {
     width: 100%;
   }
 
+  .cookie-card {
+    width: 90%;
+  }
+
   .chat-info .btn {
     width: 100%;
   }

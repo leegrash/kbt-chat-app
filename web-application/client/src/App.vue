@@ -99,7 +99,7 @@
             class="btn btn-info"
             @click="redirect('/psychologist-signin')"
           >
-            Psychologist <i class="bi bi-box-arrow-in-right"></i>
+            Admin <i class="bi bi-box-arrow-in-right"></i>
           </button>
         </div>
         <div

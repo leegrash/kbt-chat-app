@@ -255,6 +255,8 @@ export default {
       }
     }
 
+    window.addEventListener("beforeunload", this.signOutUser);
+
     // gets chat history and scrolls to bottom
     const chatHistory = document.getElementById("chat-history");
     chatHistory.scrollTop = chatHistory.scrollHeight;
@@ -500,6 +502,13 @@ export default {
         return `<a href="${sanitizedURL}" target="_blank">${sanitizedURL}</a>`;
       });
       return sanitizedMessage;
+    },
+
+    signOutUser() {
+      fetch("/api/signout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      });
     },
   },
 };

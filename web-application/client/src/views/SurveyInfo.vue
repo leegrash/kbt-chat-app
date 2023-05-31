@@ -149,6 +149,8 @@ export default {
         this.$router.push("/signin");
       });
     }
+
+    window.addEventListener("beforeunload", this.signOutUser);
   },
   created() {
     const sessionId = Cookies.get("sessionId");
@@ -196,6 +198,13 @@ export default {
       }
 
       return formatedIndex;
+    },
+
+    signOutUser() {
+      fetch("/api/signout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      });
     },
   },
 };

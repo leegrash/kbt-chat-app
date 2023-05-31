@@ -131,7 +131,7 @@ export default {
     });
     this.socket.on("connect", () => {
       this.$store.state.serverDown = false;
-      this.loadPrevConversation(Cookies.get("conversationId"));
+      this.laodPage();
     });
 
     // checks if user is idle
@@ -148,6 +148,8 @@ export default {
         this.laodPage();
       });
     }
+
+    window.addEventListener("beforeunload", this.signOutPsychologist);
 
     // gets chat history and scrolls to bottom
     const chatHistory = document.getElementById("chat-history");
@@ -255,6 +257,13 @@ export default {
         return `<a href="${sanitizedURL}" target="_blank">${sanitizedURL}</a>`;
       });
       return sanitizedMessage;
+    },
+
+    signOutPsychologist() {
+      fetch("/api/psychologist-signout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      });
     },
   },
 };

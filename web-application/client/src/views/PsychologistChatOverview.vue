@@ -97,6 +97,8 @@ export default {
           });
       });
     }
+
+    window.addEventListener("beforeunload", this.signOutPsychologist);
   },
   created() {
     const sessionId = Cookies.get("sessionId");
@@ -139,6 +141,13 @@ export default {
           conversation: conversationId,
           user: userName,
         },
+      });
+    },
+
+    signOutPsychologist() {
+      fetch("/api/psychologist-signout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
       });
     },
   },

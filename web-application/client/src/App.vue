@@ -32,7 +32,9 @@
                 "
               >
                 <a
-                  v-for="bot in $store.state.botOrder"
+                  v-for="bot in $store.state.botOrder.filter(
+                    (bot) => bot !== 'Mike'
+                  )"
                   :key="bot"
                   href="#"
                   class="nav-item nav-link active"

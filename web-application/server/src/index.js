@@ -119,27 +119,6 @@ io.on("connection", (socket) => {
     if (err) console.error(err);
     else console.debug(`Saved socketID: ${session.socketID}`);
   });
-
-  let idleTimer = null;
-  socket.on("userNotIdle", (sessionId) => {
-    clearTimeout(idleTimer); // reset the timer
-
-    // setTimeout is a built in function that calls a function after a certain amount of time
-    idleTimer = setTimeout(async () => {
-      console.debug("User is idle");
-      const successDeletion = await new Promise((resolve) => {
-        db.run("DELETE from activeSessions where sessionUUID = ?", [sessionId]);
-        resolve(true);
-      });
-
-      if (!successDeletion) {
-        throw new Error("Failed to delete session info");
-      }
-      model.signOutUser(sessionId);
-
-      socket.emit("userIdle");
-    }, 30 * 60 * 1000);
-  });
 });
 
 if (devMode === "true") {

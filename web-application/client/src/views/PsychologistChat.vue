@@ -103,7 +103,6 @@ import DOMPurify from "dompurify";
 export default {
   name: "PsychologistChatView",
   components: {},
-  // sometimes the user will leave the page without starting the conversation
   beforeRouteLeave(to, from, next) {
     this.socket.disconnect();
     next();
@@ -122,9 +121,7 @@ export default {
     socket: io.connect(),
     messages: [],
   }),
-  // when a component is mounted, the socket connection is established
   mounted() {
-    // checks connection
     this.socket.on("connect_error", () => {
       console.error("Socket connection error");
       this.$store.state.serverDown = true;
@@ -134,7 +131,6 @@ export default {
       this.laodPage();
     });
 
-    // checks if user is idle
     if (this.$store.state.serverDown === false) {
       this.socket.on("userIdle", () => {
         this.$store.commit("setAuthenticated", false);
@@ -151,11 +147,9 @@ export default {
 
     window.addEventListener("beforeunload", this.signOutPsychologist);
 
-    // gets chat history and scrolls to bottom
     const chatHistory = document.getElementById("chat-history");
     chatHistory.scrollTop = chatHistory.scrollHeight;
   },
-  // when a component is created. Like a constructor
   created() {
     this.laodPage();
   },
@@ -179,7 +173,6 @@ export default {
             this.messages = data.formatedMessages;
             this.conversationInProgress = true;
 
-            // Scroll to the bottom of the chat history
             this.$nextTick(() => {
               const chatHistory = document.getElementById("chat-history");
               chatHistory.scrollTop = chatHistory.scrollHeight;
@@ -189,7 +182,6 @@ export default {
             console.error("Error:", error);
           });
 
-        // user idle check
         document.onmousemove = () => {
           if (this.$store.state.authenticated !== false) {
             this.socket.emit("userNotIdle", sessionId);
@@ -207,7 +199,6 @@ export default {
         };
       }
 
-      // Scroll to the bottom of the chat history
       this.$nextTick(() => {
         const chatHistory = document.getElementById("chat-history");
         chatHistory.scrollTop = chatHistory.scrollHeight;
@@ -223,7 +214,7 @@ export default {
 
       if (message === "") return;
 
-      document.getElementById("message").value = ""; // clears input
+      document.getElementById("message").value = "";
 
       this.messages.push({
         message,
@@ -232,7 +223,6 @@ export default {
       });
 
       this.$nextTick(() => {
-        // scrolls to bottom
         const chatHistory = document.getElementById("chat-history");
         chatHistory.scrollTop = chatHistory.scrollHeight;
         this.conversationInProgress = true;

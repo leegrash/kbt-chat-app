@@ -147,7 +147,6 @@ import DOMPurify from "dompurify";
 export default {
   name: "ChatView",
   components: {},
-  // sometimes the user will leave the page without starting the conversation
   beforeRouteLeave(to, from, next) {
     if (!this.$store.state.signOutInProgress) {
       fetch("/api/clear-empty-conversations", {
@@ -177,7 +176,6 @@ export default {
     botName: "",
     typing: false,
   }),
-  // when version changes this acts reactively
   watch: {
     "$store.state.version": {
       handler() {
@@ -226,9 +224,7 @@ export default {
       immediate: true,
     },
   },
-  // when a component is mounted, the socket connection is established
   mounted() {
-    // checks connection
     this.socket.on("connect_error", () => {
       console.error("Socket connection error");
       this.$store.state.serverDown = true;
@@ -238,7 +234,6 @@ export default {
       this.loadPrevConversation(Cookies.get("conversationId"));
     });
 
-    // checks if user is idle
     if (this.$store.state.serverDown === false) {
       this.socket.on("userIdle", () => {
         this.$store.commit("setAuthenticated", false);
@@ -257,11 +252,9 @@ export default {
 
     window.addEventListener("beforeunload", this.signOutUser);
 
-    // gets chat history and scrolls to bottom
     const chatHistory = document.getElementById("chat-history");
     chatHistory.scrollTop = chatHistory.scrollHeight;
   },
-  // when a component is created. Like a constructor
   created() {
     this.laodPage();
     if (this.$store.state.version === "gpt_default") {
@@ -283,18 +276,17 @@ export default {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ version: this.$store.state.version }), // sends version
+          body: JSON.stringify({ version: this.$store.state.version }),
         })
           .then((response) => response.json())
           .then((data) => {
-            this.messages = data.messages; // gets data
+            this.messages = data.messages;
             this.prevConversations = data.prevTitles;
           })
           .catch((error) => {
             console.error("Error:", error);
           });
 
-        // user idle check
         document.onmousemove = () => {
           if (this.$store.state.authenticated !== false) {
             this.socket.emit("userNotIdle", sessionId);
@@ -324,7 +316,7 @@ export default {
 
       if (message === "") return;
 
-      document.getElementById("message").value = ""; // clears input
+      document.getElementById("message").value = "";
 
       if (this.$store.state.version !== "psychologist") {
         document.getElementById("message").disabled = true;
@@ -342,7 +334,6 @@ export default {
       }
 
       this.$nextTick(() => {
-        // scrolls to bottom
         const chatHistory = document.getElementById("chat-history");
         chatHistory.scrollTop = chatHistory.scrollHeight;
         this.conversationInProgress = true;
@@ -374,7 +365,6 @@ export default {
           }
 
           this.$nextTick(() => {
-            // scrolls to bottom
             const chatHistory = document.getElementById("chat-history");
             chatHistory.scrollTop = chatHistory.scrollHeight;
             this.conversationInProgress = true;
@@ -498,7 +488,7 @@ export default {
     formatMessageLinks(message) {
       const urlRegex = /(https?:\/\/[^\s]+)/g;
       const sanitizedMessage = message.replace(urlRegex, (url) => {
-        const sanitizedURL = DOMPurify.sanitize(url); // Cleans the link to prevents XSS
+        const sanitizedURL = DOMPurify.sanitize(url);
         return `<a href="${sanitizedURL}" target="_blank">${sanitizedURL}</a>`;
       });
       return sanitizedMessage;

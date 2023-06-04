@@ -131,8 +131,8 @@ export default {
         return;
       }
 
-      const { commit } = this.$store; // for the states
-      const { push } = this.$router; // to route to another page
+      const { commit } = this.$store;
+      const { push } = this.$router;
 
       if (this.password === "" || this.username === "") {
         this.$store.state.msg = "Fill out all fields";
@@ -148,7 +148,7 @@ export default {
         }),
       })
         .then((res) => {
-          if (res.status === 202) return res.json(); // If correct credentials
+          if (res.status === 202) return res.json();
 
           this.$store.state.msg = "Wrong credentials";
           throw new Error("Wrong credentials");

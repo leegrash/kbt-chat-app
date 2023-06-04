@@ -14,11 +14,9 @@ const router = Router();
  * @returns {void}
  */
 const requireAuth = (req, res, next) => {
-  // Use an unique session identifier to access information about the user making the request
   const { sessionId } = req.cookies;
 
   if (sessionId === undefined) {
-    // Choose the appropriate HTTP response status code and send an HTTP response, if any, back to the client
     res.status(401).end();
     return;
   }
@@ -122,10 +120,8 @@ router.post("/signin", async (req, res) => {
 
       const psychologistOnline = model.isPsychologistOnline();
 
-      // Save locally so we don't have to query the database
       model.addUser(sessionId, row.userId, row.username, row.botOrder);
 
-      // Emits to the psychology view that a user is online
       model.modelEmit("psychologistConversationsUpdate");
 
       const { botOrder } = row;

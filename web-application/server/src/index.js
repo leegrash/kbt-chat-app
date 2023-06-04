@@ -50,10 +50,8 @@ betterLogging(console, {
   color: Theme.green,
 });
 
-// Enable debug output
 console.logLevel = 4;
 
-// Register a custom middleware for logging incoming requests
 app.use(
   betterLogging.expressMiddleware(console, {
     ip: { show: true, color: Theme.green.base },
@@ -64,7 +62,6 @@ app.use(
   })
 );
 
-// Configure session management
 const sessionConf = expressSession({
   secret: "Super secret! Shh! Do not tell anyone...",
   resave: true,
@@ -79,24 +76,20 @@ io.use(
   })
 );
 
-// Serve static files
 app.use(express.static(resolvePath("client", "dist")));
 
-// Catch-all route that redirects all requests to the Vue.js application
 app.get("*", (req, res) => {
   res.sendFile(resolvePath("client", "dist", "index.html"));
 });
 
-// Register middlewares that parse the body of the request, available under req.body property
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// Bind REST controllers to /api/*
 app.use("/api", router);
 app.use("/api", chat.router);
 app.use("/api", psychologist.router);
-app.use(helmet()); // Helmet helps you secure your Express apps. Cleans the http headers
+app.use(helmet()); 
 
 async function loadActiveUsers() {
   const dbQuery = "SELECT * FROM activeSessions";

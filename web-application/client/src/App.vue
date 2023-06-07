@@ -33,7 +33,7 @@
               >
                 <a
                   v-for="bot in $store.state.botOrder.filter(
-                    (bot) => bot !== 'Mike'
+                    (bot) => bot !== 'Laura'
                   )"
                   :key="bot"
                   href="#"

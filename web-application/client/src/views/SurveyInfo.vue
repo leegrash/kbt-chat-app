@@ -54,14 +54,14 @@
                   Fill out the basic information in the form from which you came.
                 </li>
                 <li>
-                  Talk to <u>Chatbot: {{ $store.state.botOrder.filter((item) => item !== "Mike")[0] }}</u> for about 5-10 minutes. 
+                  Talk to <u>Chatbot: {{ $store.state.botOrder.filter((item) => item !== "Laura")[0] }}</u> for about 5-10 minutes. 
                   You can click on the blue button below, or in the navbar to do so.
                   Try to ask questions that you would ask to a real human pschologist or therapist in a real scenario.
                   The chatbot can answer questions about other topics as well, but we are only interested in how you think the chatbot preformed as a psychologist.
                 </li>
                 <li>Fill out the next step of the form, containing questions about Chatbot: {{ $store.state.botOrder.filter((item) => item !== "Liza")[0] }}.</li>
                 <li>
-                  Talk to <u>Chatbot: {{ $store.state.botOrder.filter((item) => item !== "Mike")[1] }}</u> for about 5-10 minutes. 
+                  Talk to <u>Chatbot: {{ $store.state.botOrder.filter((item) => item !== "Laura")[1] }}</u> for about 5-10 minutes. 
                   You can click on the other blue button below, or in the navbar to do so.
                   Try to ask questions that you would ask to a real human pschologist or therapist in a real scenario.
                   The chatbot can answer questions about other topics as well, but we are only interested in how you think the chatbot preformed as a psychologist.
@@ -74,7 +74,7 @@
             <template v-if="$store.state.psychologistOnline">
               <template 
                 v-for="bot in $store.state.botOrder.filter(
-                  (bot) => bot !== 'Mike'
+                  (bot) => bot !== 'Laura'
                 )" 
                 :key="bot">
                 <div class="row page-content">
@@ -84,7 +84,7 @@
                     {{ 
                       formatedIndex(
                         $store.state.botOrder
-                          .filter((item) => item !== "Mike")
+                          .filter((item) => item !== "Laura")
                           .indexOf(bot)
                       )
                     }}

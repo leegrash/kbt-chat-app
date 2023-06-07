@@ -12,6 +12,7 @@ export default createStore({
     botOrder: ["Mark", "Laura", "Liza"],
     signOutInProgress: false,
     cookieConsent: false,
+    awaitingPsychologistResponse: false,
   },
   getters: {
     isAuthenticated(state) {

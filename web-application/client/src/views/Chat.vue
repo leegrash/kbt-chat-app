@@ -244,6 +244,10 @@ export default {
 
       if (this.$store.state.version === "psychologist") {
         this.socket.on("newMessageFromBot", () => {
+          this.typing = false;
+          this.$store.state.awaitingPsychologistResponse = false;
+          document.getElementById("message").disabled = false;
+          document.getElementById("message").placeholder = "Enter text here...";
           this.reloadConversation();
         });
       }
@@ -309,7 +313,12 @@ export default {
         return;
       }
 
-      this.$store.state.awaitongResponse = true;
+      if (this.$store.state.version !== "psychologist") {
+        this.$store.state.awaitongResponse = true; 
+      }
+      else {
+        this.$store.state.awaitingPsychologistResponse = true;
+      }
 
       const message = document.getElementById("message").value;
 
@@ -317,10 +326,9 @@ export default {
 
       document.getElementById("message").value = "";
 
-      if (this.$store.state.version !== "psychologist") {
-        document.getElementById("message").disabled = true;
-        document.getElementById("message").placeholder = "Awaiting response...";
-      }
+      document.getElementById("message").disabled = true;
+      document.getElementById("message").placeholder = "Awaiting response...";
+      
 
       this.messages.push({
         message,
@@ -328,9 +336,7 @@ export default {
         videoId: null,
       });
 
-      if (this.$store.state.version !== "psychologist") {
-        this.typing = true;
-      }
+      this.typing = true;
 
       this.$nextTick(() => {
         const chatHistory = document.getElementById("chat-history");

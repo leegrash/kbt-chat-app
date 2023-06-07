@@ -210,6 +210,9 @@ export default {
       if (this.$store.state.awaitongResponse === true) {
         return;
       }
+      if (this.$store.state.awaitingPsychologistResponse === true) {
+        return;
+      }
       if (version == null) {
         this.$router.push(target);
       } else {

@@ -96,6 +96,22 @@ export default {
             console.error("Error:", error);
           });
       });
+
+      this.socket.on("newMessageFromBot", () => {
+        fetch("/api/load-psychologist-conversations", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            this.conversations = data;
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      });
     }
 
     window.addEventListener("beforeunload", this.signOutPsychologist);

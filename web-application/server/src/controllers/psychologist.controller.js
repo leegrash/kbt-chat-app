@@ -62,10 +62,7 @@ router.post("/psychologist-signin", async (req, res) => {
   }
 });
 
-router.post(
-  "/psychologist-signout",
-  requirePsychologistAuth,
-  async (req, res) => {
+router.post("/psychologist-signout", requirePsychologistAuth, async (req, res) => {
     const { sessionId } = req.cookies;
 
     model.signOutPsychologist(sessionId);
@@ -84,10 +81,7 @@ router.post(
   }
 );
 
-router.post(
-  "/load-psychologist-conversations",
-  requirePsychologistAuth,
-  async (req, res) => {
+router.post("/load-psychologist-conversations", requirePsychologistAuth, async (req, res) => {
     const psychologistConversations =
       await model.getPsychologistConversations();
 

@@ -59,14 +59,14 @@
                   Try to ask questions that you would ask to a real human pschologist or therapist in a real scenario.
                   The chatbot can answer questions about other topics as well, but we are only interested in how you think the chatbot preformed as a psychologist.
                 </li>
-                <li>Fill out the next step of the form, containing questions about Chatbot: {{ $store.state.botOrder.filter((item) => item !== "Liza")[0] }}.</li>
+                <li>Fill out the next step of the form, containing questions about Chatbot: {{ $store.state.botOrder.filter((item) => item !== "Laura")[0] }}.</li>
                 <li>
                   Talk to <u>Chatbot: {{ $store.state.botOrder.filter((item) => item !== "Laura")[1] }}</u> for about 5-10 minutes. 
                   You can click on the other blue button below, or in the navbar to do so.
                   Try to ask questions that you would ask to a real human pschologist or therapist in a real scenario.
                   The chatbot can answer questions about other topics as well, but we are only interested in how you think the chatbot preformed as a psychologist.
                 </li>
-                <li>Fill out the next section of the form, containing questions about Chatbot: {{ $store.state.botOrder.filter((item) => item !== "Liza")[1] }}.</li>
+                <li>Fill out the next section of the form, containing questions about Chatbot: {{ $store.state.botOrder.filter((item) => item !== "Laura")[1] }}.</li>
                 <li>Answer the questions in the final section of the form.</li>
                 <li>Done! Thank you!</li>
               </ol>

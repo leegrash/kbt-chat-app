@@ -395,6 +395,10 @@ export default {
         return;
       }
 
+      if (this.$store.state.awaitingPsychologistResponse === true) {
+        return;
+      }
+
       fetch("/api/load-prev-conversation", {
         method: "POST",
         headers: {
@@ -429,6 +433,10 @@ export default {
       }
 
       if (this.$store.state.awaitongResponse === true) {
+        return;
+      }
+
+      if (this.$store.state.awaitingPsychologistResponse === true) {
         return;
       }
 

@@ -89,7 +89,35 @@ app.use(cookieParser());
 app.use("/api", router);
 app.use("/api", chat.router);
 app.use("/api", psychologist.router);
-app.use(helmet()); 
+app.use(helmet());
+
+async function loadActivePsychologists() {
+  const dbQuery = "SELECT * FROM psychologistSessions";
+
+  await db.each(dbQuery, [], async (err, row) => {
+    if (err) {
+      throw err;
+    }
+
+    const usernameQuery = "SELECT username FROM psychologists WHERE userId = ?";
+    let username = "";
+    await db.get(usernameQuery, [row.userId], (userNameErr, usernameRow) => {
+      if (userNameErr) {
+        console.error(err);
+      } else {
+        username = usernameRow.username;
+      }
+    });
+
+    model.addPsychologist(row.sessionUUID, row.userId, username);
+  });
+
+  if (model.psychologistCookies.length > 0) {
+    model.psychologistOnline = true;
+  }
+}
+
+loadActivePsychologists();
 
 async function loadActiveUsers() {
   const dbQuery = "SELECT * FROM activeSessions";
@@ -112,6 +140,12 @@ io.on("connection", (socket) => {
     if (err) console.error(err);
     else console.debug(`Saved socketID: ${session.socketID}`);
   });
+
+  if (model.psychologistOnline) {
+    model.modelEmit("psychologistOnline");
+  } else {
+    model.modelEmit("psychologistOffline");
+  }
 });
 
 if (devMode === "true") {

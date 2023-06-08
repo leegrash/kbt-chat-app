@@ -314,9 +314,8 @@ export default {
       }
 
       if (this.$store.state.version !== "psychologist") {
-        this.$store.state.awaitongResponse = true; 
-      }
-      else {
+        this.$store.state.awaitongResponse = true;
+      } else {
         this.$store.state.awaitingPsychologistResponse = true;
       }
 
@@ -328,7 +327,6 @@ export default {
 
       document.getElementById("message").disabled = true;
       document.getElementById("message").placeholder = "Awaiting response...";
-      
 
       this.messages.push({
         message,
